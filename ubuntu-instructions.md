@@ -141,4 +141,4 @@ Copy the URL shown in Terminal #2 after running `npm run dev` (usually something
 
 
 **You’re all set!**  
-If you run into trouble or want to join the community, don’t forget to visit our [Discord]().
+If you run into trouble, feel free to contact me via [Email](mailto:eng.mahmoud.slman@gmail.com)
