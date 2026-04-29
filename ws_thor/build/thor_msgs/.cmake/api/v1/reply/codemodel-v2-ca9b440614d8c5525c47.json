@@ -1,0 +1,258 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-4246c0c207b7699118a3.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						17,
+						18
+					]
+				},
+				{
+					"build" : "thor_msgs__py",
+					"jsonFile" : "directory-thor_msgs__py-2a5bebe405debbba911b.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/salman/GryphonEC-ROS2/ws_thor/build/thor_msgs/thor_msgs__py",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"build" : "thor_msgs__rs",
+					"jsonFile" : "directory-thor_msgs__rs-64c860fc18037fc61515.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/salman/GryphonEC-ROS2/ws_thor/build/thor_msgs/thor_msgs__rs",
+					"targetIndexes" : 
+					[
+						16
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2
+					],
+					"name" : "thor_msgs",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_build_thor_msgs_egg::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_build_thor_msgs_egg-80149c49ba8cbeb53dca.json",
+					"name" : "ament_cmake_python_build_thor_msgs_egg",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_copy_thor_msgs::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_copy_thor_msgs-7481eb4e809192f0c07b.json",
+					"name" : "ament_cmake_python_copy_thor_msgs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "thor_msgs::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-thor_msgs-0d72c418de5e55bfce2e.json",
+					"name" : "thor_msgs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "thor_msgs__cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-thor_msgs__cpp-7744ea673f30eed60d78.json",
+					"name" : "thor_msgs__cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "thor_msgs__py::@9e51ca4e9cfdbefe2919",
+					"jsonFile" : "target-thor_msgs__py-667d974a4ed6f1648684.json",
+					"name" : "thor_msgs__py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "thor_msgs__rosidl_generator_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-thor_msgs__rosidl_generator_c-651340cd03b2cc17e4c0.json",
+					"name" : "thor_msgs__rosidl_generator_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "thor_msgs__rosidl_generator_py::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-thor_msgs__rosidl_generator_py-807ec947a3fa24ee0d7d.json",
+					"name" : "thor_msgs__rosidl_generator_py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "thor_msgs__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-thor_msgs__rosidl_typesupport_c-b9225fa9702dfb81c72d.json",
+					"name" : "thor_msgs__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "thor_msgs__rosidl_typesupport_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-thor_msgs__rosidl_typesupport_c__pyext-190666ed89bd4e9fb54c.json",
+					"name" : "thor_msgs__rosidl_typesupport_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "thor_msgs__rosidl_typesupport_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-thor_msgs__rosidl_typesupport_cpp-c380ade8daf66edb9ec8.json",
+					"name" : "thor_msgs__rosidl_typesupport_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "thor_msgs__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-thor_msgs__rosidl_typesupport_fastrtps_c-41b887f5ec530ef26503.json",
+					"name" : "thor_msgs__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "thor_msgs__rosidl_typesupport_fastrtps_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-thor_msgs__rosidl_typesupport_fastrtps_c__pyext-b4f006a05eec35246556.json",
+					"name" : "thor_msgs__rosidl_typesupport_fastrtps_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "thor_msgs__rosidl_typesupport_fastrtps_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-thor_msgs__rosidl_typesupport_fastrtps_cpp-f604610964df55024a9f.json",
+					"name" : "thor_msgs__rosidl_typesupport_fastrtps_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "thor_msgs__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-thor_msgs__rosidl_typesupport_introspection_c-dc4f185867f133a2d0eb.json",
+					"name" : "thor_msgs__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "thor_msgs__rosidl_typesupport_introspection_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-thor_msgs__rosidl_typesupport_introspection_c__pyext-a6d842e0761d7faca89c.json",
+					"name" : "thor_msgs__rosidl_typesupport_introspection_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "thor_msgs__rosidl_typesupport_introspection_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-thor_msgs__rosidl_typesupport_introspection_cpp-995ffbde2a0abf411ea4.json",
+					"name" : "thor_msgs__rosidl_typesupport_introspection_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "thor_msgs__rs::@2b88e5ec75c08f56432a",
+					"jsonFile" : "target-thor_msgs__rs-7e5fe84a16321946d53e.json",
+					"name" : "thor_msgs__rs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "thor_msgs_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-thor_msgs_uninstall-6e34e0ba5752bb3b643c.json",
+					"name" : "thor_msgs_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-055f5075c5ddc4b47ef1.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/salman/GryphonEC-ROS2/ws_thor/build/thor_msgs",
+		"source" : "/home/salman/GryphonEC-ROS2/ws_thor/src/thor_msgs"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

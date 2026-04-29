@@ -1,0 +1,51 @@
+running egg_info
+creating ../../build/thor_status_publisher/thor_status_publisher.egg-info
+writing ../../build/thor_status_publisher/thor_status_publisher.egg-info/PKG-INFO
+writing dependency_links to ../../build/thor_status_publisher/thor_status_publisher.egg-info/dependency_links.txt
+writing entry points to ../../build/thor_status_publisher/thor_status_publisher.egg-info/entry_points.txt
+writing requirements to ../../build/thor_status_publisher/thor_status_publisher.egg-info/requires.txt
+writing top-level names to ../../build/thor_status_publisher/thor_status_publisher.egg-info/top_level.txt
+writing manifest file '../../build/thor_status_publisher/thor_status_publisher.egg-info/SOURCES.txt'
+reading manifest file '../../build/thor_status_publisher/thor_status_publisher.egg-info/SOURCES.txt'
+writing manifest file '../../build/thor_status_publisher/thor_status_publisher.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/salman/GryphonEC-ROS2/ws_thor/build/thor_status_publisher/build
+creating /home/salman/GryphonEC-ROS2/ws_thor/build/thor_status_publisher/build/lib
+creating /home/salman/GryphonEC-ROS2/ws_thor/build/thor_status_publisher/build/lib/thor_status_publisher
+copying thor_status_publisher/__init__.py -> /home/salman/GryphonEC-ROS2/ws_thor/build/thor_status_publisher/build/lib/thor_status_publisher
+copying thor_status_publisher/ik_goal_listener.py -> /home/salman/GryphonEC-ROS2/ws_thor/build/thor_status_publisher/build/lib/thor_status_publisher
+copying thor_status_publisher/cartesian_goal_listener.py -> /home/salman/GryphonEC-ROS2/ws_thor/build/thor_status_publisher/build/lib/thor_status_publisher
+copying thor_status_publisher/random_position_commander.py -> /home/salman/GryphonEC-ROS2/ws_thor/build/thor_status_publisher/build/lib/thor_status_publisher
+copying thor_status_publisher/robot_status_publisher.py -> /home/salman/GryphonEC-ROS2/ws_thor/build/thor_status_publisher/build/lib/thor_status_publisher
+copying thor_status_publisher/joint_goal_listener.py -> /home/salman/GryphonEC-ROS2/ws_thor/build/thor_status_publisher/build/lib/thor_status_publisher
+running install
+running install_lib
+creating /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/lib/python3.10/site-packages/thor_status_publisher
+copying /home/salman/GryphonEC-ROS2/ws_thor/build/thor_status_publisher/build/lib/thor_status_publisher/__init__.py -> /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/lib/python3.10/site-packages/thor_status_publisher
+copying /home/salman/GryphonEC-ROS2/ws_thor/build/thor_status_publisher/build/lib/thor_status_publisher/ik_goal_listener.py -> /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/lib/python3.10/site-packages/thor_status_publisher
+copying /home/salman/GryphonEC-ROS2/ws_thor/build/thor_status_publisher/build/lib/thor_status_publisher/cartesian_goal_listener.py -> /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/lib/python3.10/site-packages/thor_status_publisher
+copying /home/salman/GryphonEC-ROS2/ws_thor/build/thor_status_publisher/build/lib/thor_status_publisher/random_position_commander.py -> /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/lib/python3.10/site-packages/thor_status_publisher
+copying /home/salman/GryphonEC-ROS2/ws_thor/build/thor_status_publisher/build/lib/thor_status_publisher/robot_status_publisher.py -> /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/lib/python3.10/site-packages/thor_status_publisher
+copying /home/salman/GryphonEC-ROS2/ws_thor/build/thor_status_publisher/build/lib/thor_status_publisher/joint_goal_listener.py -> /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/lib/python3.10/site-packages/thor_status_publisher
+byte-compiling /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/lib/python3.10/site-packages/thor_status_publisher/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/lib/python3.10/site-packages/thor_status_publisher/ik_goal_listener.py to ik_goal_listener.cpython-310.pyc
+byte-compiling /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/lib/python3.10/site-packages/thor_status_publisher/cartesian_goal_listener.py to cartesian_goal_listener.cpython-310.pyc
+byte-compiling /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/lib/python3.10/site-packages/thor_status_publisher/random_position_commander.py to random_position_commander.cpython-310.pyc
+byte-compiling /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/lib/python3.10/site-packages/thor_status_publisher/robot_status_publisher.py to robot_status_publisher.cpython-310.pyc
+byte-compiling /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/lib/python3.10/site-packages/thor_status_publisher/joint_goal_listener.py to joint_goal_listener.cpython-310.pyc
+running install_data
+creating /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/share/ament_index
+creating /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/share/ament_index/resource_index
+creating /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/share/ament_index/resource_index/packages
+copying resource/thor_status_publisher -> /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/share/ament_index/resource_index/packages
+copying package.xml -> /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/share/thor_status_publisher
+running install_egg_info
+Copying ../../build/thor_status_publisher/thor_status_publisher.egg-info to /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/lib/python3.10/site-packages/thor_status_publisher-0.0.0-py3.10.egg-info
+running install_scripts
+Installing cartesian_goal_listener script to /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/lib/thor_status_publisher
+Installing ik_goal_listener script to /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/lib/thor_status_publisher
+Installing joint_goal_listener script to /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/lib/thor_status_publisher
+Installing random_position_commander script to /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/lib/thor_status_publisher
+Installing robot_status_publisher script to /home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher/lib/thor_status_publisher
+writing list of installed files to '/home/salman/GryphonEC-ROS2/ws_thor/build/thor_status_publisher/install.log'

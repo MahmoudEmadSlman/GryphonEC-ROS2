@@ -1,0 +1,260 @@
+[0.015s] Invoking command in '/home/salman/GryphonEC-ROS2/ws_thor/build/thor_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/salman/GryphonEC-ROS2/ws_thor/src/thor_msgs -DCMAKE_INSTALL_PREFIX=/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs
+[0.117s] -- The C compiler identification is GNU 11.4.0
+[0.222s] -- The CXX compiler identification is GNU 11.4.0
+[0.233s] -- Detecting C compiler ABI info
+[0.340s] -- Detecting C compiler ABI info - done
+[0.345s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.346s] -- Detecting C compile features
+[0.347s] -- Detecting C compile features - done
+[0.353s] -- Detecting CXX compiler ABI info
+[0.443s] -- Detecting CXX compiler ABI info - done
+[0.450s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.450s] -- Detecting CXX compile features
+[0.451s] -- Detecting CXX compile features - done
+[0.455s] -- Found ament_cmake: 1.3.13 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.622s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.736s] -- Found geometry_msgs: 4.9.1 (/opt/ros/humble/share/geometry_msgs/cmake)
+[0.780s] -- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.786s] -- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.796s] -- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.810s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.826s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.864s] -- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+[1.126s] -- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+[1.575s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[1.745s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[1.764s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") 
+[1.766s] -- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)
+[1.790s] -- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") 
+[1.791s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[1.791s] -- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10
+[1.791s] -- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so
+[1.809s] -- Found PythonExtra: .so  
+[2.041s] -- Using numpy include directory: /home/salman/.local/lib/python3.10/site-packages/numpy/core/include
+[2.048s] -- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[2.073s] -- Added test 'lint_cmake' to check CMake code style
+[2.074s] -- Added test 'xmllint' to check XML markup files
+[2.076s] -- Configuring done
+[2.115s] -- Generating done
+[2.128s] -- Build files have been written to: /home/salman/GryphonEC-ROS2/ws_thor/build/thor_msgs
+[2.141s] Invoked command in '/home/salman/GryphonEC-ROS2/ws_thor/build/thor_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/salman/GryphonEC-ROS2/ws_thor/src/thor_msgs -DCMAKE_INSTALL_PREFIX=/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs
+[2.142s] Invoking command in '/home/salman/GryphonEC-ROS2/ws_thor/build/thor_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/salman/GryphonEC-ROS2/ws_thor/build/thor_msgs -- -j16 -l16
+[2.196s] [  2%] [34m[1mGenerating C code for ROS interfaces[0m
+[2.209s] [  5%] [34m[1mGenerating C++ code for ROS interfaces[0m
+[2.220s] [  5%] Built target ament_cmake_python_copy_thor_msgs
+[2.495s] [  5%] Built target thor_msgs__cpp
+[2.499s] [ 10%] [32mBuilding C object CMakeFiles/thor_msgs__rosidl_generator_c.dir/rosidl_generator_c/thor_msgs/msg/detail/ik_goal__functions.c.o[0m
+[2.499s] [ 10%] [32mBuilding C object CMakeFiles/thor_msgs__rosidl_generator_c.dir/rosidl_generator_c/thor_msgs/msg/detail/cartesian_goal__functions.c.o[0m
+[2.506s] [ 17%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
+[2.507s] [ 17%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[2.508s] [ 17%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
+[2.525s] running egg_info
+[2.525s] creating thor_msgs.egg-info
+[2.526s] writing thor_msgs.egg-info/PKG-INFO
+[2.526s] writing dependency_links to thor_msgs.egg-info/dependency_links.txt
+[2.526s] writing top-level names to thor_msgs.egg-info/top_level.txt
+[2.526s] writing manifest file 'thor_msgs.egg-info/SOURCES.txt'
+[2.529s] reading manifest file 'thor_msgs.egg-info/SOURCES.txt'
+[2.529s] writing manifest file 'thor_msgs.egg-info/SOURCES.txt'
+[2.556s] [ 20%] [32m[1mLinking C shared library libthor_msgs__rosidl_generator_c.so[0m
+[2.568s] [ 20%] Built target ament_cmake_python_build_thor_msgs_egg
+[2.610s] [ 20%] Built target thor_msgs__rosidl_generator_c
+[2.624s] [ 28%] [34m[1mGenerating C type support for eProsima Fast-RTPS[0m
+[2.624s] [ 28%] [34m[1mGenerating C type support dispatch for ROS interfaces[0m
+[2.624s] [ 28%] [34m[1mGenerating C introspection for ROS interfaces[0m
+[2.748s] [ 30%] [32mBuilding CXX object CMakeFiles/thor_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/thor_msgs/msg/ik_goal__type_support.cpp.o[0m
+[2.749s] [ 33%] [32mBuilding CXX object CMakeFiles/thor_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/thor_msgs/msg/cartesian_goal__type_support.cpp.o[0m
+[2.759s] [ 35%] [32mBuilding CXX object CMakeFiles/thor_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/thor_msgs/msg/detail/ik_goal__type_support.cpp.o[0m
+[2.762s] [ 38%] [32mBuilding CXX object CMakeFiles/thor_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/thor_msgs/msg/detail/cartesian_goal__type_support.cpp.o[0m
+[2.781s] [ 41%] [32mBuilding CXX object CMakeFiles/thor_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/thor_msgs/msg/detail/dds_fastrtps/ik_goal__type_support.cpp.o[0m
+[2.784s] [ 43%] [32mBuilding CXX object CMakeFiles/thor_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/thor_msgs/msg/detail/dds_fastrtps/cartesian_goal__type_support.cpp.o[0m
+[2.864s] [ 46%] [32mBuilding CXX object CMakeFiles/thor_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/thor_msgs/msg/ik_goal__type_support.cpp.o[0m
+[2.865s] [ 48%] [32mBuilding CXX object CMakeFiles/thor_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/thor_msgs/msg/cartesian_goal__type_support.cpp.o[0m
+[2.882s] [ 51%] [32mBuilding CXX object CMakeFiles/thor_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/thor_msgs/msg/detail/ik_goal__type_support_c.cpp.o[0m
+[2.882s] [ 53%] [32mBuilding CXX object CMakeFiles/thor_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/thor_msgs/msg/detail/cartesian_goal__type_support_c.cpp.o[0m
+[2.902s] [ 58%] [32mBuilding C object CMakeFiles/thor_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/thor_msgs/msg/detail/ik_goal__type_support.c.o[0m
+[2.902s] [ 58%] [32mBuilding C object CMakeFiles/thor_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/thor_msgs/msg/detail/cartesian_goal__type_support.c.o[0m
+[2.905s] [ 61%] [32m[1mLinking CXX shared library libthor_msgs__rosidl_typesupport_c.so[0m
+[2.947s] [ 64%] [32m[1mLinking C shared library libthor_msgs__rosidl_typesupport_introspection_c.so[0m
+[2.965s] [ 64%] Built target thor_msgs__rosidl_typesupport_c
+[3.001s] [ 64%] Built target thor_msgs__rosidl_typesupport_introspection_c
+[3.062s] [ 66%] [32m[1mLinking CXX shared library libthor_msgs__rosidl_typesupport_cpp.so[0m
+[3.118s] [ 66%] Built target thor_msgs__rosidl_typesupport_cpp
+[3.151s] [ 69%] [32m[1mLinking CXX shared library libthor_msgs__rosidl_typesupport_introspection_cpp.so[0m
+[3.227s] [ 71%] [32m[1mLinking CXX shared library libthor_msgs__rosidl_typesupport_fastrtps_cpp.so[0m
+[3.238s] [ 71%] Built target thor_msgs__rosidl_typesupport_introspection_cpp
+[3.275s] [ 74%] [32m[1mLinking CXX shared library libthor_msgs__rosidl_typesupport_fastrtps_c.so[0m
+[3.331s] [ 74%] Built target thor_msgs__rosidl_typesupport_fastrtps_cpp
+[3.374s] [ 74%] Built target thor_msgs__rosidl_typesupport_fastrtps_c
+[3.405s] [ 74%] Built target thor_msgs
+[3.434s] [ 76%] [34m[1mGenerating Python code for ROS interfaces[0m
+[3.768s] [ 76%] Built target thor_msgs__py
+[3.790s] [ 79%] [32mBuilding C object CMakeFiles/thor_msgs__rosidl_generator_py.dir/rosidl_generator_py/thor_msgs/msg/_ik_goal_s.c.o[0m
+[3.791s] [ 82%] [32mBuilding C object CMakeFiles/thor_msgs__rosidl_generator_py.dir/rosidl_generator_py/thor_msgs/msg/_cartesian_goal_s.c.o[0m
+[3.886s] [ 84%] [32m[1mLinking C shared library rosidl_generator_py/thor_msgs/libthor_msgs__rosidl_generator_py.so[0m
+[3.928s] [ 84%] Built target thor_msgs__rosidl_generator_py
+[3.948s] [ 87%] [32mBuilding C object CMakeFiles/thor_msgs__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/thor_msgs/_thor_msgs_s.ep.rosidl_typesupport_c.c.o[0m
+[3.948s] [ 92%] [32mBuilding C object CMakeFiles/thor_msgs__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/thor_msgs/_thor_msgs_s.ep.rosidl_typesupport_fastrtps_c.c.o[0m
+[3.948s] [ 92%] [32mBuilding C object CMakeFiles/thor_msgs__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/thor_msgs/_thor_msgs_s.ep.rosidl_typesupport_introspection_c.c.o[0m
+[4.050s] [ 94%] [32m[1mLinking C shared library rosidl_generator_py/thor_msgs/thor_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so[0m
+[4.050s] [ 97%] [32m[1mLinking C shared library rosidl_generator_py/thor_msgs/thor_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so[0m
+[4.052s] [100%] [32m[1mLinking C shared library rosidl_generator_py/thor_msgs/thor_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so[0m
+[4.096s] [100%] Built target thor_msgs__rosidl_typesupport_fastrtps_c__pyext
+[4.096s] [100%] Built target thor_msgs__rosidl_typesupport_c__pyext
+[4.096s] [100%] Built target thor_msgs__rosidl_typesupport_introspection_c__pyext
+[4.113s] Invoked command in '/home/salman/GryphonEC-ROS2/ws_thor/build/thor_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/salman/GryphonEC-ROS2/ws_thor/build/thor_msgs -- -j16 -l16
+[4.114s] Invoking command in '/home/salman/GryphonEC-ROS2/ws_thor/build/thor_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/salman/GryphonEC-ROS2/ws_thor/build/thor_msgs
+[4.125s] -- Install configuration: ""
+[4.125s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/ament_index/resource_index/rosidl_interfaces/thor_msgs
+[4.125s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs
+[4.125s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg
+[4.125s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/cartesian_goal.h
+[4.125s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/ik_goal.h
+[4.125s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/rosidl_generator_c__visibility_control.h
+[4.126s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail
+[4.126s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__functions.h
+[4.126s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__functions.c
+[4.126s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__struct.h
+[4.126s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__type_support.h
+[4.126s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__type_support.h
+[4.126s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__functions.h
+[4.126s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__struct.h
+[4.126s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__functions.c
+[4.126s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/environment/library_path.sh
+[4.127s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/environment/library_path.dsv
+[4.127s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_generator_c.so
+[4.127s] -- Set runtime path of "/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_generator_c.so" to ""
+[4.127s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs
+[4.127s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg
+[4.127s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[4.127s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail
+[4.127s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__rosidl_typesupport_fastrtps_c.h
+[4.127s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__rosidl_typesupport_fastrtps_c.h
+[4.128s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_typesupport_fastrtps_c.so
+[4.128s] -- Set runtime path of "/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_typesupport_fastrtps_c.so" to ""
+[4.128s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs
+[4.128s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg
+[4.129s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/ik_goal.hpp
+[4.129s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/cartesian_goal.hpp
+[4.129s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/rosidl_generator_cpp__visibility_control.hpp
+[4.129s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail
+[4.129s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__traits.hpp
+[4.130s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__struct.hpp
+[4.131s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__type_support.hpp
+[4.131s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__builder.hpp
+[4.132s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__type_support.hpp
+[4.133s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__traits.hpp
+[4.133s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__builder.hpp
+[4.133s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__struct.hpp
+[4.133s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs
+[4.133s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg
+[4.133s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail
+[4.133s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/dds_fastrtps
+[4.133s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__rosidl_typesupport_fastrtps_cpp.hpp
+[4.133s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__rosidl_typesupport_fastrtps_cpp.hpp
+[4.133s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[4.133s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_typesupport_fastrtps_cpp.so
+[4.134s] -- Set runtime path of "/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_typesupport_fastrtps_cpp.so" to ""
+[4.134s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs
+[4.134s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg
+[4.134s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail
+[4.134s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__rosidl_typesupport_introspection_c.h
+[4.134s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__rosidl_typesupport_introspection_c.h
+[4.134s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__type_support.c
+[4.134s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__type_support.c
+[4.134s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[4.134s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_typesupport_introspection_c.so
+[4.135s] -- Set runtime path of "/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_typesupport_introspection_c.so" to ""
+[4.135s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_typesupport_c.so
+[4.135s] -- Set runtime path of "/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_typesupport_c.so" to ""
+[4.135s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs
+[4.135s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg
+[4.135s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail
+[4.135s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__rosidl_typesupport_introspection_cpp.hpp
+[4.135s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__rosidl_typesupport_introspection_cpp.hpp
+[4.135s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__type_support.cpp
+[4.136s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__type_support.cpp
+[4.136s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_typesupport_introspection_cpp.so
+[4.136s] -- Set runtime path of "/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_typesupport_introspection_cpp.so" to ""
+[4.136s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_typesupport_cpp.so
+[4.136s] -- Set runtime path of "/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_typesupport_cpp.so" to ""
+[4.137s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/environment/pythonpath.sh
+[4.137s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/environment/pythonpath.dsv
+[4.137s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs-0.0.0-py3.10.egg-info
+[4.137s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs-0.0.0-py3.10.egg-info/SOURCES.txt
+[4.137s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs-0.0.0-py3.10.egg-info/top_level.txt
+[4.137s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs-0.0.0-py3.10.egg-info/dependency_links.txt
+[4.137s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs-0.0.0-py3.10.egg-info/PKG-INFO
+[4.137s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs
+[4.138s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/__init__.py
+[4.138s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/_thor_msgs_s.ep.rosidl_typesupport_c.c
+[4.138s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/_thor_msgs_s.ep.rosidl_typesupport_introspection_c.c
+[4.138s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/_thor_msgs_s.ep.rosidl_typesupport_fastrtps_c.c
+[4.138s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/thor_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[4.138s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/thor_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[4.138s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/msg
+[4.138s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/msg/__init__.py
+[4.138s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/msg/_ik_goal.py
+[4.138s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/msg/_cartesian_goal_s.c
+[4.139s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/msg/_ik_goal_s.c
+[4.139s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/msg/_cartesian_goal.py
+[4.139s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/thor_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[4.139s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/libthor_msgs__rosidl_generator_py.so
+[4.176s] Listing '/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs'...
+[4.177s] Compiling '/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/__init__.py'...
+[4.177s] Listing '/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/msg'...
+[4.177s] Compiling '/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/msg/__init__.py'...
+[4.177s] Compiling '/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/msg/_cartesian_goal.py'...
+[4.177s] Compiling '/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/msg/_ik_goal.py'...
+[4.182s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/thor_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[4.182s] -- Set runtime path of "/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/thor_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so" to ""
+[4.182s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/thor_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[4.183s] -- Set runtime path of "/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/thor_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so" to ""
+[4.183s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/thor_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[4.184s] -- Set runtime path of "/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/thor_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so" to ""
+[4.184s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_generator_py.so
+[4.184s] -- Set runtime path of "/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_generator_py.so" to ""
+[4.184s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/msg/IKGoal.idl
+[4.184s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/msg/CartesianGoal.idl
+[4.184s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/msg/IKGoal.msg
+[4.184s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/msg/CartesianGoal.msg
+[4.185s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/ament_index/resource_index/package_run_dependencies/thor_msgs
+[4.185s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/ament_index/resource_index/parent_prefix_path/thor_msgs
+[4.185s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/environment/ament_prefix_path.sh
+[4.185s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/environment/ament_prefix_path.dsv
+[4.185s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/environment/path.sh
+[4.185s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/environment/path.dsv
+[4.185s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/local_setup.bash
+[4.185s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/local_setup.sh
+[4.186s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/local_setup.zsh
+[4.186s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/local_setup.dsv
+[4.186s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/package.dsv
+[4.186s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/ament_index/resource_index/packages/thor_msgs
+[4.186s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/export_thor_msgs__rosidl_generator_cExport.cmake
+[4.186s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/export_thor_msgs__rosidl_generator_cExport-noconfig.cmake
+[4.187s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/export_thor_msgs__rosidl_typesupport_fastrtps_cExport.cmake
+[4.188s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/export_thor_msgs__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+[4.190s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/export_thor_msgs__rosidl_generator_cppExport.cmake
+[4.190s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/export_thor_msgs__rosidl_typesupport_fastrtps_cppExport.cmake
+[4.191s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/export_thor_msgs__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+[4.191s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/thor_msgs__rosidl_typesupport_introspection_cExport.cmake
+[4.191s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/thor_msgs__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[4.191s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/thor_msgs__rosidl_typesupport_cExport.cmake
+[4.191s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/thor_msgs__rosidl_typesupport_cExport-noconfig.cmake
+[4.191s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/thor_msgs__rosidl_typesupport_introspection_cppExport.cmake
+[4.191s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/thor_msgs__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[4.191s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/thor_msgs__rosidl_typesupport_cppExport.cmake
+[4.192s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/thor_msgs__rosidl_typesupport_cppExport-noconfig.cmake
+[4.192s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/export_thor_msgs__rosidl_generator_pyExport.cmake
+[4.192s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/export_thor_msgs__rosidl_generator_pyExport-noconfig.cmake
+[4.192s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/rosidl_cmake-extras.cmake
+[4.192s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/ament_cmake_export_dependencies-extras.cmake
+[4.192s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/ament_cmake_export_include_directories-extras.cmake
+[4.192s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/ament_cmake_export_libraries-extras.cmake
+[4.193s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/ament_cmake_export_targets-extras.cmake
+[4.193s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[4.193s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[4.193s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/thor_msgsConfig.cmake
+[4.193s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/thor_msgsConfig-version.cmake
+[4.193s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/package.xml
+[4.196s] Invoked command in '/home/salman/GryphonEC-ROS2/ws_thor/build/thor_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/salman/GryphonEC-ROS2/ws_thor/build/thor_msgs

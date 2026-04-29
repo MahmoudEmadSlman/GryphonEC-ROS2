@@ -1,0 +1,34 @@
+[01m[K/home/salman/GryphonEC-ROS2/ws_thor/src/thor_controller/src/thor_interface.cpp:[m[K In member function ‘[01m[Kvirtual thor_controller::CallbackReturn thor_controller::ThorInterface::on_activate(const rclcpp_lifecycle::State&)[m[K’:
+[01m[K/home/salman/GryphonEC-ROS2/ws_thor/src/thor_controller/src/thor_interface.cpp:71:74:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kprevious_state[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   71 | n ThorInterface::on_activate([01;35m[Kconst rclcpp_lifecycle::State &previous_state[m[K)
+      |                              [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~[m[K
+
+[01m[K/home/salman/GryphonEC-ROS2/ws_thor/src/thor_controller/src/thor_interface.cpp:[m[K In member function ‘[01m[Kvirtual thor_controller::CallbackReturn thor_controller::ThorInterface::on_deactivate(const rclcpp_lifecycle::State&)[m[K’:
+[01m[K/home/salman/GryphonEC-ROS2/ws_thor/src/thor_controller/src/thor_interface.cpp:96:76:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kprevious_state[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   96 | ThorInterface::on_deactivate([01;35m[Kconst rclcpp_lifecycle::State &previous_state[m[K){
+      |                              [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~[m[K
+
+[01m[K/home/salman/GryphonEC-ROS2/ws_thor/src/thor_controller/src/thor_interface.cpp:[m[K In member function ‘[01m[Kvirtual hardware_interface::return_type thor_controller::ThorInterface::read(const rclcpp::Time&, const rclcpp::Duration&)[m[K’:
+[01m[K/home/salman/GryphonEC-ROS2/ws_thor/src/thor_controller/src/thor_interface.cpp:155:55:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kint[m[K’ and ‘[01m[Kstd::vector<double, std::allocator<double> >::size_type[m[K’ {aka ‘[01m[Klong unsigned int[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare-Wsign-compare]8;;[m[K]
+  155 |             while (std::getline(iss, token, ',') && [01;35m[Ki < position_states_.size()[m[K) {
+      |                                                     [01;35m[K~~^~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/salman/GryphonEC-ROS2/ws_thor/src/thor_controller/src/thor_interface.cpp:209:22:[m[K [01;35m[Kwarning: [m[Kvariable ‘[01m[Khomed[m[K’ set but not used [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-but-set-variable-Wunused-but-set-variable]8;;[m[K]
+  209 |                 bool [01;35m[Khomed[m[K = true;
+      |                      [01;35m[K^~~~~[m[K
+[01m[K/home/salman/GryphonEC-ROS2/ws_thor/src/thor_controller/src/thor_interface.cpp:113:73:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Ktime[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+  113 | erface::return_type ThorInterface::read([01;35m[Kconst rclcpp::Time &time[m[K, const rclcpp::Duration &period){
+      |                                         [01;35m[K~~~~~~~~~~~~~~~~~~~~^~~~[m[K
+
+[01m[K/home/salman/GryphonEC-ROS2/ws_thor/src/thor_controller/src/thor_interface.cpp:113:103:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kperiod[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+  113 | erface::read(const rclcpp::Time &time, [01;35m[Kconst rclcpp::Duration &period[m[K){
+      |                                        [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~[m[K
+
+[01m[K/home/salman/GryphonEC-ROS2/ws_thor/src/thor_controller/src/thor_interface.cpp:[m[K In member function ‘[01m[Kvirtual hardware_interface::return_type thor_controller::ThorInterface::write(const rclcpp::Time&, const rclcpp::Duration&)[m[K’:
+[01m[K/home/salman/GryphonEC-ROS2/ws_thor/src/thor_controller/src/thor_interface.cpp:269:74:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Ktime[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+  269 | rface::return_type ThorInterface::write([01;35m[Kconst rclcpp::Time &time[m[K, const rclcpp::Duration &period){
+      |                                         [01;35m[K~~~~~~~~~~~~~~~~~~~~^~~~[m[K
+
+[01m[K/home/salman/GryphonEC-ROS2/ws_thor/src/thor_controller/src/thor_interface.cpp:269:104:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kperiod[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+  269 | rface::write(const rclcpp::Time &time, [01;35m[Kconst rclcpp::Duration &period[m[K){
+      |                                        [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~[m[K
+

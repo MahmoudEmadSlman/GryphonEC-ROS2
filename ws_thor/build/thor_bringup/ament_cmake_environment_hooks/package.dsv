@@ -1,0 +1,4 @@
+source;share/thor_bringup/local_setup.bash
+source;share/thor_bringup/local_setup.dsv
+source;share/thor_bringup/local_setup.sh
+source;share/thor_bringup/local_setup.zsh

@@ -1,0 +1,34 @@
+// generated from rosidl_adapter/resource/action.idl.em
+// with input from thor_server/action/PoseTask.action
+// generated code does not contain a copyright notice
+
+
+module thor_server {
+  module action {
+    @verbatim (language="comment", text=
+      "Goal")
+    struct PoseTask_Goal {
+      float x;
+
+      float y;
+
+      float z;
+
+      float roll;
+
+      float pitch;
+
+      float yaw;
+    };
+    @verbatim (language="comment", text=
+      "Result")
+    struct PoseTask_Result {
+      boolean success;
+    };
+    @verbatim (language="comment", text=
+      "Feedback")
+    struct PoseTask_Feedback {
+      int32 percentage;
+    };
+  };
+};

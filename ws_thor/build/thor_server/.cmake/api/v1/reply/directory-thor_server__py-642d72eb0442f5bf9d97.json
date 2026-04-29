@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "thor_server__py",
+		"source" : "/home/salman/GryphonEC-ROS2/ws_thor/build/thor_server/thor_server__py"
+	}
+}

@@ -1,0 +1,34 @@
+// generated from rosidl_adapter/resource/action.idl.em
+// with input from thor_server/action/JointTask.action
+// generated code does not contain a copyright notice
+
+
+module thor_server {
+  module action {
+    @verbatim (language="comment", text=
+      "Goal")
+    struct JointTask_Goal {
+      float joint1_deg;
+
+      float joint2_deg;
+
+      float joint3_deg;
+
+      float joint4_deg;
+
+      float joint5_deg;
+
+      float gripper_joint_deg;
+    };
+    @verbatim (language="comment", text=
+      "Result")
+    struct JointTask_Result {
+      boolean success;
+    };
+    @verbatim (language="comment", text=
+      "Feedback")
+    struct JointTask_Feedback {
+      int32 percentage;
+    };
+  };
+};
