@@ -11,7 +11,7 @@ function Poses({ onPreviewJointsChange, poses, setPoses }, ref) {
   const rosApi = useRosApi();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [poseNameToDelete, setPoseNameToDelete] = useState(null);
-  const jointOrder = ['joint_1','joint_2','joint_3','joint_4','joint_5','joint_6','gripperbase_to_armgearright'];
+  const jointOrder = ['joint_1','joint_2','joint_3','joint_4','joint_5','gripperbase_to_armgearright'];
 
   // Load saved poses from localStorage on mount
   useEffect(() => {

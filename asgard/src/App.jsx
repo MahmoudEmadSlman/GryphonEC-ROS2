@@ -69,7 +69,7 @@ function AppInner() {
   const [overlayRealTCP, setOverlayRealTCP] = useState(null);
   const [overlayGhostTCP, setOverlayGhostTCP] = useState(null);
 
-  const jointOrder = ['joint_1','joint_2','joint_3','joint_4','joint_5','joint_6'];
+  const jointOrder = ['joint_1','joint_2','joint_3','joint_4','joint_5'];
   const radToDeg = (r) => (r * 180 / Math.PI);
 
   // Formatters for overlay display
@@ -165,7 +165,7 @@ function AppInner() {
     const poseData = {
       name: poseName,
       joints: Object.fromEntries(
-        ['joint_1', 'joint_2', 'joint_3', 'joint_4', 'joint_5', 'joint_6', 'gripperbase_to_armgearright'].map(jointName => [jointName, currentJoints[jointName]])
+        ['joint_1', 'joint_2', 'joint_3', 'joint_4', 'joint_5', 'gripperbase_to_armgearright'].map(jointName => [jointName, currentJoints[jointName]])
       ),
       gripperBase: currentTCP
     };

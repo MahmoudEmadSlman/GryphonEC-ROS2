@@ -5,13 +5,12 @@ import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
 
 const jointConfigs = [
-  { name: 'joint_1', label: 'Art 1', min: -170, max: 170 },
-  { name: 'joint_2', label: 'Art 2', min: -90, max: 90 },
-  { name: 'joint_3', label: 'Art 3', min: -90, max: 90 },
-  { name: 'joint_4', label: 'Art 4', min: -170, max: 170 },
-  { name: 'joint_5', label: 'Art 5', min: -90, max: 90 },
-  { name: 'joint_6', label: 'Art 6', min: -170, max: 170 },
-  { name: 'gripperbase_to_armgearright', label: 'Tool', min: 0, max: 89.9 }
+  { name: 'joint_1', label: 'Joint 1', min: -180, max: 180 },
+  { name: 'joint_2', label: 'Joint 2', min: -90, max: 90 },
+  { name: 'joint_3', label: 'Joint 3', min: -120, max: 120 },
+  { name: 'joint_4', label: 'Joint 4', min: -120, max: 120 },
+  { name: 'joint_5', label: 'Joint 5', min: -180, max: 180 },
+  { name: 'gripperbase_to_armgearright', label: 'Gripper', min: 0, max: 89.9 }
 ];
 
 function FKControls({ initialJoints, urdfApi, active = true }) {

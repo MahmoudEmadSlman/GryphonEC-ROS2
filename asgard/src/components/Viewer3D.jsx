@@ -27,7 +27,7 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
 
   // No direct ROS context; rely on rosApi passed from parent
 
-  const jointOrder = ['joint_1','joint_2','joint_3','joint_4','joint_5','joint_6','gripperbase_to_armgearright'];
+  const jointOrder = ['joint_1','joint_2','joint_3','joint_4','joint_5','gripperbase_to_armgearright'];
 
   const jointsEqual = (a, b) => {
     if (!a || !b) return false;
