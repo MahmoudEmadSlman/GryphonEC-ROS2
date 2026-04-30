@@ -9,6 +9,7 @@
 /home/salman/GryphonEC-ROS2/ws_thor/install/thor_urdf/share/thor_urdf/meshes/Wrist_gripper_base_v2_1.stl
 /home/salman/GryphonEC-ROS2/ws_thor/install/thor_urdf/share/thor_urdf/meshes/Wrist_l_gripper_v1_1.stl
 /home/salman/GryphonEC-ROS2/ws_thor/install/thor_urdf/share/thor_urdf/meshes/Elbow_v1_1.stl
+/home/salman/GryphonEC-ROS2/ws_thor/install/thor_urdf/share/thor_urdf/urdf/cube.urdf
 /home/salman/GryphonEC-ROS2/ws_thor/install/thor_urdf/share/thor_urdf/urdf/thor_arm.ros2_control.xacro
 /home/salman/GryphonEC-ROS2/ws_thor/install/thor_urdf/share/thor_urdf/urdf/thor.urdf.xacro
 /home/salman/GryphonEC-ROS2/ws_thor/install/thor_urdf/share/thor_urdf/urdf/thor_gazebo.xacro

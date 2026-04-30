@@ -1,0 +1,190 @@
+[0.013s] Invoking command in '/home/salman/GryphonEC-ROS2/ws_thor/build/thor_server': CMAKE_PREFIX_PATH=/home/salman/GryphonEC-ROS2/ws_thor/install/thor_controller:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_bringup:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_moveit:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_urdf:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_joystick:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_server:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher:/opt/ros/humble LD_LIBRARY_PATH=/home/salman/GryphonEC-ROS2/ws_thor/install/thor_controller/lib:/usr/local/cuda-12.8/lib64:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/lib:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib:/usr/local/cuda-12.8/lib64:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib /usr/bin/cmake --build /home/salman/GryphonEC-ROS2/ws_thor/build/thor_server -- -j16 -l16
+[0.071s] [  2%] Built target thor_server__rs
+[0.072s] [ 10%] Built target thor_server__rosidl_generator_c
+[0.075s] [ 13%] Built target thor_server__cpp
+[0.078s] [ 17%] Built target hardware_command_node
+[0.082s] [ 21%] Built target task_server_node
+[0.084s] [ 21%] Built target ament_cmake_python_copy_thor_server
+[0.095s] [ 30%] Built target thor_server__rosidl_typesupport_c
+[0.095s] [ 39%] Built target thor_server__rosidl_typesupport_introspection_c
+[0.096s] [ 47%] Built target thor_server__rosidl_typesupport_fastrtps_c
+[0.100s] [ 65%] Built target thor_server__rosidl_typesupport_introspection_cpp
+[0.100s] [ 65%] Built target thor_server__rosidl_typesupport_cpp
+[0.100s] [ 73%] Built target thor_server__rosidl_typesupport_fastrtps_cpp
+[0.123s] [ 73%] Built target thor_server
+[0.134s] [ 78%] Built target task_server
+[0.145s] [ 80%] Built target thor_server__py
+[0.173s] [ 86%] Built target thor_server__rosidl_generator_py
+[0.196s] [100%] Built target thor_server__rosidl_typesupport_c__pyext
+[0.196s] [100%] Built target thor_server__rosidl_typesupport_introspection_c__pyext
+[0.196s] [100%] Built target thor_server__rosidl_typesupport_fastrtps_c__pyext
+[0.318s] running egg_info
+[0.319s] writing thor_server.egg-info/PKG-INFO
+[0.319s] writing dependency_links to thor_server.egg-info/dependency_links.txt
+[0.319s] writing top-level names to thor_server.egg-info/top_level.txt
+[0.322s] reading manifest file 'thor_server.egg-info/SOURCES.txt'
+[0.323s] writing manifest file 'thor_server.egg-info/SOURCES.txt'
+[0.351s] [100%] Built target ament_cmake_python_build_thor_server_egg
+[0.579s] Invoked command in '/home/salman/GryphonEC-ROS2/ws_thor/build/thor_server' returned '0': CMAKE_PREFIX_PATH=/home/salman/GryphonEC-ROS2/ws_thor/install/thor_controller:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_bringup:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_moveit:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_urdf:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_joystick:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_server:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher:/opt/ros/humble LD_LIBRARY_PATH=/home/salman/GryphonEC-ROS2/ws_thor/install/thor_controller/lib:/usr/local/cuda-12.8/lib64:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/lib:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib:/usr/local/cuda-12.8/lib64:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib /usr/bin/cmake --build /home/salman/GryphonEC-ROS2/ws_thor/build/thor_server -- -j16 -l16
+[0.581s] Invoking command in '/home/salman/GryphonEC-ROS2/ws_thor/build/thor_server': CMAKE_PREFIX_PATH=/home/salman/GryphonEC-ROS2/ws_thor/install/thor_controller:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_bringup:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_moveit:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_urdf:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_joystick:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_server:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher:/opt/ros/humble LD_LIBRARY_PATH=/home/salman/GryphonEC-ROS2/ws_thor/install/thor_controller/lib:/usr/local/cuda-12.8/lib64:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/lib:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib:/usr/local/cuda-12.8/lib64:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib /usr/bin/cmake --install /home/salman/GryphonEC-ROS2/ws_thor/build/thor_server
+[0.589s] -- Install configuration: ""
+[0.589s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/ament_index/resource_index/rosidl_interfaces/thor_server
+[0.589s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server
+[0.589s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action
+[0.589s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/joint_task.h
+[0.589s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/pose_task.h
+[0.590s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail
+[0.590s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/joint_task__functions.c
+[0.590s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/joint_task__functions.h
+[0.590s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/joint_task__struct.h
+[0.590s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/pose_task__functions.h
+[0.590s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/pose_task__functions.c
+[0.590s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/joint_task__type_support.h
+[0.590s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/pose_task__type_support.h
+[0.590s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/pose_task__struct.h
+[0.590s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/msg
+[0.590s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/msg/rosidl_generator_c__visibility_control.h
+[0.590s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/environment/library_path.sh
+[0.590s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/environment/library_path.dsv
+[0.591s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/lib/libthor_server__rosidl_generator_c.so
+[0.591s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server
+[0.591s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action
+[0.591s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail
+[0.591s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/joint_task__rosidl_typesupport_fastrtps_c.h
+[0.591s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/pose_task__rosidl_typesupport_fastrtps_c.h
+[0.591s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/msg
+[0.591s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[0.591s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/lib/libthor_server__rosidl_typesupport_fastrtps_c.so
+[0.591s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server
+[0.591s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action
+[0.591s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/joint_task.hpp
+[0.591s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail
+[0.591s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/joint_task__traits.hpp
+[0.592s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/pose_task__builder.hpp
+[0.592s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/joint_task__builder.hpp
+[0.592s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/pose_task__struct.hpp
+[0.592s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/pose_task__traits.hpp
+[0.592s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/joint_task__type_support.hpp
+[0.592s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/pose_task__type_support.hpp
+[0.592s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/joint_task__struct.hpp
+[0.592s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/pose_task.hpp
+[0.592s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/msg
+[0.592s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/msg/rosidl_generator_cpp__visibility_control.hpp
+[0.592s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server
+[0.592s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action
+[0.592s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail
+[0.592s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/dds_fastrtps
+[0.592s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/joint_task__rosidl_typesupport_fastrtps_cpp.hpp
+[0.592s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/pose_task__rosidl_typesupport_fastrtps_cpp.hpp
+[0.593s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/msg
+[0.593s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[0.593s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/lib/libthor_server__rosidl_typesupport_fastrtps_cpp.so
+[0.593s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server
+[0.593s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action
+[0.593s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail
+[0.593s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/joint_task__rosidl_typesupport_introspection_c.h
+[0.593s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/joint_task__type_support.c
+[0.593s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/pose_task__type_support.c
+[0.593s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/pose_task__rosidl_typesupport_introspection_c.h
+[0.593s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/msg
+[0.593s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[0.593s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/lib/libthor_server__rosidl_typesupport_introspection_c.so
+[0.593s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/lib/libthor_server__rosidl_typesupport_c.so
+[0.594s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server
+[0.594s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action
+[0.594s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail
+[0.594s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/joint_task__type_support.cpp
+[0.594s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/joint_task__rosidl_typesupport_introspection_cpp.hpp
+[0.594s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/pose_task__type_support.cpp
+[0.594s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/include/thor_server/thor_server/action/detail/pose_task__rosidl_typesupport_introspection_cpp.hpp
+[0.594s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/lib/libthor_server__rosidl_typesupport_introspection_cpp.so
+[0.594s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/lib/libthor_server__rosidl_typesupport_cpp.so
+[0.595s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/environment/pythonpath.sh
+[0.595s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/environment/pythonpath.dsv
+[0.595s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server-0.0.0-py3.10.egg-info
+[0.595s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server-0.0.0-py3.10.egg-info/SOURCES.txt
+[0.595s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server-0.0.0-py3.10.egg-info/top_level.txt
+[0.595s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server-0.0.0-py3.10.egg-info/dependency_links.txt
+[0.595s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server-0.0.0-py3.10.egg-info/PKG-INFO
+[0.595s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server
+[0.595s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server/_thor_server_s.ep.rosidl_typesupport_c.c
+[0.595s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server/__init__.py
+[0.595s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server/_thor_server_s.ep.rosidl_typesupport_fastrtps_c.c
+[0.595s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server/libthor_server__rosidl_generator_py.so
+[0.595s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server/thor_server_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[0.595s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server/_thor_server_s.ep.rosidl_typesupport_introspection_c.c
+[0.595s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server/thor_server_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[0.595s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server/action
+[0.595s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server/action/__init__.py
+[0.595s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server/action/_joint_task.py
+[0.596s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server/action/_joint_task_s.c
+[0.596s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server/action/_pose_task_s.c
+[0.596s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server/action/_pose_task.py
+[0.596s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server/thor_server_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[0.620s] Listing '/home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server'...
+[0.620s] Listing '/home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server/action'...
+[0.625s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server/thor_server_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[0.625s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server/thor_server_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[0.626s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/local/lib/python3.10/dist-packages/thor_server/thor_server_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[0.626s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/lib/libthor_server__rosidl_generator_py.so
+[0.626s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/ament_index/resource_index/rust_packages/thor_server
+[0.626s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/rust
+[0.627s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/rust/Cargo.toml
+[0.627s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/rust/build.rs
+[0.627s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/rust/src
+[0.627s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/rust/src/lib.rs
+[0.627s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/rust/src/action.rs
+[0.627s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/rust/src/action
+[0.627s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/rust/src/action/rmw.rs
+[0.627s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/action/JointTask.idl
+[0.627s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/action/PoseTask.idl
+[0.627s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/action/JointTask.action
+[0.627s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/action/PoseTask.action
+[0.627s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/lib/thor_server/task_server_node
+[0.627s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/action
+[0.627s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/action/PoseTask.action
+[0.627s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/action/JointTask.action
+[0.627s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/lib/thor_server/libtask_server.so
+[0.628s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/lib/thor_server/hardware_command_node
+[0.628s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/lib/libtask_server.so
+[0.628s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/ament_index/resource_index/package_run_dependencies/thor_server
+[0.628s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/ament_index/resource_index/parent_prefix_path/thor_server
+[0.628s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/environment/ament_prefix_path.sh
+[0.628s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/environment/ament_prefix_path.dsv
+[0.628s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/environment/path.sh
+[0.629s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/environment/path.dsv
+[0.629s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/local_setup.bash
+[0.629s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/local_setup.sh
+[0.629s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/local_setup.zsh
+[0.629s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/local_setup.dsv
+[0.629s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/package.dsv
+[0.629s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/ament_index/resource_index/packages/thor_server
+[0.629s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/ament_index/resource_index/rclcpp_components/thor_server
+[0.629s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/export_thor_server__rosidl_generator_cExport.cmake
+[0.629s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/export_thor_server__rosidl_generator_cExport-noconfig.cmake
+[0.629s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/export_thor_server__rosidl_typesupport_fastrtps_cExport.cmake
+[0.629s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/export_thor_server__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+[0.629s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/export_thor_server__rosidl_generator_cppExport.cmake
+[0.629s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/export_thor_server__rosidl_typesupport_fastrtps_cppExport.cmake
+[0.629s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/export_thor_server__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+[0.629s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/thor_server__rosidl_typesupport_introspection_cExport.cmake
+[0.629s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/thor_server__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[0.630s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/thor_server__rosidl_typesupport_cExport.cmake
+[0.630s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/thor_server__rosidl_typesupport_cExport-noconfig.cmake
+[0.630s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/thor_server__rosidl_typesupport_introspection_cppExport.cmake
+[0.630s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/thor_server__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[0.630s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/thor_server__rosidl_typesupport_cppExport.cmake
+[0.630s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/thor_server__rosidl_typesupport_cppExport-noconfig.cmake
+[0.630s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/export_thor_server__rosidl_generator_pyExport.cmake
+[0.630s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/export_thor_server__rosidl_generator_pyExport-noconfig.cmake
+[0.630s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/rosidl_cmake-extras.cmake
+[0.630s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/ament_cmake_export_dependencies-extras.cmake
+[0.630s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/ament_cmake_export_include_directories-extras.cmake
+[0.630s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/ament_cmake_export_libraries-extras.cmake
+[0.630s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/ament_cmake_export_targets-extras.cmake
+[0.630s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[0.630s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[0.630s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/thor_serverConfig.cmake
+[0.630s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/cmake/thor_serverConfig-version.cmake
+[0.630s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/share/thor_server/package.xml
+[0.633s] Invoked command in '/home/salman/GryphonEC-ROS2/ws_thor/build/thor_server' returned '0': CMAKE_PREFIX_PATH=/home/salman/GryphonEC-ROS2/ws_thor/install/thor_controller:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_bringup:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_moveit:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_urdf:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_joystick:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_server:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher:/opt/ros/humble LD_LIBRARY_PATH=/home/salman/GryphonEC-ROS2/ws_thor/install/thor_controller/lib:/usr/local/cuda-12.8/lib64:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_server/lib:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib:/usr/local/cuda-12.8/lib64:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib /usr/bin/cmake --install /home/salman/GryphonEC-ROS2/ws_thor/build/thor_server

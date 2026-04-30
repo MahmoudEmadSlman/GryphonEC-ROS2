@@ -162,13 +162,14 @@ export default function IKControls({
       };
 
       // Compute gripper value from local gripperPercent to avoid race with ghostJoints updates
+      // Map gripperPercent (0-100) to radians (0.5 to -0.75)
       let gripperRadians;
       if (gripperPercent === 0) {
-        gripperRadians = 0;
+        gripperRadians = 0.5;
       } else if (gripperPercent === 100) {
-        gripperRadians = -89.9 * Math.PI / 180;
+        gripperRadians = -0.75;
       } else {
-        gripperRadians = -89.9 * (gripperPercent / 100) * Math.PI / 180;
+        gripperRadians = 0.5 - (1.25 * (gripperPercent / 100));
       }
 
       // Use the locally computed value to ensure we send what the user selected
@@ -281,10 +282,10 @@ export default function IKControls({
     const currentGhost = ghostJointsRef.current;
     if (!currentGhost || typeof onPreviewJointsUpdate !== 'function') return;
     const gripperValue = gripperPercent === 0
-      ? 0
+      ? 0.5
       : gripperPercent === 100
-      ? (-89.9 * Math.PI / 180)
-      : (-89.9 * (gripperPercent / 100) * Math.PI / 180);
+      ? -0.75
+      : (0.5 - (1.25 * (gripperPercent / 100)));
     if (currentGhost['gripperbase_to_armgearright'] !== gripperValue) {
       const updatedJoints = { ...currentGhost, gripperbase_to_armgearright: gripperValue };
       onPreviewJointsUpdate(updatedJoints);

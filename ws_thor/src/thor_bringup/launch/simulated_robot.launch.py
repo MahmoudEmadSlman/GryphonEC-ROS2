@@ -97,6 +97,18 @@ def generate_launch_description():
         parameters=[{"use_sim_time": True}]
     )
 
+    spawn_cube = Node(
+        package="gazebo_ros",
+        executable="spawn_entity.py",
+        arguments=[
+            "-entity", "cube",
+            "-file", os.path.join(get_package_share_directory("thor_urdf"), "urdf", "cube.urdf"),
+            "-x", "0.0",
+            "-y", "0.3",
+            "-z", "0.02"
+        ]
+    )
+
     return LaunchDescription([
         gazebo,
         controller,
@@ -107,5 +119,6 @@ def generate_launch_description():
         status_publisher,
         joint_goal_listener,
         ik_goal_listener,
-        cartesian_goal_listener
+        cartesian_goal_listener,
+        spawn_cube
     ])

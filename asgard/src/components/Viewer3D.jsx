@@ -64,6 +64,15 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
     }
   };
 
+  const setRobotJointValue = (robot, jn, val) => {
+    if (robot && robot.joints && robot.joints[jn] !== undefined) {
+      robot.setJointValue(jn, val);
+      if (jn === 'gripperbase_to_armgearright' && robot.joints['gripperbase_to_armgearleft'] !== undefined) {
+        robot.setJointValue('gripperbase_to_armgearleft', -val);
+      }
+    }
+  };
+
   // Copy real robot joint angles into the ghost robot (make ghost take real pose)
   const copyRealToGhost = () => {
     if (!robotRef.current || !ghostRef.current) return;
@@ -71,8 +80,8 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
       const rj = robotRef.current.joints || {};
       Object.keys(rj).forEach(jn => {
         const rv = rj[jn] && rj[jn].angle;
-        if (rv !== undefined && ghostRef.current.joints && ghostRef.current.joints[jn] !== undefined) {
-          ghostRef.current.setJointValue(jn, rv);
+        if (rv !== undefined) {
+          setRobotJointValue(ghostRef.current, jn, rv);
         }
       });
       // Notify parent about ghost change
@@ -124,9 +133,7 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
   const computeIkAndApply = (poseMm) => new Promise((resolve) => {
     const applySolved = (solved) => {
       Object.keys(solved).forEach(jn => {
-        if (ghostRef.current && ghostRef.current.joints && ghostRef.current.joints[jn] !== undefined) {
-          ghostRef.current.setJointValue(jn, solved[jn]);
-        }
+        setRobotJointValue(ghostRef.current, jn, solved[jn]);
       });
       emitGhostStateIfChanged();
     };
@@ -164,16 +171,14 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
       Object.keys(ghostRef.current.joints || {}).forEach(jn => { prev[jn] = ghostRef.current.joints[jn] && ghostRef.current.joints[jn].angle; });
       // Apply requested joints where available
       Object.keys(joints || {}).forEach(jn => {
-        if (ghostRef.current.joints && ghostRef.current.joints[jn] !== undefined) {
-          ghostRef.current.setJointValue(jn, joints[jn]);
-        }
+        setRobotJointValue(ghostRef.current, jn, joints[jn]);
       });
       // Force update and read EE
       const eePose = getEndEffectorPoseMeters();
       // Restore previous joints
       Object.keys(prev).forEach(jn => {
-        if (prev[jn] !== undefined && ghostRef.current.joints && ghostRef.current.joints[jn] !== undefined) {
-          ghostRef.current.setJointValue(jn, prev[jn]);
+        if (prev[jn] !== undefined) {
+          setRobotJointValue(ghostRef.current, jn, prev[jn]);
         }
       });
       // Prevent emitting ghost change due to this temporary set by resetting lastSentJointsRef
@@ -184,9 +189,7 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
     setGhostJoints: (joints) => {
       if (!ghostRef.current || !joints) return;
       Object.keys(joints).forEach(jn => {
-        if (ghostRef.current.joints && ghostRef.current.joints[jn] !== undefined) {
-          ghostRef.current.setJointValue(jn, joints[jn]);
-        }
+        setRobotJointValue(ghostRef.current, jn, joints[jn]);
       });
       emitGhostStateIfChanged();
     },
@@ -197,8 +200,10 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
       if (rosApi && typeof rosApi.publishJointGroupCommand === 'function') {
         // Build a joints map with the expected sign for gripper
         const toSend = { ...current };
+        // The gripper value is already computed correctly in the UI (FK/IK)
         if (toSend['gripperbase_to_armgearright'] !== undefined) {
-          toSend['gripperbase_to_armgearright'] = -Math.abs(toSend['gripperbase_to_armgearright']);
+          // just pass it as is
+          toSend['gripperbase_to_armgearright'] = toSend['gripperbase_to_armgearright'];
         }
         rosApi.publishJointGroupCommand(jointOrder, toSend);
         return;
@@ -530,7 +535,7 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
         for (let i = 0; i < message.name.length; i++) {
           const jointName = message.name[i];
           const position = message.position[i];
-          robotRef.current.setJointValue(jointName, position);
+          setRobotJointValue(robotRef.current, jointName, position);
         }
       });
     };
@@ -550,7 +555,7 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
     if (jointsEqual(previewJoints, current)) return;
     if (previewJoints.joint_1 !== undefined) {
       jointOrder.forEach(j => {
-        if (previewJoints[j] !== undefined) ghostRef.current.setJointValue(j, previewJoints[j]);
+        if (previewJoints[j] !== undefined) setRobotJointValue(ghostRef.current, j, previewJoints[j]);
       });
   // After applying preview joints to the ghost model, emit the new ghost
   // state back to the parent so `ghostJoints` stays in sync with the visual

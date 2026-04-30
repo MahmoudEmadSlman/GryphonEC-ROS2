@@ -1,0 +1,174 @@
+[0.023s] Invoking command in '/home/salman/GryphonEC-ROS2/ws_thor/build/thor_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher:/opt/ros/humble /usr/bin/cmake --build /home/salman/GryphonEC-ROS2/ws_thor/build/thor_msgs -- -j16 -l16
+[0.084s] [ 10%] Built target thor_msgs__cpp
+[0.084s] [ 10%] Built target thor_msgs__rs
+[0.084s] [ 15%] Built target thor_msgs__rosidl_generator_c
+[0.099s] [ 15%] Built target ament_cmake_python_copy_thor_msgs
+[0.117s] [ 25%] Built target thor_msgs__rosidl_typesupport_fastrtps_cpp
+[0.117s] [ 35%] Built target thor_msgs__rosidl_typesupport_introspection_cpp
+[0.118s] [ 45%] Built target thor_msgs__rosidl_typesupport_cpp
+[0.132s] [ 70%] Built target thor_msgs__rosidl_typesupport_introspection_c
+[0.132s] [ 75%] Built target thor_msgs__rosidl_typesupport_c
+[0.133s] [ 75%] Built target thor_msgs__rosidl_typesupport_fastrtps_c
+[0.161s] [ 75%] Built target thor_msgs
+[0.189s] [ 77%] Built target thor_msgs__py
+[0.222s] [ 85%] Built target thor_msgs__rosidl_generator_py
+[0.255s] [ 95%] Built target thor_msgs__rosidl_typesupport_fastrtps_c__pyext
+[0.255s] [ 95%] Built target thor_msgs__rosidl_typesupport_introspection_c__pyext
+[0.255s] [100%] Built target thor_msgs__rosidl_typesupport_c__pyext
+[0.442s] running egg_info
+[0.442s] writing thor_msgs.egg-info/PKG-INFO
+[0.442s] writing dependency_links to thor_msgs.egg-info/dependency_links.txt
+[0.443s] writing top-level names to thor_msgs.egg-info/top_level.txt
+[0.444s] reading manifest file 'thor_msgs.egg-info/SOURCES.txt'
+[0.445s] writing manifest file 'thor_msgs.egg-info/SOURCES.txt'
+[0.481s] [100%] Built target ament_cmake_python_build_thor_msgs_egg
+[0.501s] Invoked command in '/home/salman/GryphonEC-ROS2/ws_thor/build/thor_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher:/opt/ros/humble /usr/bin/cmake --build /home/salman/GryphonEC-ROS2/ws_thor/build/thor_msgs -- -j16 -l16
+[0.503s] Invoking command in '/home/salman/GryphonEC-ROS2/ws_thor/build/thor_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher:/opt/ros/humble /usr/bin/cmake --install /home/salman/GryphonEC-ROS2/ws_thor/build/thor_msgs
+[0.516s] -- Install configuration: ""
+[0.516s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/ament_index/resource_index/rosidl_interfaces/thor_msgs
+[0.516s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs
+[0.516s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg
+[0.516s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/cartesian_goal.h
+[0.516s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/ik_goal.h
+[0.517s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/rosidl_generator_c__visibility_control.h
+[0.517s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail
+[0.517s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__functions.h
+[0.517s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__functions.c
+[0.517s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__struct.h
+[0.517s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__type_support.h
+[0.517s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__type_support.h
+[0.517s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__functions.h
+[0.517s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__struct.h
+[0.517s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__functions.c
+[0.517s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/environment/library_path.sh
+[0.518s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/environment/library_path.dsv
+[0.518s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_generator_c.so
+[0.518s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs
+[0.518s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg
+[0.518s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[0.518s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail
+[0.518s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__rosidl_typesupport_fastrtps_c.h
+[0.518s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__rosidl_typesupport_fastrtps_c.h
+[0.518s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_typesupport_fastrtps_c.so
+[0.518s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs
+[0.518s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg
+[0.518s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/ik_goal.hpp
+[0.518s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/cartesian_goal.hpp
+[0.518s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/rosidl_generator_cpp__visibility_control.hpp
+[0.518s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail
+[0.519s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__traits.hpp
+[0.519s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__struct.hpp
+[0.519s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__type_support.hpp
+[0.519s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__builder.hpp
+[0.519s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__type_support.hpp
+[0.519s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__traits.hpp
+[0.519s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__builder.hpp
+[0.519s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__struct.hpp
+[0.519s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs
+[0.519s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg
+[0.519s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail
+[0.519s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/dds_fastrtps
+[0.519s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__rosidl_typesupport_fastrtps_cpp.hpp
+[0.519s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__rosidl_typesupport_fastrtps_cpp.hpp
+[0.520s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[0.520s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_typesupport_fastrtps_cpp.so
+[0.520s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs
+[0.520s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg
+[0.520s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail
+[0.520s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__rosidl_typesupport_introspection_c.h
+[0.520s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__rosidl_typesupport_introspection_c.h
+[0.520s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__type_support.c
+[0.520s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__type_support.c
+[0.520s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[0.520s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_typesupport_introspection_c.so
+[0.520s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_typesupport_c.so
+[0.520s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs
+[0.520s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg
+[0.520s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail
+[0.520s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__rosidl_typesupport_introspection_cpp.hpp
+[0.520s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__rosidl_typesupport_introspection_cpp.hpp
+[0.521s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/cartesian_goal__type_support.cpp
+[0.521s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/include/thor_msgs/thor_msgs/msg/detail/ik_goal__type_support.cpp
+[0.521s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_typesupport_introspection_cpp.so
+[0.521s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_typesupport_cpp.so
+[0.521s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/environment/pythonpath.sh
+[0.521s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/environment/pythonpath.dsv
+[0.521s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs-0.0.0-py3.10.egg-info
+[0.521s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs-0.0.0-py3.10.egg-info/SOURCES.txt
+[0.521s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs-0.0.0-py3.10.egg-info/top_level.txt
+[0.521s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs-0.0.0-py3.10.egg-info/dependency_links.txt
+[0.521s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs-0.0.0-py3.10.egg-info/PKG-INFO
+[0.521s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs
+[0.522s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/__init__.py
+[0.522s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/_thor_msgs_s.ep.rosidl_typesupport_c.c
+[0.522s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/_thor_msgs_s.ep.rosidl_typesupport_introspection_c.c
+[0.522s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/_thor_msgs_s.ep.rosidl_typesupport_fastrtps_c.c
+[0.522s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/thor_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[0.522s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/thor_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[0.522s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/msg
+[0.522s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/msg/__init__.py
+[0.522s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/msg/_ik_goal.py
+[0.522s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/msg/_cartesian_goal_s.c
+[0.522s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/msg/_ik_goal_s.c
+[0.522s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/msg/_cartesian_goal.py
+[0.522s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/thor_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[0.522s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/libthor_msgs__rosidl_generator_py.so
+[0.559s] Listing '/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs'...
+[0.559s] Listing '/home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/msg'...
+[0.567s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/thor_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[0.567s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/thor_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[0.567s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/local/lib/python3.10/dist-packages/thor_msgs/thor_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[0.568s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/lib/libthor_msgs__rosidl_generator_py.so
+[0.568s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/ament_index/resource_index/rust_packages/thor_msgs
+[0.568s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/rust
+[0.568s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/rust/Cargo.toml
+[0.568s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/rust/build.rs
+[0.568s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/rust/src
+[0.568s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/rust/src/lib.rs
+[0.568s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/rust/src/msg.rs
+[0.568s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/rust/src/msg
+[0.569s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/rust/src/msg/rmw.rs
+[0.569s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/msg/IKGoal.idl
+[0.569s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/msg/CartesianGoal.idl
+[0.569s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/msg/IKGoal.msg
+[0.569s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/msg/CartesianGoal.msg
+[0.569s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/ament_index/resource_index/package_run_dependencies/thor_msgs
+[0.569s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/ament_index/resource_index/parent_prefix_path/thor_msgs
+[0.569s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/environment/ament_prefix_path.sh
+[0.569s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/environment/ament_prefix_path.dsv
+[0.569s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/environment/path.sh
+[0.569s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/environment/path.dsv
+[0.569s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/local_setup.bash
+[0.569s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/local_setup.sh
+[0.569s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/local_setup.zsh
+[0.569s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/local_setup.dsv
+[0.569s] -- Installing: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/package.dsv
+[0.569s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/ament_index/resource_index/packages/thor_msgs
+[0.569s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/export_thor_msgs__rosidl_generator_cExport.cmake
+[0.570s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/export_thor_msgs__rosidl_generator_cExport-noconfig.cmake
+[0.570s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/export_thor_msgs__rosidl_typesupport_fastrtps_cExport.cmake
+[0.570s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/export_thor_msgs__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+[0.570s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/export_thor_msgs__rosidl_generator_cppExport.cmake
+[0.570s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/export_thor_msgs__rosidl_typesupport_fastrtps_cppExport.cmake
+[0.570s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/export_thor_msgs__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+[0.570s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/thor_msgs__rosidl_typesupport_introspection_cExport.cmake
+[0.570s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/thor_msgs__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[0.570s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/thor_msgs__rosidl_typesupport_cExport.cmake
+[0.570s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/thor_msgs__rosidl_typesupport_cExport-noconfig.cmake
+[0.570s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/thor_msgs__rosidl_typesupport_introspection_cppExport.cmake
+[0.570s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/thor_msgs__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[0.570s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/thor_msgs__rosidl_typesupport_cppExport.cmake
+[0.570s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/thor_msgs__rosidl_typesupport_cppExport-noconfig.cmake
+[0.570s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/export_thor_msgs__rosidl_generator_pyExport.cmake
+[0.570s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/export_thor_msgs__rosidl_generator_pyExport-noconfig.cmake
+[0.570s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/rosidl_cmake-extras.cmake
+[0.570s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/ament_cmake_export_dependencies-extras.cmake
+[0.570s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/ament_cmake_export_include_directories-extras.cmake
+[0.570s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/ament_cmake_export_libraries-extras.cmake
+[0.571s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/ament_cmake_export_targets-extras.cmake
+[0.571s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[0.571s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[0.571s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/thor_msgsConfig.cmake
+[0.571s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/cmake/thor_msgsConfig-version.cmake
+[0.571s] -- Up-to-date: /home/salman/GryphonEC-ROS2/ws_thor/install/thor_msgs/share/thor_msgs/package.xml
+[0.573s] Invoked command in '/home/salman/GryphonEC-ROS2/ws_thor/build/thor_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/salman/GryphonEC-ROS2/ws_thor/install/thor_status_publisher:/opt/ros/humble /usr/bin/cmake --install /home/salman/GryphonEC-ROS2/ws_thor/build/thor_msgs

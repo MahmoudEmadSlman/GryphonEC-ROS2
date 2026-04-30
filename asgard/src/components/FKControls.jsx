@@ -10,7 +10,7 @@ const jointConfigs = [
   { name: 'joint_3', label: 'Joint 3', min: -120, max: 120 },
   { name: 'joint_4', label: 'Joint 4', min: -120, max: 120 },
   { name: 'joint_5', label: 'Joint 5', min: -180, max: 180 },
-  { name: 'gripperbase_to_armgearright', label: 'Gripper', min: 0, max: 89.9 }
+  { name: 'gripperbase_to_armgearright', label: 'Gripper', min: -28.6, max: 43.0 }
 ];
 
 function FKControls({ initialJoints, urdfApi, active = true }) {
