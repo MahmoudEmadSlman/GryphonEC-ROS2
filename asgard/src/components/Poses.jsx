@@ -1,5 +1,6 @@
 import { useEffect, useState, useImperativeHandle, forwardRef } from 'react';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -76,43 +77,38 @@ function Poses({ onPreviewJointsChange, poses, setPoses }, ref) {
   };
 
   return (
-    <div style={{ padding: '0.5rem' }}>
+    <div style={{ padding: '0.25rem' }}>
       {poses.length === 0 ? (
-        <p>There are no saved poses to show yet</p>
+        <p style={{ color: 'var(--text-muted)', textAlign: 'center', fontSize: '0.9rem' }}>No saved poses yet</p>
       ) : (
-        <ul style={{ listStyleType: 'none', padding: 0 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
           {poses.map((pose) => (
-            <li
-              key={pose.name}
-              style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}
-            >
-              <Button
-                variant="contained"
-                color="error"
+            <div key={pose.name} className="pose-item">
+              <IconButton
+                size="small"
                 onClick={() => openDeleteDialog(pose.name)}
-                style={{ padding: '0.5rem' }}
+                sx={{ color: '#ff4757', '&:hover': { background: 'rgba(255,71,87,0.12)' } }}
               >
-                <span className="material-icons">delete</span>
-              </Button>
-              <span style={{ flex: 1, textAlign: 'left', paddingLeft: '0.5rem' }}>{pose.name}</span>
-              <Button
-                variant="contained"
-                style={{ backgroundColor: '#808080', color: '#fff', padding: '0.5rem', marginRight: '4px' }}
+                <span className="material-icons" style={{ fontSize: '18px' }}>delete</span>
+              </IconButton>
+              <span className="pose-name">{pose.name}</span>
+              <IconButton
+                size="small"
                 onClick={() => previewPoseOnGhost(pose.name)}
+                sx={{ color: 'var(--text-secondary)', '&:hover': { color: '#7c4dff', background: 'rgba(124,77,255,0.12)' } }}
               >
-                <span className="material-icons">visibility</span>
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                  onClick={() => publishPoseToController(pose.name)}
-                style={{ padding: '0.5rem' }}
+                <span className="material-icons" style={{ fontSize: '18px' }}>visibility</span>
+              </IconButton>
+              <IconButton
+                size="small"
+                onClick={() => publishPoseToController(pose.name)}
+                sx={{ color: 'var(--accent-primary)', '&:hover': { background: 'rgba(0,212,170,0.12)' } }}
               >
-                <span className="material-icons">navigation</span>
-              </Button>
-            </li>
+                <span className="material-icons" style={{ fontSize: '18px' }}>navigation</span>
+              </IconButton>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
 
       {/* Confirmation Dialog */}

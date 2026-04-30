@@ -427,13 +427,11 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
         sceneRef.current.add(sphere);
         sphereRef.current = sphere;
 
-        // TransformControls
+        // Dual TransformControls: translate (arrows) + rotate (rings) both visible
         const translateControl = new TransformControls(cameraRef.current, rendererRef.current.domElement);
         translateControl.attach(sphere);
         translateControl.setMode('translate');
-        translateControl.setSpace('local');
-        translateControl.setTranslationSnap(null);
-        translateControl.setRotationSnap(null);
+        translateControl.setSpace('world');
         translateControl.setSize(1.0);
         sceneRef.current.add(translateControl.getHelper());
         translateCtrlRef.current = translateControl;
@@ -441,22 +439,49 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
         const rotateControl = new TransformControls(cameraRef.current, rendererRef.current.domElement);
         rotateControl.attach(sphere);
         rotateControl.setMode('rotate');
-        rotateControl.setSpace('local');
-        rotateControl.setTranslationSnap(null);
-        rotateControl.setRotationSnap(null);
+        rotateControl.setSpace('world');
         rotateControl.setSize(0.85);
         sceneRef.current.add(rotateControl.getHelper());
         rotateCtrlRef.current = rotateControl;
 
         const orbit = orbitRef.current;
-        translateControl.addEventListener('dragging-changed', (e) => { if (orbit) orbit.enabled = !e.value; if (rotateControl) rotateControl.enabled = !e.value; isDraggingTargetRef.current = e.value; });
-        rotateControl.addEventListener('dragging-changed', (e) => { if (orbit) orbit.enabled = !e.value; if (translateControl) translateControl.enabled = !e.value; isDraggingTargetRef.current = e.value; });
+        const domEl = rendererRef.current.domElement;
+
+        // Prevent OrbitControls from stealing pointer events.
+        // Check BOTH controls' axis property in capture phase.
+        domEl.addEventListener('pointerdown', () => {
+          if (translateControl.axis || rotateControl.axis) {
+            if (orbit) orbit.enabled = false;
+          }
+        }, { capture: true });
+
+        domEl.addEventListener('pointerup', () => {
+          if (orbit) orbit.enabled = true;
+          isDraggingTargetRef.current = false;
+        });
+
+        translateControl.addEventListener('dragging-changed', (e) => {
+          if (orbit) orbit.enabled = !e.value;
+          if (rotateControl) rotateControl.enabled = !e.value;
+          isDraggingTargetRef.current = e.value;
+        });
+        rotateControl.addEventListener('dragging-changed', (e) => {
+          if (orbit) orbit.enabled = !e.value;
+          if (translateControl) translateControl.enabled = !e.value;
+          isDraggingTargetRef.current = e.value;
+        });
+
+        // IK visual feedback
+        let lastValidPos = sphere.position.clone();
+        let lastValidQuat = sphere.quaternion.clone();
+        const reachableColor = new THREE.Color(0x4caf50);
+        const unreachableColor = new THREE.Color(0xff4757);
 
         const sendIKFromSphere = () => {
           if (!sphereRef.current) return;
           if (sendIKFromSphere.__locked) return;
           sendIKFromSphere.__locked = true;
-          setTimeout(() => { sendIKFromSphere.__locked = false; }, 50); // throttle 20Hz
+          setTimeout(() => { sendIKFromSphere.__locked = false; }, 50);
           sphereRef.current.updateMatrixWorld(true);
           const p = new THREE.Vector3();
           const q = new THREE.Quaternion();
@@ -465,8 +490,16 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
           const poseMm = { x: p.x * 1000, y: p.y * 1000, z: p.z * 1000, qx: q.x, qy: q.y, qz: q.z, qw: q.w };
           computeIkAndApply(poseMm).then((res) => {
             if (res && res.ok) {
-              // Push joints immediately to synchronize the upstream UI
+              sphereRef.current.material.color.copy(reachableColor);
+              lastValidPos = sphereRef.current.position.clone();
+              lastValidQuat = sphereRef.current.quaternion.clone();
               emitGhostStateIfChanged();
+            } else {
+              sphereRef.current.material.color.copy(unreachableColor);
+              if (!isDraggingTargetRef.current) {
+                sphereRef.current.position.copy(lastValidPos);
+                sphereRef.current.quaternion.copy(lastValidQuat);
+              }
             }
           });
         };
@@ -536,7 +569,6 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
   // Control visibility of the target sphere and the TransformControls
   useEffect(() => {
     if (sphereRef.current) sphereRef.current.visible = !!showGhostRobotCoordinates;
-    // Hide TransformControls helpers and disable controls
     if (translateCtrlRef.current) {
       translateCtrlRef.current.getHelper().visible = !!showGhostRobotCoordinates;
       translateCtrlRef.current.enabled = !!showGhostRobotCoordinates;
@@ -551,7 +583,7 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
     <div style={{ width: '100%', height: '100%', position: 'relative', margin: 0, padding: 0, overflow: 'hidden' }}>
       <div ref={mountRef} style={{ width: '100%', height: '100%', margin: 0, padding: 0, position: 'relative', overflow: 'hidden' }} />
       {showFPS && (
-        <div style={{ position: 'absolute', bottom: '20px', right: '20px', backgroundColor: 'rgba(0, 0, 0, 0.5)', color: 'white', padding: '5px', borderRadius: '5px', fontSize: '12px' }}>
+        <div style={{ position: 'absolute', top: '60px', left: '12px', backgroundColor: 'rgba(0, 0, 0, 0.6)', color: '#00d4aa', padding: '4px 10px', borderRadius: '6px', fontSize: '11px', fontFamily: 'monospace', zIndex: 5, pointerEvents: 'none' }}>
           FPS: {fps}
         </div>
       )}

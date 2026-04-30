@@ -81,16 +81,16 @@ function FKControls({ initialJoints, urdfApi, active = true }) {
   return (
     <div style={{ marginTop: '0' }}>
       {jointConfigs.map(joint => (
-        <div key={joint.name} style={{ marginBottom: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <label htmlFor={joint.name} style={{ minWidth: '90px', fontWeight: 'bold' }}>
+        <div key={joint.name} className="fk-joint-row">
+          <label htmlFor={joint.name} className="fk-joint-label">
             {joint.label}
           </label>
-          <Slider id={joint.name} min={joint.min} max={joint.max} step={0.1} value={jointValuesDeg[joint.name]} onChange={(e, value) => handleJointSliderChange(joint.name, value)} style={{ flex: 1, marginLeft: '-30px' }} />
-          <Input value={jointValuesDeg[joint.name]} onChange={e => handleJointInputChange(joint.name, e.target.value, joint.min, joint.max)} inputProps={{ step: 0.1, min: joint.min, max: joint.max, type: 'number', 'aria-labelledby': joint.name }} style={{ width: '80px' }} />
-          <span>°</span>
+          <Slider id={joint.name} min={joint.min} max={joint.max} step={0.1} value={jointValuesDeg[joint.name]} onChange={(e, value) => handleJointSliderChange(joint.name, value)} style={{ flex: 1, marginLeft: '-20px' }} />
+          <Input value={jointValuesDeg[joint.name]} onChange={e => handleJointInputChange(joint.name, e.target.value, joint.min, joint.max)} inputProps={{ step: 0.1, min: joint.min, max: joint.max, type: 'number', 'aria-labelledby': joint.name }} style={{ width: '72px' }} />
+          <span className="fk-joint-unit">°</span>
         </div>
       ))}
-      <Button variant="contained" color="primary" onClick={publishGhostToController} style={{ marginTop: '1rem', display: 'block', marginLeft: 'auto', marginRight: 'auto', fontWeight: 'bold' }}>
+      <Button className="move-j-btn" variant="contained" onClick={publishGhostToController} style={{ marginTop: '1rem', display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
         Move
       </Button>
     </div>

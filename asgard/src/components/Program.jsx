@@ -9,6 +9,7 @@ import InputLabel from '@mui/material/InputLabel';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import IconButton from '@mui/material/IconButton';
 import useRosApi from '../ros/useRosApi';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -556,9 +557,9 @@ function Program({ poses }) {
       </Dialog>
 
       {movements.length === 0 ? (
-        <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-          <p style={{ fontSize: '1.2rem', color: '#555' }}>There are no movements programmed yet</p>
-          <Button variant="contained" color="primary" onClick={handleAddMovement}>
+        <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
+          <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>No movements programmed yet</p>
+          <Button variant="contained" color="primary" onClick={handleAddMovement} style={{ fontWeight: 600 }}>
             Add Movement
           </Button>
         </div>
@@ -568,81 +569,79 @@ function Program({ poses }) {
             {movements.map((movement, index) => (
               <div
                 key={index}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  marginBottom: '1rem',
-                  marginLeft: '0.5rem',
-                  marginRight: '0.3rem',
-                  backgroundColor: currentStep === index ? 'lightyellow' : 'transparent',
-                }}
+                className={`movement-card${currentStep === index ? ' active' : ''}`}
               >
                 <RadioGroup
                   value={pointerIndex}
                   onChange={() => openSelectionDialog(index)}
-                  style={{ borderRadius: '50%' }}
+                  style={{ borderRadius: '50%', flexShrink: 0 }}
                 >
                   <FormControlLabel
                     value={index}
+                    sx={{ margin: 0 }}
                     control={
                       <Radio
-                        style={{ backgroundColor: pointerIndex === index ? 'yellow' : 'transparent', borderRadius: '50%' }}
-                        icon={<ArrowForwardIosIcon style={{ color: pointerIndex === index ? 'black' : 'lightgray' }} />}
-                        checkedIcon={<ArrowForwardIosIcon style={{ color: 'black' }} />}
+                        sx={{
+                          padding: '4px',
+                          background: pointerIndex === index ? 'rgba(0,212,170,0.15)' : 'transparent',
+                          borderRadius: '50%',
+                          '&:hover': { background: 'rgba(0,212,170,0.1)' },
+                        }}
+                        icon={<ArrowForwardIosIcon style={{ color: pointerIndex === index ? 'var(--accent-primary)' : 'var(--text-muted)', fontSize: '12px' }} />}
+                        checkedIcon={<ArrowForwardIosIcon style={{ color: 'var(--accent-primary)', fontSize: '12px' }} />}
                       />
                     }
                     label=""
                   />
                 </RadioGroup>
 
-                <div style={{ display: 'flex', flexDirection: 'column', marginRight: '0.3rem' }}>
-                  <Button
-                    variant="contained"
-                    style={{ backgroundColor: 'green', color: 'white', padding: '0.3rem', minWidth: '36px', marginBottom: '0.2rem' }}
+                <div style={{ display: 'flex', flexDirection: 'column', marginRight: '0.25rem', gap: '2px' }}>
+                  <IconButton
+                    size="small"
                     onClick={() => handleAddMovementBelow(index)}
+                    sx={{ color: '#2ed573', background: 'rgba(46,213,115,0.1)', '&:hover': { background: 'rgba(46,213,115,0.2)' }, width: 22, height: 22, padding: '2px' }}
                   >
-                    <span className="material-icons" style={{ fontSize: '20px' }}>add</span>
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="error"
+                    <span className="material-icons" style={{ fontSize: '14px' }}>add</span>
+                  </IconButton>
+                  <IconButton
+                    size="small"
                     onClick={() => handleDeleteMovement(index)}
-                    style={{ padding: '0.3rem', minWidth: '36px' }}
+                    sx={{ color: '#ff4757', background: 'rgba(255,71,87,0.1)', '&:hover': { background: 'rgba(255,71,87,0.2)' }, width: 22, height: 22, padding: '2px' }}
                   >
-                    <span className="material-icons" style={{ fontSize: '20px' }}>delete</span>
-                  </Button>
+                    <span className="material-icons" style={{ fontSize: '14px' }}>delete</span>
+                  </IconButton>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', marginRight: '0.3rem' }}>
-                  <Button
-                    variant="contained"
-                    style={{ backgroundColor: 'blue', color: 'white', padding: '0.3rem', minWidth: '36px', marginBottom: '0.2rem' }}
+                <div style={{ display: 'flex', flexDirection: 'column', marginRight: '0.25rem', gap: '2px' }}>
+                  <IconButton
+                    size="small"
                     onClick={() => handleMoveUp(index)}
                     disabled={index === 0}
+                    sx={{ color: '#70a1ff', background: 'rgba(112,161,255,0.1)', '&:hover': { background: 'rgba(112,161,255,0.2)' }, width: 22, height: 22, padding: '2px', '&.Mui-disabled': { color: 'var(--text-muted)', background: 'transparent' } }}
                   >
-                    <span className="material-icons" style={{ fontSize: '20px' }}>arrow_upward</span>
-                  </Button>
-
-                  <Button
-                    variant="contained"
-                    style={{ backgroundColor: 'blue', color: 'white', padding: '0.3rem', minWidth: '36px' }}
+                    <span className="material-icons" style={{ fontSize: '14px' }}>arrow_upward</span>
+                  </IconButton>
+                  <IconButton
+                    size="small"
                     onClick={() => handleMoveDown(index)}
                     disabled={index === movements.length - 1}
+                    sx={{ color: '#70a1ff', background: 'rgba(112,161,255,0.1)', '&:hover': { background: 'rgba(112,161,255,0.2)' }, width: 22, height: 22, padding: '2px', '&.Mui-disabled': { color: 'var(--text-muted)', background: 'transparent' } }}
                   >
-                    <span className="material-icons" style={{ fontSize: '20px' }}>arrow_downward</span>
-                  </Button>
+                    <span className="material-icons" style={{ fontSize: '14px' }}>arrow_downward</span>
+                  </IconButton>
                 </div>
 
                 <Autocomplete
                   options={poseNames}
                   value={movement.pose}
                   onChange={(event, newValue) => handleChangeMovement(index, 'pose', newValue)}
+                  style={{ flex: 1, minWidth: '100px', marginLeft: '0.2rem' }}
                   renderInput={(params) => (
-                    <TextField {...params} label="Pose" variant="outlined" style={{ marginLeft: '0.5rem', width: '180px', paddingTop: '0', paddingBottom: '0' }} />
+                    <TextField {...params} label="Pose" variant="outlined" size="small" />
                   )}
                 />
 
-                <FormControl style={{ marginLeft: '0.5rem', width: '60px', minWidth: '60px' }} variant="outlined">
+                <FormControl style={{ marginLeft: '0.2rem', width: '70px', minWidth: '70px', flexShrink: 0 }} variant="outlined" size="small">
                   <InputLabel>Type</InputLabel>
                   <Select
                     value={movement.type}
@@ -653,90 +652,46 @@ function Program({ poses }) {
                     <MenuItem value="L">L</MenuItem>
                   </Select>
                 </FormControl>
-                {/*
-                <TextField
-                  className="speed-input"
-                  label="Speed (%)"
-                  variant="outlined"
-                  type="number"
-                  value={movement.speed ?? 100}
-                  onChange={(e) => {
-                    let val = parseInt(e.target.value, 10);
-                    if (isNaN(val)) val = 100;
-                    if (val < 1) val = 1;
-                    if (val > 100) val = 100;
-                    handleChangeMovement(index, 'speed', val);
-                  }}
-                  style={{ marginLeft: '0.5rem', width: '85px'}}
-                  InputProps={{ inputProps: { min: 1, max: 100, step: 1 } }}
-                />
-                */}
               </div>
             ))}
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.4rem', marginTop: '0.5rem', padding: '0 0.5rem' }}>
             <Button
+              className="program-btn run-all-btn"
               variant="contained"
-              style={{ 
-                backgroundColor: controlsDisabled ? 'lightgray' : 'yellow', 
-                color: controlsDisabled ? 'darkgray' : 'black', 
-                marginRight: '0.5rem', 
-                fontSize: '1rem', 
-                fontWeight: 'bold',
-                cursor: controlsDisabled ? 'not-allowed' : 'pointer'
-              }}
-              onClick={handleStepForward}
-              disabled={controlsDisabled} // Disable button when step is in progress
-            >
-              Step FW
-            </Button>
-            <Button
-              variant="contained"
-              style={{ 
-                backgroundColor: controlsDisabled ? 'lightgray' : 'orange', 
-                color: controlsDisabled ? 'darkgray' : 'white', 
-                marginRight: '0.5rem', 
-                fontSize: '1rem', 
-                fontWeight: 'bold',
-                cursor: controlsDisabled ? 'not-allowed' : 'pointer'
-              }}
-              onClick={handleStepBackward}
-              disabled={controlsDisabled} // Disable button when step is in progress
-            >
-              Step BW
-            </Button>
-          </div>
-
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-            <Button
-              variant="contained"
-              style={{
-                backgroundColor: controlsDisabled ? 'lightgray' : 'green',
-                color: controlsDisabled ? 'darkgray' : 'white',
-                marginRight: '0.5rem',
-                fontSize: '1rem',
-                fontWeight: 'bold',
-                cursor: controlsDisabled ? 'not-allowed' : 'pointer'
-              }}
               onClick={handleRunAll}
-              disabled={controlsDisabled} // Disable button when step is in progress
+              disabled={controlsDisabled}
+              style={{ width: '100%' }}
             >
               Run All
             </Button>
             <Button
+              className="program-btn step-bw-btn"
               variant="contained"
-              style={{
-                backgroundColor: controlsDisabled ? 'red' : 'lightgray', // Red when enabled, gray when disabled
-                color: controlsDisabled ? 'white' : 'darkgray', // White text when enabled, dark gray when disabled
-                fontSize: '1rem',
-                fontWeight: 'bold',
-                cursor: controlsDisabled ? 'pointer' : 'not-allowed', // Pointer when enabled, not-allowed when disabled
-              }}
+              onClick={handleStepBackward}
+              disabled={controlsDisabled}
+              style={{ width: '100%' }}
+            >
+              Step BW
+            </Button>
+            <Button
+              className={`program-btn stop-btn`}
+              variant="contained"
               onClick={handleStop}
-              disabled={!controlsDisabled} // Enable Stop only when Step and Run All are disabled
+              disabled={!controlsDisabled}
+              style={{ width: '100%' }}
             >
               Stop
+            </Button>
+            <Button
+              className="program-btn step-fw-btn"
+              variant="contained"
+              onClick={handleStepForward}
+              disabled={controlsDisabled}
+              style={{ width: '100%' }}
+            >
+              Step FW
             </Button>
           </div>
         </div>

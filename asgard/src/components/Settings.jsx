@@ -159,12 +159,10 @@ export default function Settings({
           control={<Checkbox checked={showGhostRobot} onChange={(e) => setShowGhostRobot(e.target.checked)} />}
           label="Show Ghost Robot"
         />
-        <div style={{ marginLeft: '1rem' }}>
-          <FormControlLabel
-            control={<Checkbox checked={showTcpGizmo} onChange={(e) => setShowTcpGizmo(e.target.checked)} disabled={!showGhostRobot} />}
-            label="Show TCP Gizmo"
-          />
-        </div>
+        <FormControlLabel
+          control={<Checkbox checked={showTcpGizmo} onChange={(e) => setShowTcpGizmo(e.target.checked)} disabled={!showGhostRobot} />}
+          label="Show TCP Gizmo"
+        />
       </Box>
 
       <Box component="fieldset" style={{ display: 'flex', flexDirection: 'column'}}>
@@ -181,11 +179,11 @@ export default function Settings({
 
       <Box component="fieldset">
         <legend>Import & Export</legend>
-        <div style={{ marginTop: '0.5rem', display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+        <div style={{ marginTop: '0.5rem', display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
           <Button
             variant="contained"
             color="primary"
-            style={{ fontWeight: 'bold', width: '180px' }}
+            style={{ fontWeight: 'bold', fontSize: '0.7rem', padding: '4px 10px', flex: 1 }}
             onClick={() => {
               const poses = localStorage.getItem('savedPoses') || '[]';
               const filename = `thor_poses_${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
@@ -218,7 +216,7 @@ export default function Settings({
           <Button 
             variant="contained"
             color="primary"
-            style={{ fontWeight: 'bold', width: '180px'}}
+            style={{ fontWeight: 'bold', fontSize: '0.7rem', padding: '4px 10px', flex: 1 }}
             onClick={() => {
               const inp = document.getElementById('import-poses-input'); if (inp) inp.click();
             }}
@@ -249,11 +247,11 @@ export default function Settings({
           </Dialog>
         </div>
 
-        <div style={{ marginTop: '1.0rem', display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+        <div style={{ marginTop: '0.5rem', display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
           <Button
             variant="contained"
             color="warning"
-            style={{ fontWeight: 'bold', width: '180px' }}
+            style={{ fontWeight: 'bold', fontSize: '0.7rem', padding: '4px 10px', flex: 1 }}
             onClick={() => {
               const program = localStorage.getItem('program') || '[]';
               const filename = `thor_program_${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
@@ -286,7 +284,7 @@ export default function Settings({
           <Button 
             variant="contained"
             color="warning"
-            style={{ fontWeight: 'bold', width: '180px' }}
+            style={{ fontWeight: 'bold', fontSize: '0.7rem', padding: '4px 10px', flex: 1 }}
             onClick={() => {
               const inp = document.getElementById('import-program-input'); if (inp) inp.click();
             }}

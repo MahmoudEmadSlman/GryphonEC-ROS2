@@ -9,7 +9,6 @@ export default function IKControls({
   ikPose: ikTargetPose,
   onPreviewJointsChange: onPreviewJointsUpdate,
   onIKStatusChange: onIKReachabilityChange,
-  initialPose,
   ghostJoints,
   urdfApi,
   active = true,
@@ -75,30 +74,6 @@ export default function IKControls({
       }
     }
   }, [ikTargetPose]);
-
-  // Initialize when `initialPose` changes
-  useEffect(() => {
-    if (initialPose) {
-      setTcpPosition(new THREE.Vector3(
-        initialPose.x || 0,
-        initialPose.y || 0,
-        initialPose.z || 0
-      ));
-      if (
-        initialPose.qx !== undefined &&
-        initialPose.qy !== undefined &&
-        initialPose.qz !== undefined &&
-        initialPose.qw !== undefined
-      ) {
-        setTcpQuaternion(new THREE.Quaternion(
-          initialPose.qx,
-          initialPose.qy,
-          initialPose.qz,
-          initialPose.qw
-        ));
-      }
-    }
-  }, [initialPose]);
 
   // IK requests (when position or quaternion change) => delegate to urdfApi
   useEffect(() => {
@@ -200,7 +175,7 @@ export default function IKControls({
       const currentGripperValue = gripperRadians;
 
       // Warn the gripper value (percent and radians) that will be sent with the cartesian goal
-      console.warn('MOVE L - gripper percent:', gripperPercent, '-> radians:', currentGripperValue);
+      console.warn('MOVE L - gripper percent:', gripperPercent, '->', currentGripperValue);
 
       // Send cartesian goal to ROS
       const cartesianResult = await rosApi.publishCartesianGoal(startPose, endPose, {
@@ -316,348 +291,100 @@ export default function IKControls({
     }
   }, [gripperPercent, onPreviewJointsUpdate]);
 
+  /* Helper to render a row of axis buttons (position or rotation) */
+  const renderAxisRow = (axes, frameType) => (
+    <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '0.75rem' }}>
+      {axes.map(({ axis, label }) => {
+        const colorClass = (axis === 'x' || axis === 'roll') ? 'x' : (axis === 'y' || axis === 'pitch') ? 'y' : 'z';
+        return (
+          <div key={axis} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <label className={`axis-label axis-label-${colorClass}`}>{label}</label>
+            <ButtonGroup size="small">
+              <Button
+                variant="contained"
+                className={`axis-btn-${colorClass}`}
+                onMouseDown={() => startContinuousMove(axis, -1, frameType)}
+                onMouseUp={stopContinuousMove}
+                onMouseLeave={stopContinuousMove}
+              >−</Button>
+              <Button
+                variant="contained"
+                className={`axis-btn-${colorClass}`}
+                onMouseDown={() => startContinuousMove(axis, 1, frameType)}
+                onMouseUp={stopContinuousMove}
+                onMouseLeave={stopContinuousMove}
+              >+</Button>
+            </ButtonGroup>
+          </div>
+        );
+      })}
+    </div>
+  );
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: '0', marginBottom: '1rem' }}>
-       <h3 style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '1.5rem' }}>World Frame</h3>
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '1rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: '0', marginBottom: '0.5rem' }}>
+      
+      <div className="control-section-title">World Frame</div>
+      {renderAxisRow([
+        { axis: 'x', label: 'X' },
+        { axis: 'y', label: 'Y' },
+        { axis: 'z', label: 'Z' },
+      ], 'world')}
+      {renderAxisRow([
+        { axis: 'roll', label: 'Roll' },
+        { axis: 'pitch', label: 'Pitch' },
+        { axis: 'yaw', label: 'Yaw' },
+      ], 'world')}
 
-        {/* X group */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginRight: '8px' }}>
-          <label style={{ marginBottom: '4px' }}><strong>X</strong></label>
-          <ButtonGroup>
-            <Button
-              variant="contained"
-                      onMouseDown={() => startContinuousMove('x', -1, 'world')}
-                    onMouseUp={stopContinuousMove}
-                    onMouseLeave={stopContinuousMove}
-              style={{ backgroundColor: '#ffcccc', color: 'black', border: '1px solid #ff9999' }}
-            >
-              -
-            </Button>
-            <Button
-              variant="contained"
-                onMouseDown={() => startContinuousMove('x', 1, 'world')}
-              onMouseUp={stopContinuousMove}
-              onMouseLeave={stopContinuousMove}
-              style={{ backgroundColor: '#ffcccc', color: 'black', border: '1px solid #ff9999' }}
-            >
-              +
-            </Button>
-          </ButtonGroup>
-        </div>
-
-        {/* Y group */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginRight: '8px' }}>
-          <label style={{ marginBottom: '4px' }}><strong>Y</strong></label>
-          <ButtonGroup>
-            <Button
-              variant="contained"
-              onMouseDown={() => startContinuousMove('y', -1, 'world')}
-              onMouseUp={stopContinuousMove}
-              onMouseLeave={stopContinuousMove}
-              style={{ backgroundColor: '#ffffcc', color: 'black', border: '1px solid #cccc99' }}
-            >
-              -
-            </Button>
-            <Button
-              variant="contained"
-              onMouseDown={() => startContinuousMove('y', 1, 'world')}
-              onMouseUp={stopContinuousMove}
-              onMouseLeave={stopContinuousMove}
-              style={{ backgroundColor: '#ffffcc', color: 'black', border: '1px solid #cccc99' }}
-            >
-              +
-            </Button>
-          </ButtonGroup>
-        </div>
-
-        {/* Z group */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <label style={{ marginBottom: '4px' }}><strong>Z</strong></label>
-          <ButtonGroup>
-            <Button
-              variant="contained"
-              onMouseDown={() => startContinuousMove('z', -1, 'world')}
-              onMouseUp={stopContinuousMove}
-              onMouseLeave={stopContinuousMove}
-              style={{ backgroundColor: '#ccccff', color: 'black', border: '1px solid #9999cc' }}
-            >
-              -
-            </Button>
-            <Button
-              variant="contained"
-              onMouseDown={() => startContinuousMove('z', 1, 'world')}
-              onMouseUp={stopContinuousMove}
-              onMouseLeave={stopContinuousMove}
-              style={{ backgroundColor: '#ccccff', color: 'black', border: '1px solid #9999cc' }}
-            >
-              +
-            </Button>
-          </ButtonGroup>
-        </div>
-      </div>
-
-      {/* Buttons for TCP coordinate adjustments */}
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '1rem' }}> {/* Row for Roll, Pitch, Yaw Buttons */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginRight: '8px' }}> {/* Roll group */}
-          <label style={{ marginBottom: '4px' }}><strong>Roll</strong></label>
-          <ButtonGroup>
-            <Button
-              variant="contained"
-              onMouseDown={() => startContinuousMove('roll', -1, 'world')}
-              onMouseUp={stopContinuousMove}
-              onMouseLeave={stopContinuousMove}
-              style={{ backgroundColor: '#ffcccc', color: 'black', border: '1px solid #ff9999' }}
-            >
-              -
-            </Button>
-            <Button
-              variant="contained"
-                onMouseDown={() => startContinuousMove('roll', 1, 'world')}
-              onMouseUp={stopContinuousMove}
-              onMouseLeave={stopContinuousMove}
-              style={{ backgroundColor: '#ffcccc', color: 'black', border: '1px solid #ff9999' }}
-            >
-              +
-            </Button>
-          </ButtonGroup>
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginRight: '8px' }}> {/* Pitch group */}
-          <label style={{ marginBottom: '4px' }}><strong>Pitch</strong></label>
-          <ButtonGroup>
-            <Button
-              variant="contained"
-              onMouseDown={() => startContinuousMove('pitch', -1, 'world')}
-              onMouseUp={stopContinuousMove}
-              onMouseLeave={stopContinuousMove}
-              style={{ backgroundColor: '#ffffcc', color: 'black', border: '1px solid #cccc99' }}
-            >
-              -
-            </Button>
-            <Button
-              variant="contained"
-              onMouseDown={() => startContinuousMove('pitch', 1, 'world')}
-              onMouseUp={stopContinuousMove}
-              onMouseLeave={stopContinuousMove}
-              style={{ backgroundColor: '#ffffcc', color: 'black', border: '1px solid #cccc99' }}
-            >
-              +
-            </Button>
-          </ButtonGroup>
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}> {/* Yaw group */}
-          <label style={{ marginBottom: '4px' }}><strong>Yaw</strong></label>
-          <ButtonGroup>
-            <Button
-              variant="contained"
-              onMouseDown={() => startContinuousMove('yaw', -1, 'world')}
-              onMouseUp={stopContinuousMove}
-              onMouseLeave={stopContinuousMove}
-              style={{ backgroundColor: '#ccccff', color: 'black', border: '1px solid #9999cc' }}
-            >
-              -
-            </Button>
-            <Button
-              variant="contained"
-              onMouseDown={() => startContinuousMove('yaw', 1, 'world')}
-              onMouseUp={stopContinuousMove}
-              onMouseLeave={stopContinuousMove}
-              style={{ backgroundColor: '#ccccff', color: 'black', border: '1px solid #9999cc' }}
-            >
-              +
-            </Button>
-          </ButtonGroup>
-        </div>
-      </div>
-
-      {/* Buttons for TCP coordinate adjustments */}        
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '1rem' }}> {/* TCP Buttons */}
-        <h3 style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '1.5rem' }}>TCP Frame</h3>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '1rem' }}> {/* Row for X, Y, Z */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginRight: '8px' }}> {/* X group */}
-            <label style={{ marginBottom: '4px' }}><strong>X</strong></label>
-            <ButtonGroup>
-              <Button
-                variant="contained"
-                onMouseDown={() => startContinuousMove('x', -1, 'tcp')}
-                onMouseUp={stopContinuousMove}
-                onMouseLeave={stopContinuousMove} // Ensure it stops if the mouse leaves the button
-                style={{ backgroundColor: '#ffcccc', color: 'black', border: '1px solid #ff9999' }}
-              >
-                -
-              </Button>
-              <Button
-                variant="contained"
-                onMouseDown={() => startContinuousMove('x', 1, 'tcp')}
-                onMouseUp={stopContinuousMove}
-                onMouseLeave={stopContinuousMove}
-                style={{ backgroundColor: '#ffcccc', color: 'black', border: '1px solid #ff9999' }}
-              >
-                +
-              </Button>
-            </ButtonGroup>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginRight: '8px' }}> {/* Y group */}
-            <label style={{ marginBottom: '4px' }}><strong>Y</strong></label>
-            <ButtonGroup>
-              <Button
-                variant="contained"
-                onMouseDown={() => startContinuousMove('y', -1, 'tcp')}
-                onMouseUp={stopContinuousMove}
-                onMouseLeave={stopContinuousMove}
-                style={{ backgroundColor: '#ffffcc', color: 'black', border: '1px solid #cccc99' }}
-              >
-                -
-              </Button>
-              <Button
-                variant="contained"
-                onMouseDown={() => startContinuousMove('y', 1, 'tcp')}
-                onMouseUp={stopContinuousMove}
-                onMouseLeave={stopContinuousMove}
-                style={{ backgroundColor: '#ffffcc', color: 'black', border: '1px solid #cccc99' }}
-              >
-                +
-              </Button>
-            </ButtonGroup>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}> {/* Z group */}
-            <label style={{ marginBottom: '4px' }}><strong>Z</strong></label>
-            <ButtonGroup>
-              <Button
-                variant="contained"
-                onMouseDown={() => startContinuousMove('z', -1, 'tcp')}
-                onMouseUp={stopContinuousMove}
-                onMouseLeave={stopContinuousMove}
-                style={{ backgroundColor: '#ccccff', color: 'black', border: '1px solid #9999cc' }}
-              >
-                -
-              </Button>
-              <Button
-                variant="contained"
-                onMouseDown={() => startContinuousMove('z', 1, 'tcp')}
-                onMouseUp={stopContinuousMove}
-                onMouseLeave={stopContinuousMove}
-                style={{ backgroundColor: '#ccccff', color: 'black', border: '1px solid #9999cc' }}
-              >
-                +
-              </Button>
-            </ButtonGroup>
-          </div>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '1rem' }}> {/* Row for Roll, Pitch, Yaw */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginRight: '8px' }}> {/* Roll group */}
-            <label style={{ marginBottom: '4px' }}><strong>Roll</strong></label>
-            <ButtonGroup>
-              <Button
-                variant="contained"
-                onMouseDown={() => startContinuousMove('roll', -1, 'tcp')}
-                onMouseUp={stopContinuousMove}
-                onMouseLeave={stopContinuousMove}
-                style={{ backgroundColor: '#ffcccc', color: 'black', border: '1px solid #ff9999' }}
-              >
-                -
-              </Button>
-              <Button
-                variant="contained"
-                onMouseDown={() => startContinuousMove('roll', 1, 'tcp')}
-                onMouseUp={stopContinuousMove}
-                onMouseLeave={stopContinuousMove}
-                style={{ backgroundColor: '#ffcccc', color: 'black', border: '1px solid #ff9999' }}
-              >
-                +
-              </Button>
-            </ButtonGroup>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginRight: '8px' }}> {/* Pitch group */}
-            <label style={{ marginBottom: '4px' }}><strong>Pitch</strong></label>
-            <ButtonGroup>
-              <Button
-                variant="contained"
-                onMouseDown={() => startContinuousMove('pitch', -1, 'tcp')}
-                onMouseUp={stopContinuousMove}
-                onMouseLeave={stopContinuousMove}
-                style={{ backgroundColor: '#ffffcc', color: 'black', border: '1px solid #cccc99' }}
-              >
-                -
-              </Button>
-              <Button
-                variant="contained"
-                onMouseDown={() => startContinuousMove('pitch', 1, 'tcp')}
-                onMouseUp={stopContinuousMove}
-                onMouseLeave={stopContinuousMove}
-                style={{ backgroundColor: '#ffffcc', color: 'black', border: '1px solid #cccc99' }}
-              >
-                +
-              </Button>
-            </ButtonGroup>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}> {/* Yaw group */}
-            <label style={{ marginBottom: '4px' }}><strong>Yaw</strong></label>
-            <ButtonGroup>
-              <Button
-                variant="contained"
-                onMouseDown={() => startContinuousMove('yaw', -1, 'tcp')}
-                onMouseUp={stopContinuousMove}
-                onMouseLeave={stopContinuousMove}
-                style={{ backgroundColor: '#ccccff', color: 'black', border: '1px solid #9999cc' }}
-              >
-                -
-              </Button>
-              <Button
-                variant="contained"
-                onMouseDown={() => startContinuousMove('yaw', 1, 'tcp')}
-                onMouseUp={stopContinuousMove}
-                onMouseLeave={stopContinuousMove}
-                style={{ backgroundColor: '#ccccff', color: 'black', border: '1px solid #9999cc' }}
-              >
-                +
-              </Button>
-            </ButtonGroup>
-          </div>
-        </div>
-      </div>
+      <div className="control-section-title">TCP Frame</div>
+      {renderAxisRow([
+        { axis: 'x', label: 'X' },
+        { axis: 'y', label: 'Y' },
+        { axis: 'z', label: 'Z' },
+      ], 'tcp')}
+      {renderAxisRow([
+        { axis: 'roll', label: 'Roll' },
+        { axis: 'pitch', label: 'Pitch' },
+        { axis: 'yaw', label: 'Yaw' },
+      ], 'tcp')}
 
       {/* Gripper control buttons */}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '1rem' }}> {/* Gripper Buttons */}
-        <h3 style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '1.5rem' }}>Gripper Control</h3>
-        <ButtonGroup>
-          {[0, 20, 40, 60, 80, 100].map((percentage) => (
-            <Button
-              key={percentage}
-              variant={gripperPercent === percentage ? "contained" : "outlined"} // Highlight selected button
-              onClick={() => updateGripperPercent(percentage)} // Update selected state
-              style={{ backgroundColor: gripperPercent === percentage ? '#ccccff' : 'white', color: 'black', border: '1px solid #9999cc' }}
-            >
-              {percentage}%
-            </Button>
-          ))}
-        </ButtonGroup>
-      </div>
+      <div className="control-section-title">Gripper</div>
+      <ButtonGroup size="small" style={{ marginBottom: '1rem' }}>
+        {[0, 20, 40, 60, 80, 100].map((percentage) => (
+          <Button
+            key={percentage}
+            variant={gripperPercent === percentage ? "contained" : "outlined"}
+            className={`gripper-btn${gripperPercent === percentage ? ' active' : ''}`}
+            onClick={() => updateGripperPercent(percentage)}
+          >
+            {percentage}%
+          </Button>
+        ))}
+      </ButtonGroup>
 
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: '1rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '0.75rem', marginTop: '0.5rem' }}>
         <Button
+          className="move-j-btn"
           onClick={publishGhostToController}
           disabled={!ghostJoints || Object.keys(ghostJoints).length === 0}
           variant="contained"
-          color={(!ghostJoints || Object.keys(ghostJoints).length === 0) ? "secondary" : "primary"}
-          style={{ fontWeight: 'bold' }}
         >
           MOVE J
         </Button>
 
         <Button
+          className="move-l-btn"
           onClick={executeCartesianMove}
           disabled={!ghostJoints || Object.keys(ghostJoints).length === 0 || !connected || isComputingCartesian}
           variant="contained"
-          color={(!ghostJoints || Object.keys(ghostJoints).length === 0 || !connected) ? "secondary" : "success"}
-          style={{ fontWeight: 'bold' }}
         >
           {isComputingCartesian ? 'COMPUTING...' : 'MOVE L'}
         </Button>
       </div>
 
       {cartesianError && (
-        <div style={{ color: 'red', marginTop: '0.5rem', fontSize: '0.9rem', textAlign: 'center' }}>
+        <div style={{ color: '#ff4757', marginTop: '0.5rem', fontSize: '0.85rem', textAlign: 'center', background: 'rgba(255,71,87,0.08)', padding: '6px 12px', borderRadius: '8px', border: '1px solid rgba(255,71,87,0.2)' }}>
           {cartesianError}
         </div>
       )}
