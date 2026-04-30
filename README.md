@@ -53,10 +53,10 @@ This project adapts the arm for full ROS2 integration including simulation and r
 
 - [x] URDF / XACRO model
 - [x] MoveIt2 motion planning
-- [x] RViz simulation
-- [ ] Asgard web GUI integration
+- [x] RViz & Gazebo simulation
+- [x] Asgard web GUI integration
 - [ ] Arduino hardware interface (ros2_control)
-- [ ] Dual-arm coordination
+- [ ] Dockerize the project & deploy to server
 
 ---
 
