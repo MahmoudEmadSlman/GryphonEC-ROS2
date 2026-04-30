@@ -20,7 +20,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 let isRunAllInProgress = false; // Global flag to track "Run All" execution state
 
-function Program({ poses }) {
+function Program({ poses, onRunAllStateChange }) {
   const [movements, setMovements] = useState([]);
   const [poseNames, setPoseNames] = useState(poses.map(pose => pose.name));
   const [currentStep, setCurrentStep] = useState(null);
@@ -208,6 +208,7 @@ function Program({ poses }) {
 
   const executeRunAll = async (startIndex = 0) => {
     isRunAllInProgress = true; // Mark that Run All is in progress
+    if (onRunAllStateChange) onRunAllStateChange(true);
     setControlsDisabled(true); // Disable controls at the beginning
 
     for (let i = startIndex; i < movements.length; i++) {
@@ -259,6 +260,7 @@ function Program({ poses }) {
     }
 
     isRunAllInProgress = false; // Mark that Run All has finished
+    if (onRunAllStateChange) onRunAllStateChange(false);
     setControlsDisabled(false); // Re-enable controls after all movements are executed
     console.log('All movements executed.');
   };
@@ -266,6 +268,7 @@ function Program({ poses }) {
   const handleStop = () => {
     // Stop the Run All process
     isRunAllInProgress = false;
+    if (onRunAllStateChange) onRunAllStateChange(false);
     setControlsDisabled(false); // Re-enable buttons
 
   if (!rosApi.connected) {

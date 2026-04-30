@@ -55,6 +55,7 @@ function AppInner() {
   const [showGhostRobotCoordinates, setShowGhostRobotCoordinates] = useState(defaultSettings.showGhostRobotCoordinates);
   const [showFPS, setShowFPS] = useState(defaultSettings.showFPS);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isProgramRunning, setIsProgramRunning] = useState(false);
   const [poseName, setPoseName] = useState('');
   const [poses, setPoses] = useState(() => {
     const savedPoses = JSON.parse(localStorage.getItem('savedPoses')) || [];
@@ -395,7 +396,7 @@ function AppInner() {
               </span>
             </AccordionSummary>
             <AccordionDetails>
-              <Program poses={poses} />
+              <Program poses={poses} onRunAllStateChange={setIsProgramRunning} />
             </AccordionDetails>
           </Accordion>
     </div>
@@ -412,11 +413,11 @@ function AppInner() {
               ref={urdfApiRef}
               previewJoints={effectivePreviewJoints}
               showRealRobot={showRealRobot}
-              showGhostRobot={showGhostRobot}
+              showGhostRobot={showGhostRobot && !isProgramRunning}
               onGhostJointsChange={setGhostJoints}
               className="urdf-viewer"
               showFPS={showFPS}
-              showGhostRobotCoordinates={showGhostRobotCoordinates}
+              showGhostRobotCoordinates={showGhostRobotCoordinates && !isProgramRunning}
               rosApi={rosApi}
             />
           </div>
@@ -451,7 +452,7 @@ function AppInner() {
         {/* FAB Buttons Container */}
         <div className="fab-container">
           {/* TCP Gizmo Frame FAB */}
-          {showGhostRobotCoordinates && (
+          {showGhostRobotCoordinates && !isProgramRunning && (
             <Fab variant="extended"
               aria-label="toggle-tcp-gizmo"
               onClick={() => { if (urdfApiRef.current && urdfApiRef.current.toggleTCPGizmoFrame) urdfApiRef.current.toggleTCPGizmoFrame(); }}
