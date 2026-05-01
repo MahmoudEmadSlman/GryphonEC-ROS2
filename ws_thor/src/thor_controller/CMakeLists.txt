@@ -10,6 +10,7 @@ find_package(hardware_interface REQUIRED)
 find_package(pluginlib REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
 find_package(PkgConfig REQUIRED)
 
 pkg_check_modules(SERIAL libserial)
@@ -31,6 +32,7 @@ ament_target_dependencies(${PROJECT_NAME}
   pluginlib
   rclcpp
   rclcpp_lifecycle
+  std_msgs
 )
 
 pluginlib_export_plugin_description_file(hardware_interface thor_controller.xml)
@@ -63,6 +65,7 @@ ament_export_dependencies(
   pluginlib
   rclcpp
   rclcpp_lifecycle
+  std_msgs
 )
 
 if(BUILD_TESTING)
