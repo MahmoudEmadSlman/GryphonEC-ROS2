@@ -1,4 +1,0 @@
-source;share/thor_moveit/local_setup.bash
-source;share/thor_moveit/local_setup.dsv
-source;share/thor_moveit/local_setup.sh
-source;share/thor_moveit/local_setup.zsh

@@ -1,9 +1,0 @@
-setup.py
-thor_server/__init__.py
-thor_server.egg-info/PKG-INFO
-thor_server.egg-info/SOURCES.txt
-thor_server.egg-info/dependency_links.txt
-thor_server.egg-info/top_level.txt
-thor_server/action/__init__.py
-thor_server/action/_joint_task.py
-thor_server/action/_pose_task.py

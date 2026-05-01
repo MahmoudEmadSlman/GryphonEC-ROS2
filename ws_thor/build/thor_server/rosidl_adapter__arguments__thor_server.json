@@ -1,7 +1,0 @@
-{
-  "package_name": "thor_server",
-  "non_idl_tuples": [
-    "/home/salman/GryphonEC-ROS2/ws_thor/src/thor_server:action/JointTask.action",
-    "/home/salman/GryphonEC-ROS2/ws_thor/src/thor_server:action/PoseTask.action"
-  ]
-}

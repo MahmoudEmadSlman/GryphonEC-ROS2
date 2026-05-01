@@ -1,9 +1,0 @@
-/home/salman/GryphonEC-ROS2/ws_thor/build/thor_bringup/CMakeFiles/uninstall.dir
-/home/salman/GryphonEC-ROS2/ws_thor/build/thor_bringup/CMakeFiles/thor_bringup_uninstall.dir
-/home/salman/GryphonEC-ROS2/ws_thor/build/thor_bringup/CMakeFiles/test.dir
-/home/salman/GryphonEC-ROS2/ws_thor/build/thor_bringup/CMakeFiles/edit_cache.dir
-/home/salman/GryphonEC-ROS2/ws_thor/build/thor_bringup/CMakeFiles/rebuild_cache.dir
-/home/salman/GryphonEC-ROS2/ws_thor/build/thor_bringup/CMakeFiles/list_install_components.dir
-/home/salman/GryphonEC-ROS2/ws_thor/build/thor_bringup/CMakeFiles/install.dir
-/home/salman/GryphonEC-ROS2/ws_thor/build/thor_bringup/CMakeFiles/install/local.dir
-/home/salman/GryphonEC-ROS2/ws_thor/build/thor_bringup/CMakeFiles/install/strip.dir
