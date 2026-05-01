@@ -42,6 +42,14 @@ CallbackReturn ThorInterface::on_init(const hardware_interface::HardwareInfo &ha
   position_states_.reserve(info_.joints.size());
   RCLCPP_INFO_STREAM(rclcpp::get_logger("ThorInterface"), "ON INIT - Joints Size: " << info_.joints.size());
 
+  // Create internal node for receiving hardware commands via ROS2 subscription
+  // This replaces the unsafe /tmp/commands.txt file-based IPC
+  command_node_ = rclcpp::Node::make_shared("thor_hardware_command_listener");
+  command_subscription_ = command_node_->create_subscription<std_msgs::msg::String>(
+      "/hardware_command", rclcpp::QoS(10),
+      std::bind(&ThorInterface::commandCallback, this, std::placeholders::_1));
+  RCLCPP_INFO(rclcpp::get_logger("ThorInterface"), "Subscribed to /hardware_command topic");
+
   return CallbackReturn::SUCCESS;
 }
 
@@ -95,6 +103,9 @@ CallbackReturn ThorInterface::on_activate(const rclcpp_lifecycle::State &previou
 
 CallbackReturn ThorInterface::on_deactivate(const rclcpp_lifecycle::State &previous_state){
   RCLCPP_INFO(rclcpp::get_logger("ThorInterface"), "Stopping robot hardware ...");
+
+  // Clean up subscription before closing serial
+  command_subscription_.reset();
 
   if(thor_.IsOpen()){
     try{
@@ -227,43 +238,31 @@ hardware_interface::return_type ThorInterface::read(const rclcpp::Time &time, co
     }
   }
 
-  // Process external commands
-  // 
-  // NOTE: This is a temporary workaround to handle the issue with memory addressing of the queues.
-  // It works for now, but a proper solution needs to be implemented in the future.
+  // Process external commands from the thread-safe queue
+  // Spin the internal node to process any pending subscription callbacks
+  rclcpp::spin_some(command_node_);
 
   {
-    // Check if the file "/tmp/commands.txt" exists
-    std::ifstream file("/tmp/commands.txt");
-    if(file.is_open()){
-      std::string command;
-      std::vector<std::string> lines;
-      std::string line;
-
-      // Read all lines from the file
-      while(std::getline(file, line)){
-        lines.push_back(line);
-      }
-      file.close();
-
-      // Delete the file
-      if (std::remove("/tmp/commands.txt") == 0){
-        RCLCPP_INFO(rclcpp::get_logger("ThorInterface"), "File /tmp/commands.txt deleted.");
-      }
-      else{
-        RCLCPP_ERROR(rclcpp::get_logger("ThorInterface"), "Failed to delete file /tmp/commands.txt.");
-      }
-
-      if(!lines.empty()){
-        for(size_t i = 0; i < lines.size(); ++i){
-          RCLCPP_INFO(rclcpp::get_logger("ThorInterface"), "Sending external command: %s", lines[i].c_str());
-          thor_.Write(lines[i] + "\r\n");
-        }
+    std::lock_guard<std::mutex> lock(queue_mutex_);
+    while (!command_queue_.empty()) {
+      std::string command = command_queue_.front();
+      command_queue_.pop();
+      RCLCPP_INFO(rclcpp::get_logger("ThorInterface"), "Executing external command: %s", command.c_str());
+      try {
+        thor_.Write(command + "\r\n");
+      } catch (const std::exception& e) {
+        RCLCPP_ERROR(rclcpp::get_logger("ThorInterface"), "Failed to send command '%s': %s", command.c_str(), e.what());
       }
     }
   }
 
   return hardware_interface::return_type::OK;
+}
+
+void ThorInterface::commandCallback(const std_msgs::msg::String::SharedPtr msg) {
+  std::lock_guard<std::mutex> lock(queue_mutex_);
+  command_queue_.push(msg->data);
+  RCLCPP_DEBUG(rclcpp::get_logger("ThorInterface"), "Queued command: %s", msg->data.c_str());
 }
 
 hardware_interface::return_type ThorInterface::write(const rclcpp::Time &time, const rclcpp::Duration &period){

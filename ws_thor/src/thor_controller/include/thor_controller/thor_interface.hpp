@@ -6,12 +6,14 @@
 #include <libserial/SerialPort.h>
 #include <rclcpp_lifecycle/state.hpp>
 #include <rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp>
+#include <std_msgs/msg/string.hpp>
 
 #include <vector>
 #include <string>
+#include <mutex>
+#include <queue>
 #include <nlohmann/json.hpp>
 
-#include <fstream>
 #include <sstream>
 
 namespace thor_controller
@@ -46,8 +48,16 @@ private:
   std::vector<int> prev_angles_;
   std::vector<double> position_states_;
 
-  bool homed_;
-  std::string status_;
+  bool homed_ = false;
+  std::string status_ = "UNINITIALIZED";
+
+  // Thread-safe command queue (replaces unsafe /tmp/commands.txt file IPC)
+  rclcpp::Node::SharedPtr command_node_;
+  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr command_subscription_;
+  std::queue<std::string> command_queue_;
+  std::mutex queue_mutex_;
+
+  void commandCallback(const std_msgs::msg::String::SharedPtr msg);
 };
 } // namespace thor_controller
 

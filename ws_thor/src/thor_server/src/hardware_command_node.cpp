@@ -1,6 +1,10 @@
+// NOTE: This node is now OPTIONAL. The ThorInterface hardware plugin subscribes
+// directly to /hardware_command via an internal node and a thread-safe queue.
+// This node is kept only for logging/monitoring purposes.
+// You can safely remove it from your launch files.
+
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
-#include <fstream> // Para manejar archivos
 
 class HardwareCommandNode : public rclcpp::Node
 {
@@ -12,23 +16,17 @@ public:
       "/hardware_command", 10,
       std::bind(&HardwareCommandNode::command_callback, this, _1));
 
-    RCLCPP_INFO(this->get_logger(), "Nodo de comandos de hardware iniciado.");
+    RCLCPP_INFO(this->get_logger(),
+      "Hardware command monitor started. "
+      "NOTE: ThorInterface now subscribes directly to /hardware_command. "
+      "This node is optional and only logs commands for debugging.");
   }
 
 private:
   void command_callback(const std_msgs::msg::String::SharedPtr msg)
   {
-    RCLCPP_INFO(this->get_logger(), "Recibido comando: '%s'", msg->data.c_str());
-
-    // Abrir el archivo en modo de agregar (append)
-    std::ofstream file("/tmp/commands.txt", std::ios::app);
-    if (file.is_open()) {
-      file << msg->data << "\n"; // Escribir el comando en una nueva línea
-      file.close();
-      RCLCPP_INFO(this->get_logger(), "Comando guardado en /tmp/commands.txt.");
-    } else {
-      RCLCPP_ERROR(this->get_logger(), "No se pudo abrir /tmp/commands.txt para escribir.");
-    }
+    RCLCPP_INFO(this->get_logger(), "Command received: '%s'", msg->data.c_str());
+    // No file writing - ThorInterface handles commands directly via ROS2 subscription
   }
 
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
