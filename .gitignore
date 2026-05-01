@@ -2,3 +2,5 @@ ws_thor/build/
 ws_thor/install/
 ws_thor/log/
 .vscode/
+asgard/node_modules/
+asgard/dist/
