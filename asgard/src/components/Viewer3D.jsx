@@ -27,7 +27,7 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
 
   // No direct ROS context; rely on rosApi passed from parent
 
-  const jointOrder = ['joint_1','joint_2','joint_3','joint_4','joint_5','gripperbase_to_armgearright'];
+  const jointOrder = ['joint_1', 'joint_2', 'joint_3', 'joint_4', 'joint_5', 'gripperbase_to_armgearright'];
 
   const jointsEqual = (a, b) => {
     if (!a || !b) return false;
@@ -119,6 +119,18 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
     return vals;
   };
 
+  const lastValidPoseMmRef = useRef({ x: 0, y: 0, z: 0, qx: 0, qy: 0, qz: 0, qw: 1 });
+
+  const lerpPose = (p1, p2, t) => ({
+    x: p1.x + (p2.x - p1.x) * t,
+    y: p1.y + (p2.y - p1.y) * t,
+    z: p1.z + (p2.z - p1.z) * t,
+    qx: p1.qx + (p2.qx - p1.qx) * t,
+    qy: p1.qy + (p2.qy - p1.qy) * t,
+    qz: p1.qz + (p2.qz - p1.qz) * t,
+    qw: p1.qw + (p2.qw - p1.qw) * t,
+  });
+
   const getEndEffectorPoseMeters = () => {
     const ee = getEndEffector();
     if (!ee) return null;
@@ -130,7 +142,7 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
     return { x: p.x, y: p.y, z: p.z, qx: q.x, qy: q.y, qz: q.z, qw: q.w };
   };
 
-  const computeIkAndApply = (poseMm) => new Promise((resolve) => {
+  const computeIkAndApply = (poseMm, isRetry = false) => new Promise((resolve) => {
     const applySolved = (solved) => {
       Object.keys(solved).forEach(jn => {
         setRobotJointValue(ghostRef.current, jn, solved[jn]);
@@ -139,18 +151,47 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
     };
 
     const seed = collectGhostJoints();
-    // Prefer external rosApi when available
+    
     if (rosApi && typeof rosApi.computeIK === 'function') {
-      rosApi.computeIK(poseMm, seed).then((res) => {
+      rosApi.computeIK(poseMm, seed).then(async (res) => {
         if (res?.ok && res.joints) {
           applySolved(res.joints);
+          lastValidPoseMmRef.current = { ...poseMm };
           return resolve({ ok: true, joints: res.joints });
         }
-        return resolve({ ok: false, error: res?.error || 'ik_unreachable', raw: res });
+
+        // If failed and not already a retry, try to find the "limit" via binary search
+        if (!isRetry && lastValidPoseMmRef.current) {
+          let low = 0.0; // last valid
+          let high = 1.0; // unreachable target
+          let bestRes = null;
+          let bestPose = null;
+
+          // 2 iterations of binary search is enough to feel like a "stretch" without too much spam
+          for (let i = 0; i < 2; i++) {
+            const mid = (low + high) / 2;
+            const testPose = lerpPose(lastValidPoseMmRef.current, poseMm, mid);
+            const r = await rosApi.computeIK(testPose, seed);
+            if (r.ok) {
+              low = mid;
+              bestRes = r;
+              bestPose = testPose;
+            } else {
+              high = mid;
+            }
+          }
+
+          if (bestRes) {
+            applySolved(bestRes.joints);
+            lastValidPoseMmRef.current = { ...bestPose };
+            return resolve({ ok: true, joints: bestRes.joints, stretched: true });
+          }
+        }
+
+        return resolve({ ok: false, error: 'ik_unreachable' });
       });
       return;
     }
-    // No fallback; ROS not available through API
     resolve({ ok: false, error: 'ros_not_ready' });
   });
 
@@ -182,7 +223,7 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
         }
       });
       // Prevent emitting ghost change due to this temporary set by resetting lastSentJointsRef
-      try { lastEmittedGhostJointsRef.current = collectGhostJoints(); } catch (e) {}
+      try { lastEmittedGhostJointsRef.current = collectGhostJoints(); } catch (e) { }
       if (!eePose) return null;
       return { x: eePose.x * 1000, y: eePose.y * 1000, z: eePose.z * 1000, qx: eePose.qx, qy: eePose.qy, qz: eePose.qz, qw: eePose.qw };
     },
@@ -259,9 +300,9 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
       if (t) t.setSpace(newSpace);
       if (r) r.setSpace(newSpace);
     }
-  ,
-  // Allow external callers to copy the real robot pose into the ghost
-  copyRealToGhost: () => copyRealToGhost(),
+    ,
+    // Allow external callers to copy the real robot pose into the ghost
+    copyRealToGhost: () => copyRealToGhost(),
   }), [rosApi?.connected]);
 
   // Init scene
@@ -277,10 +318,10 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
     cameraRef.current = camera;
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xd4d8d8);
+    scene.background = new THREE.Color(0x333333);
     sceneRef.current = scene;
     // Grid on Z=0 (XY plane) since this app uses Z as up
-    const grid = new THREE.GridHelper(4, 40, 0x888888, 0xcccccc);
+    const grid = new THREE.GridHelper(4, 40, 0x222222, 0x111111);
     // GridHelper is XZ by default; rotate to XY plane
     grid.rotation.x = Math.PI / 2;
     grid.position.set(0, 0, 0);
@@ -290,7 +331,7 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
     }
     scene.add(grid);
     gridRef.current = grid;
-    
+
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -318,7 +359,7 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
     gizmo.update();
     gizmoRef.current = gizmo;
 
-  // Animation with an effective FPS limiter
+    // Animation with an effective FPS limiter
     let lastTime = 0;
     const targetFPS = 30;
     const frameInterval = 1000 / targetFPS;
@@ -386,10 +427,10 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
 
     return () => {
       window.removeEventListener('resize', handleResize);
-  if (rendererRef.current) rendererRef.current.dispose();
-  if (gridRef.current && sceneRef.current) sceneRef.current.remove(gridRef.current);
-  if (hemiRef.current && sceneRef.current) sceneRef.current.remove(hemiRef.current);
-  clearInterval(logFPS);
+      if (rendererRef.current) rendererRef.current.dispose();
+      if (gridRef.current && sceneRef.current) sceneRef.current.remove(gridRef.current);
+      if (hemiRef.current && sceneRef.current) sceneRef.current.remove(hemiRef.current);
+      clearInterval(logFPS);
     };
   }, []);
 
@@ -399,7 +440,7 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
     if (!sceneRef.current || !cameraRef.current || !rendererRef.current) return;
 
     let unsubscribeJointStates = null;
-    
+
     // Load URDF and add to scene
     const loadUrdf = (urdfXml) => {
       if (!urdfXml) return;
@@ -482,24 +523,60 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
         const reachableColor = new THREE.Color(0x4caf50);
         const unreachableColor = new THREE.Color(0xff4757);
 
+        // Anti-spam: track consecutive failures and request sequencing
+        let consecutiveFailures = 0;
+        let lastSentPos = sphere.position.clone();
+        let lastSentQuat = sphere.quaternion.clone();
+        let ikRequestId = 0; // monotonically increasing ID to ignore stale responses
+        const MAX_CONSECUTIVE_FAILURES = 3;
+        const MIN_MOVE_TO_RETRY_MM = 5;      // must move >5mm to retry after backoff
+        const MIN_ROTATE_TO_RETRY_RAD = 0.09; // ~5° to retry after backoff
+
         const sendIKFromSphere = () => {
           if (!sphereRef.current) return;
+          // Throttle: 150ms between IK calls (was 50ms)
           if (sendIKFromSphere.__locked) return;
           sendIKFromSphere.__locked = true;
-          setTimeout(() => { sendIKFromSphere.__locked = false; }, 50);
+          setTimeout(() => { sendIKFromSphere.__locked = false; }, 150);
+
           sphereRef.current.updateMatrixWorld(true);
           const p = new THREE.Vector3();
           const q = new THREE.Quaternion();
           sphereRef.current.getWorldPosition(p);
           sphereRef.current.getWorldQuaternion(q);
+
+          // Backoff: if too many consecutive failures, only retry when the
+          // sphere has moved significantly from where the failures started
+          if (consecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
+            const posDeltaMm = p.clone().sub(lastSentPos).length() * 1000;
+            const rotDeltaRad = lastSentQuat.angleTo(q);
+            if (posDeltaMm < MIN_MOVE_TO_RETRY_MM && rotDeltaRad < MIN_ROTATE_TO_RETRY_RAD) {
+              return; // skip — sphere hasn't moved enough to warrant another try
+            }
+            // Moved enough; reset backoff and let it try again
+            consecutiveFailures = 0;
+          }
+
+          lastSentPos = p.clone();
+          lastSentQuat = q.clone();
           const poseMm = { x: p.x * 1000, y: p.y * 1000, z: p.z * 1000, qx: q.x, qy: q.y, qz: q.z, qw: q.w };
+
+          // Tag this request so we can ignore stale responses
+          const thisRequestId = ++ikRequestId;
+
           computeIkAndApply(poseMm).then((res) => {
+            // Ignore stale response — a newer request was already sent
+            if (thisRequestId !== ikRequestId) return;
+            if (!sphereRef.current) return;
+
             if (res && res.ok) {
+              consecutiveFailures = 0;
               sphereRef.current.material.color.copy(reachableColor);
               lastValidPos = sphereRef.current.position.clone();
               lastValidQuat = sphereRef.current.quaternion.clone();
               emitGhostStateIfChanged();
             } else {
+              consecutiveFailures++;
               sphereRef.current.material.color.copy(unreachableColor);
               if (!isDraggingTargetRef.current) {
                 sphereRef.current.position.copy(lastValidPos);
@@ -543,7 +620,7 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
     rosApi.getUrdfXml().then(loadUrdf);
 
     return () => {
-      try { unsubscribeJointStates && unsubscribeJointStates(); } catch(_) {}
+      try { unsubscribeJointStates && unsubscribeJointStates(); } catch (_) { }
     };
   }, [rosApi?.connected]);
 
@@ -557,11 +634,11 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
       jointOrder.forEach(j => {
         if (previewJoints[j] !== undefined) setRobotJointValue(ghostRef.current, j, previewJoints[j]);
       });
-  // After applying preview joints to the ghost model, emit the new ghost
-  // state back to the parent so `ghostJoints` stays in sync with the visual
-  // model. This avoids race conditions where UI changes (eg gripper) are
-  // applied as preview but never reflected in the app-level ghost state.
-  try { emitGhostStateIfChanged(); } catch (e) {}
+      // After applying preview joints to the ghost model, emit the new ghost
+      // state back to the parent so `ghostJoints` stays in sync with the visual
+      // model. This avoids race conditions where UI changes (eg gripper) are
+      // applied as preview but never reflected in the app-level ghost state.
+      try { emitGhostStateIfChanged(); } catch (e) { }
     }
   }, [previewJoints]);
 
