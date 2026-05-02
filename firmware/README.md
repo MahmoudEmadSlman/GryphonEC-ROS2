@@ -11,11 +11,14 @@ adapted here for use with the **Gryphon 5-DOF robotic arm**.
 
 1. Open **Arduino IDE**
 2. Go to `Sketch > Include Library > Add .ZIP Library`
-   - Navigate to `grbl-1.0/grbl/` and press **Open** (not the zip, not grbl-1.0, the *grbl* subfolder)
-3. Open `grbl-1.0/grbl/examples/grblUpload/grblUpload.ino`
-4. Select `Tools > Board > Arduino Mega`
+   - Navigate to the file: `firmware/grbl_library.zip` and press **Open** 
+3. Open the upload sketch:
+   - Go to `File > Examples > grbl > grblUpload`
+4. Select `Tools > Board > Arduino Mega or Mega 2560`
 5. Select correct port under `Tools > Port`
 6. Press **Upload**
+
+> **Note:** If you get a "Library already exists" error, you can skip step 2. If you see "NoSuchFileException", make sure you are selecting the `.zip` file itself, not the folder.
 
 ## GRBL Axis → Gryphon Joint Mapping
 
@@ -52,7 +55,7 @@ M5        ← Valve OFF (gripper opens)
 After flashing, open Serial Monitor at **115200 baud** and send `$$` to verify settings.
 To reset to defaults: `$RST=$`
 
-Key settings for Gryphon (same as Thor PCB):
+Key settings for Gryphon:
 - `$22=1` — Homing enabled
 - `$100=44.5` — A steps/mm
 - `$101=270.0` — B steps/mm
