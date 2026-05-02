@@ -326,7 +326,7 @@ function AppInner() {
   <div className={'sidebar'} style={{ display: isSidebarOpen ? 'flex' : 'none', width: sidebarWidth, minWidth: sidebarWidth, maxWidth: sidebarWidth }}>
     <div className="sidebar-top">
       <div className="logo-section">
-        <img src="/images/thor_logo.png" alt="Thor Logo" />
+        <img src="/images/gryphon_logo.png" alt="Gryphon Logo" />
         <div className="logo-subtitle">Robotic Arm Control</div>
         <div className={`connection-status ${connected ? 'connected' : 'disconnected'}`}>
           <span className={`status-dot ${connected ? 'connected' : 'disconnected'}`}></span>

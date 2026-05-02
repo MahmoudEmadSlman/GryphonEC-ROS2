@@ -1,0 +1,10 @@
+<library path="gryphon_controller">
+    <class name="gryphon_controller/GryphonInterface"
+      type="gryphon_controller::GryphonInterface"
+      base_class_type="hardware_interface::SystemInterface"
+    >
+      <description>
+        Gryphon Hardware Interface
+      </description>
+    </class>
+  </library>

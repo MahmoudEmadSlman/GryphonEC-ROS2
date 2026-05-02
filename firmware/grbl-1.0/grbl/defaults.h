@@ -35,9 +35,9 @@
   #include "defaults/defaults_generic.h"
 #endif
 
-#ifdef DEFAULTS_THOR
-  // Grbl Thor modification default settings.
-  #include "defaults/defaults_thor.h"
+#ifdef DEFAULTS_GRYPHON
+  // Grbl Gryphon modification default settings.
+  #include "defaults/defaults_gryphon.h"
 #endif
 
 

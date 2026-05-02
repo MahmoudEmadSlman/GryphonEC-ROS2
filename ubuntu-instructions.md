@@ -1,6 +1,6 @@
 # GryphonEC-ROS2 & Asgard Installation Guide (Ubuntu 22.04)
 
-Ready to run Thor and Asgard on Ubuntu?
+Ready to run Gryphon and Asgard on Ubuntu?
 Just follow these steps, grab your terminal and let the penguin do the heavy lifting!
 
 ---
@@ -96,7 +96,7 @@ git clone https://github.com/MahmoudEmadSlman/GryphonEC-ROS2
 Time to compile:
 
 ```bash
-cd ~/GryphonEC-ROS2/ws_thor
+cd ~/GryphonEC-ROS2/ws_gryphon
 colcon build
 ```
 
@@ -113,14 +113,14 @@ npm install
 ```
 
 
-## 7. Launch the Thor ROS2 system (Terminal #1)
+## 7. Launch the Gryphon ROS2 system (Terminal #1)
 
 Start the simulated robot or connect to your real one!
 
 ```bash
-cd ~/GryphonEC-ROS2/ws_thor
+cd ~/GryphonEC-ROS2/ws_gryphon
 source install/setup.bash
-ros2 launch thor_moveit demo.launch.py
+ros2 launch gryphon_moveit demo.launch.py
 ```
 
 
@@ -136,7 +136,7 @@ npm run dev
 
 ## 9. Open Asgard in your browser
 
-Copy the URL shown in Terminal #2 after running `npm run dev` (usually something like `http://localhost:5173`) and enjoy controlling Thor from your browser!
+Copy the URL shown in Terminal #2 after running `npm run dev` (usually something like `http://localhost:5173`) and enjoy controlling Gryphon from your browser!
 
 
 

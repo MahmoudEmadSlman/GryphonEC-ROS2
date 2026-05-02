@@ -4,7 +4,7 @@
 source /opt/ros/humble/setup.bash
 echo ">> Ros2 sourced."
 # Navigate to work space
-cd ws_thor/
+cd ws_gryphon/
 # Source ws as overlay
 source install/setup.bash
 echo ">> Overlay sourced."

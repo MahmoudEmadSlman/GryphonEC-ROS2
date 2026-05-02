@@ -186,7 +186,7 @@ export default function Settings({
             style={{ fontWeight: 'bold', fontSize: '0.7rem', padding: '4px 10px', flex: 1 }}
             onClick={() => {
               const poses = localStorage.getItem('savedPoses') || '[]';
-              const filename = `thor_poses_${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
+              const filename = `gryphon_poses_${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
               exportToFile(filename, poses);
             }}
           >
@@ -254,7 +254,7 @@ export default function Settings({
             style={{ fontWeight: 'bold', fontSize: '0.7rem', padding: '4px 10px', flex: 1 }}
             onClick={() => {
               const program = localStorage.getItem('program') || '[]';
-              const filename = `thor_program_${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
+              const filename = `gryphon_program_${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
               exportToFile(filename, program);
             }}
           >

@@ -1,6 +1,6 @@
-ws_thor/build/
-ws_thor/install/
-ws_thor/log/
+ws_gryphon/build/
+ws_gryphon/install/
+ws_gryphon/log/
 .vscode/
 asgard/node_modules/
 asgard/dist/

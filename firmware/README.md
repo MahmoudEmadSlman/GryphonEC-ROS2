@@ -1,11 +1,11 @@
 # Gryphon Firmware
 
-This folder contains the **GRBL v1.0** firmware modified by Angel LM for the Thor robotic arm,
+This folder contains the **GRBL v1.0** firmware modified by Angel LM for the Gryphon robotic arm,
 adapted here for use with the **Gryphon 5-DOF robotic arm**.
 
 ## Source
 - Original: [AngelLM/grbl @ v1.0](https://github.com/AngelLM/grbl/releases/tag/v1.0)
-- Documentation: [thor.angel-lm.com/documentation/firmware](http://thor.angel-lm.com/documentation/firmware/)
+- Documentation: [gryphon.angel-lm.com/documentation/firmware](http://gryphon.angel-lm.com/documentation/firmware/)
 
 ## Uploading to Arduino Mega
 
@@ -22,7 +22,7 @@ adapted here for use with the **Gryphon 5-DOF robotic arm**.
 
 ## GRBL Axis → Gryphon Joint Mapping
 
-| GRBL Axis | `defaults_thor.h` | Gryphon Joint | Motor |
+| GRBL Axis | `defaults_gryphon.h` | Gryphon Joint | Motor |
 |-----------|-------------------|---------------|-------|
 | `A`       | `A_STEPS = 44.5`  | Joint 1 (Waist) | Motor 1 |
 | `B`       | `B_STEPS = 270.0` | Joint 2 (Shoulder) | Motor 2 |

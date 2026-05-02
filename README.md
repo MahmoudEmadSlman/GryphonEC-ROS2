@@ -21,7 +21,7 @@
 
 ## 📦 What's inside this repository?
 
-- `ws_thor/src` — **ROS2 Packages for Gryphon**  
+- `ws_gryphon/src` — **ROS2 Packages for Gryphon**  
   All packages and configuration needed to integrate the Gryphon arm with ROS2 Humble LTS and MoveIt2, enabling motion planning, simulation, and real hardware control via RViz.
 
 - `/asgard` — **Asgard: Web GUI**  

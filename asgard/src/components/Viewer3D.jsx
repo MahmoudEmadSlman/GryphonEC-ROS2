@@ -445,7 +445,7 @@ const Viewer3D = forwardRef(({ previewJoints, showRealRobot = true, showGhostRob
     const loadUrdf = (urdfXml) => {
       if (!urdfXml) return;
       const loader = new URDFLoader();
-      loader.workingPath = '/thor_urdf';
+      loader.workingPath = '/gryphon_urdf';
       loader.fetchOptions = { mode: 'cors' };
       // Real robot
       const robot = loader.parse(urdfXml);

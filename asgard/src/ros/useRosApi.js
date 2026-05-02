@@ -171,7 +171,7 @@ export function useRosApi() {
       const cartesianGoalTopic = new ROSLIB.Topic({
         ros,
         name: '/cartesian_goal',
-        messageType: 'thor_msgs/CartesianGoal',
+        messageType: 'gryphon_msgs/CartesianGoal',
       });
 
       // Status and waypoints topics
