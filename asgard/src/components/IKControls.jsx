@@ -92,8 +92,11 @@ export default function IKControls({
       qz: tcpQuaternion.z,
       qw: tcpQuaternion.w,
     };
+    console.log(`[DEBUG IK] Requesting IK solution for pose:`, pose);
     urdfApi.solveAndMoveToPose(pose).then((res) => {
+      console.log(`[DEBUG IK] Solution received:`, res);
       if (res && res.ok) {
+        console.log(`[DEBUG IK] Joint solution:`, res.joints);
         if (onPreviewJointsUpdate) onPreviewJointsUpdate(res.joints);
         if (onIKReachabilityChange) onIKReachabilityChange('reachable');
         // Align the visual target/sphere with the newly solved TCP
@@ -207,11 +210,14 @@ export default function IKControls({
 
   // Apply delta in world/global coordinates
   const applyWorldDelta = (axis, increment) => {
+    console.log(`[DEBUG] applyWorldDelta called with axis=${axis}, increment=${increment}`);
     if (axis === 'x' || axis === 'y' || axis === 'z') {
       // Linear global movement (no transform)
       setTcpPosition(prevPos => {
         const newPos = prevPos.clone();
         newPos[axis] += increment; // mm in global coordinates
+        console.log(`[DEBUG] TCP Position updated: axis=${axis}, old=${prevPos[axis]}, new=${newPos[axis]}`);
+        console.log(`[DEBUG] Full TCP Position:`, { x: newPos.x, y: newPos.y, z: newPos.z });
         return newPos;
       });
     } else {

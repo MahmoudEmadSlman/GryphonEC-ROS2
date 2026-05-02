@@ -40,9 +40,11 @@ export function useRosApi() {
   const computeIK = (poseMm, seedJoints, opts = {}) =>
     new Promise((resolve) => {
       if (!ros || !connected || !ikServiceRef.current) {
+        console.warn('[ROS] computeIK failed: ros or connected or ikService not ready');
         return resolve({ ok: false, error: 'ros_not_ready' });
       }
       const { x = 0, y = 0, z = 0, qx = 0, qy = 0, qz = 0, qw = 1 } = poseMm || {};
+      console.log(`[ROS] computeIK input: x=${x}mm, y=${y}mm, z=${z}mm`);
       const pose = {
         header: { frame_id: 'base_link' },
         pose: {
@@ -50,6 +52,7 @@ export function useRosApi() {
           orientation: { x: qx, y: qy, z: qz, w: qw },
         },
       };
+      console.log(`[ROS] Converted to meters: x=${x/1000}m, y=${y/1000}m, z=${z/1000}m`);
       const names = [];
       const positions = [];
       if (seedJoints) {
@@ -74,7 +77,9 @@ export function useRosApi() {
           avoid_collisions: opts.avoidCollisions ?? false,
         },
       };
+      console.log(`[ROS] Calling IK service with request:`, req);
       ikServiceRef.current.callService(req, (res) => {
+        console.log(`[ROS] IK service response:`, res);
         if (
           res &&
           res.solution &&
@@ -86,8 +91,10 @@ export function useRosApi() {
           res.solution.joint_state.name.forEach((n, i) => {
             solved[n] = res.solution.joint_state.position[i];
           });
+          console.log(`[ROS] IK Success! Solved joints:`, solved);
           resolve({ ok: true, joints: solved, raw: res });
         } else {
+          console.warn(`[ROS] IK Failed. Error code:`, res?.error_code);
           resolve({ ok: false, error: 'ik_unreachable', raw: res });
         }
       });

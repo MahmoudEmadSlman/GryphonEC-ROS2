@@ -18,7 +18,7 @@ function FKControls({ initialJoints, urdfApi, active = true }) {
   const suppressSyncRef = useRef(false);
   const [jointValuesDeg, setJointValuesDeg] = useState(
     jointConfigs.reduce((acc, joint) => {
-      acc[joint.name] = 0;
+      acc[joint.name] = "0";
       return acc;
     }, {})
   );
@@ -30,10 +30,9 @@ function FKControls({ initialJoints, urdfApi, active = true }) {
         const newValuesDeg = { ...prev };
         jointConfigs.forEach(cfg => {
           if (initialJoints[cfg.name] !== undefined) {
-            newValuesDeg[cfg.name] = Math.round((initialJoints[cfg.name] * 180) / Math.PI * 100) / 100;
-          }
-          if (cfg.name === 'gripperbase_to_armgearright') {
-            newValuesDeg[cfg.name] = -newValuesDeg[cfg.name];
+            let val = Math.round((initialJoints[cfg.name] * 180) / Math.PI * 100) / 100;
+            if (cfg.name === 'gripperbase_to_armgearright') val = -val;
+            newValuesDeg[cfg.name] = val.toString();
           }
         });
         return newValuesDeg;
@@ -49,7 +48,10 @@ function FKControls({ initialJoints, urdfApi, active = true }) {
       return;
     }
      const jointsRad = {};
-    jointConfigs.forEach(cfg => { jointsRad[cfg.name] = (jointValuesDeg[cfg.name] * Math.PI) / 180; });
+    jointConfigs.forEach(cfg => { 
+      const valNum = parseFloat(jointValuesDeg[cfg.name]) || 0;
+      jointsRad[cfg.name] = (valNum * Math.PI) / 180; 
+    });
     jointsRad['gripperbase_to_armgearright'] = -jointsRad['gripperbase_to_armgearright'];
     if (active && urdfApi) {
       urdfApi.setGhostJoints(jointsRad);
@@ -59,17 +61,26 @@ function FKControls({ initialJoints, urdfApi, active = true }) {
 
   // Handle slider change
   const handleJointSliderChange = (name, value) => {
-    setJointValuesDeg(prev => ({ ...prev, [name]: parseFloat(value.toFixed(1)) }));
+    setJointValuesDeg(prev => ({ ...prev, [name]: value.toFixed(1) }));
   };
 
-  // Ensure input is numeric and within bounds
+  // Ensure input is numeric and within bounds, but allow intermediate states like "-"
   const handleJointInputChange = (name, value, min, max) => {
+    // Allow empty or just a minus sign for typing
+    if (value === '' || value === '-') {
+      setJointValuesDeg(prev => ({ ...prev, [name]: value }));
+      return;
+    }
+
     let valueNum = parseFloat(value);
-    if (isNaN(valueNum)) valueNum = 0;
+    if (isNaN(valueNum)) return; // ignore invalid numeric strings that aren't "-"
+
+    // Clamp values
     if (valueNum > max) valueNum = max;
     if (valueNum < min) valueNum = min;
-    valueNum = parseFloat(valueNum.toFixed(1));
-    setJointValuesDeg(prev => ({ ...prev, [name]: valueNum }));
+    
+    // Store as string to maintain user formatting/typing
+    setJointValuesDeg(prev => ({ ...prev, [name]: valueNum.toString() }));
   };
 
   // Publish the ghost to the robot controller
@@ -85,8 +96,8 @@ function FKControls({ initialJoints, urdfApi, active = true }) {
           <label htmlFor={joint.name} className="fk-joint-label">
             {joint.label}
           </label>
-          <Slider id={joint.name} min={joint.min} max={joint.max} step={0.1} value={jointValuesDeg[joint.name]} onChange={(e, value) => handleJointSliderChange(joint.name, value)} style={{ flex: 1, marginLeft: '-20px' }} />
-          <Input value={jointValuesDeg[joint.name]} onChange={e => handleJointInputChange(joint.name, e.target.value, joint.min, joint.max)} inputProps={{ step: 0.1, min: joint.min, max: joint.max, type: 'number', 'aria-labelledby': joint.name }} style={{ width: '72px' }} />
+          <Slider id={joint.name} min={joint.min} max={joint.max} step={0.1} value={parseFloat(jointValuesDeg[joint.name]) || 0} onChange={(e, value) => handleJointSliderChange(joint.name, value)} style={{ flex: 1, marginLeft: '-20px' }} />
+          <Input value={jointValuesDeg[joint.name]} onChange={e => handleJointInputChange(joint.name, e.target.value, joint.min, joint.max)} inputProps={{ step: 0.1, min: joint.min, max: joint.max, type: 'text', 'aria-labelledby': joint.name }} style={{ width: '72px' }} />
           <span className="fk-joint-unit">°</span>
         </div>
       ))}

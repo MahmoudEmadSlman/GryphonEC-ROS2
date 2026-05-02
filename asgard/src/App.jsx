@@ -64,6 +64,51 @@ function AppInner() {
   const posesRef = useRef(null); // Reference to the Poses component
   const urdfApiRef = useRef(null);
 
+  // Global Keyboard Shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Don't trigger if user is typing in an input
+      if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+      
+      const key = e.key.toLowerCase();
+      if (key === 'm') {
+        if (e.shiftKey) {
+          console.log('[Shortcut] Triggering MOVE L (Shift+M)');
+          handleMoveL();
+        } else {
+          console.log('[Shortcut] Triggering MOVE J (m)');
+          handleMoveJ();
+        }
+      }
+    };
+
+    const handleMoveJ = () => {
+      if (urdfApiRef.current) {
+        urdfApiRef.current.publishGhostToController();
+      }
+    };
+
+    const handleMoveL = async () => {
+      if (!connected || !rosApi || !urdfApiRef.current || !currentJoints) return;
+      
+      const ghostState = urdfApiRef.current.getGhostState();
+      if (!ghostState || !ghostState.tcp) return;
+
+      const startPose = urdfApiRef.current.getTCPFromJoints(currentJoints);
+      if (!startPose) return;
+
+      const endPose = ghostState.tcp;
+      const gripperValue = ghostState.joints['gripperbase_to_armgearright'] || 0;
+
+      await rosApi.publishCartesianGoal(startPose, endPose, { gripperValue });
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [connected, currentJoints, rosApi]);
+
   // When the program panel opens/closes or sidebar toggles, force the 3D viewer to resize so it adapts to the new width
   useEffect(() => {
     try {
