@@ -11,247 +11,162 @@ ThorInterface::ThorInterface()
 
 ThorInterface::~ThorInterface()
 {
-  if(thor_.IsOpen()){
-    try{
+  if (thor_.IsOpen()) {
+    try {
       thor_.Close();
-    }
-    catch(...){
-      RCLCPP_FATAL_STREAM(rclcpp::get_logger("ThorInterface"), "Something went wrong while closing connection with port " << port_);
+    } catch (...) {
+      RCLCPP_FATAL_STREAM(rclcpp::get_logger("ThorInterface"),
+        "Something went wrong while closing connection with port " << port_);
     }
   }
 }
 
-CallbackReturn ThorInterface::on_init(const hardware_interface::HardwareInfo &hardware_info){
+// ---------------------------------------------------------------------------
+// on_init — called once when the hardware plugin is loaded
+// ---------------------------------------------------------------------------
+CallbackReturn ThorInterface::on_init(const hardware_interface::HardwareInfo &hardware_info)
+{
   CallbackReturn result = hardware_interface::SystemInterface::on_init(hardware_info);
-  if(result != CallbackReturn::SUCCESS){
+  if (result != CallbackReturn::SUCCESS) {
     return result;
   }
 
-  try{
+  // Read serial port param from URDF xacro
+  try {
     port_ = info_.hardware_parameters.at("port");
-    board_type_ = info_.hardware_parameters.at("board_type");
-  }
-  catch(const std::out_of_range &e){
-    RCLCPP_FATAL(rclcpp::get_logger("ThorInterface"), "No Serial Port provided! Aborting");
+  } catch (const std::out_of_range &) {
+    RCLCPP_FATAL(rclcpp::get_logger("ThorInterface"),
+      "No 'port' parameter provided in URDF hardware tag! Aborting.");
     return CallbackReturn::FAILURE;
   }
 
-  position_commands_.reserve(info_.joints.size());
-  curr_angles_.reserve(info_.joints.size());
-  prev_angles_.reserve(info_.joints.size());
-  position_states_.reserve(info_.joints.size());
-  RCLCPP_INFO_STREAM(rclcpp::get_logger("ThorInterface"), "ON INIT - Joints Size: " << info_.joints.size());
+  // Reserve storage for 6 joints: joint_1..5 + gripper
+  // Internally we track 7 GRBL motor angles (shoulder has 2 motors: B & C)
+  const size_t n_joints = info_.joints.size(); // expected: 6
+  position_commands_.assign(n_joints, 0.0);
+  position_states_.assign(n_joints, 0.0);
+  curr_angles_.assign(8, 0);   // 7 GRBL axes (A B C D X Y Z) + 1 gripper deg
+  prev_angles_.assign(8, 0);
 
-  // Create internal node for receiving hardware commands via ROS2 subscription
-  // This replaces the unsafe /tmp/commands.txt file-based IPC
-  command_node_ = rclcpp::Node::make_shared("thor_hardware_command_listener");
+  RCLCPP_INFO_STREAM(rclcpp::get_logger("ThorInterface"),
+    "on_init — joints: " << n_joints << ", port: " << port_);
+
+  // Internal ROS2 node for receiving raw hardware commands on /hardware_command
+  command_node_ = rclcpp::Node::make_shared("gryphon_hardware_command_listener");
   command_subscription_ = command_node_->create_subscription<std_msgs::msg::String>(
-      "/hardware_command", rclcpp::QoS(10),
-      std::bind(&ThorInterface::commandCallback, this, std::placeholders::_1));
-  RCLCPP_INFO(rclcpp::get_logger("ThorInterface"), "Subscribed to /hardware_command topic");
+    "/hardware_command", rclcpp::QoS(10),
+    std::bind(&ThorInterface::commandCallback, this, std::placeholders::_1));
+  RCLCPP_INFO(rclcpp::get_logger("ThorInterface"), "Subscribed to /hardware_command");
 
   return CallbackReturn::SUCCESS;
 }
 
-std::vector<hardware_interface::StateInterface> ThorInterface::export_state_interfaces(){
+// ---------------------------------------------------------------------------
+// export_state_interfaces — expose position states to ros2_control
+// ---------------------------------------------------------------------------
+std::vector<hardware_interface::StateInterface> ThorInterface::export_state_interfaces()
+{
   std::vector<hardware_interface::StateInterface> state_interfaces;
-
-  // Provide only a position interface
-  for(size_t i = 0; i < info_.joints.size(); i++){
-    state_interfaces.emplace_back(hardware_interface::StateInterface(info_.joints[i].name, hardware_interface::HW_IF_POSITION, &position_states_[i]));
+  for (size_t i = 0; i < info_.joints.size(); i++) {
+    state_interfaces.emplace_back(
+      info_.joints[i].name, hardware_interface::HW_IF_POSITION, &position_states_[i]);
   }
-
   return state_interfaces;
 }
 
+// ---------------------------------------------------------------------------
+// export_command_interfaces — expose position commands from ros2_control
+// ---------------------------------------------------------------------------
 std::vector<hardware_interface::CommandInterface> ThorInterface::export_command_interfaces()
 {
   std::vector<hardware_interface::CommandInterface> command_interfaces;
-
-  // Provide only a position interface
-  for(size_t i = 0; i < info_.joints.size(); i++){
-    command_interfaces.emplace_back(hardware_interface::CommandInterface(info_.joints[i].name, hardware_interface::HW_IF_POSITION, &position_commands_[i]));
+  for (size_t i = 0; i < info_.joints.size(); i++) {
+    command_interfaces.emplace_back(
+      info_.joints[i].name, hardware_interface::HW_IF_POSITION, &position_commands_[i]);
   }
-
   return command_interfaces;
 }
 
-CallbackReturn ThorInterface::on_activate(const rclcpp_lifecycle::State &previous_state)
+// ---------------------------------------------------------------------------
+// on_activate — open serial port and wait for GRBL to boot
+// ---------------------------------------------------------------------------
+CallbackReturn ThorInterface::on_activate(const rclcpp_lifecycle::State & /*previous_state*/)
 {
-  RCLCPP_INFO(rclcpp::get_logger("ThorInterface"), "Starting robot hardware ...");
+  RCLCPP_INFO(rclcpp::get_logger("ThorInterface"), "Starting Gryphon hardware ...");
 
-  // Reset commands and states
-  position_commands_ = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-  curr_angles_ = {0, 0, 0, 0, 0, 0, 0};
-  prev_angles_ = {0, 0, 0, 0, 0, 0, 0};
-  position_states_ = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+  // Initialize all joints to zero position
+  const size_t n_joints = info_.joints.size();
+  position_commands_.assign(n_joints, 0.0);
+  position_states_.assign(n_joints, 0.0);
+  curr_angles_.assign(8, 0);
+  prev_angles_.assign(8, 0);
 
-  try{
+  try {
     thor_.Open(port_);
     thor_.SetBaudRate(LibSerial::BaudRate::BAUD_115200);
-    // Wait for a couple of seconds to let the board initialize
+    // Wait 2 s for GRBL to initialise and send its welcome message
     std::this_thread::sleep_for(std::chrono::seconds(2));
-  }
-  catch(...){
-    RCLCPP_FATAL_STREAM(rclcpp::get_logger("ThorInterface"), "Something went wrong while interacting with port " << port_);
+  } catch (...) {
+    RCLCPP_FATAL_STREAM(rclcpp::get_logger("ThorInterface"),
+      "Failed to open serial port " << port_);
     return CallbackReturn::FAILURE;
   }
 
-  RCLCPP_INFO(rclcpp::get_logger("ThorInterface"), "Hardware started, ready to take commands");
+  RCLCPP_INFO(rclcpp::get_logger("ThorInterface"),
+    "Gryphon hardware started — ready to accept commands on port %s", port_.c_str());
   return CallbackReturn::SUCCESS;
 }
 
-CallbackReturn ThorInterface::on_deactivate(const rclcpp_lifecycle::State &previous_state){
-  RCLCPP_INFO(rclcpp::get_logger("ThorInterface"), "Stopping robot hardware ...");
+// ---------------------------------------------------------------------------
+// on_deactivate — close serial port cleanly
+// ---------------------------------------------------------------------------
+CallbackReturn ThorInterface::on_deactivate(const rclcpp_lifecycle::State & /*previous_state*/)
+{
+  RCLCPP_INFO(rclcpp::get_logger("ThorInterface"), "Stopping Gryphon hardware ...");
 
-  // Clean up subscription before closing serial
   command_subscription_.reset();
 
-  if(thor_.IsOpen()){
-    try{
+  if (thor_.IsOpen()) {
+    try {
       thor_.Close();
-    }
-    catch(...){
-      RCLCPP_FATAL_STREAM(rclcpp::get_logger("ThorInterface"), "Something went wrong while closing connection with port " << port_);
+    } catch (...) {
+      RCLCPP_FATAL_STREAM(rclcpp::get_logger("ThorInterface"),
+        "Failed to close serial port " << port_);
     }
   }
 
-  RCLCPP_INFO(rclcpp::get_logger("ThorInterface"), "Hardware stopped");
+  RCLCPP_INFO(rclcpp::get_logger("ThorInterface"), "Gryphon hardware stopped.");
   return CallbackReturn::SUCCESS;
 }
 
-// Read data from Thor
-hardware_interface::return_type ThorInterface::read(const rclcpp::Time &time, const rclcpp::Duration &period){
-  // If the port is open and no data is available, send a request for status
-  if(thor_.IsOpen() && thor_.IsDataAvailable() <= 0){
-    try{
-      if (board_type_== "thor_pcb"){
-        std::string msg = "?\r\n";
-        thor_.Write(msg);
-        // Wait for 0.05 seconds
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
-      }
-      else
-        thor_.Write("M408\r\n");
-    }
-    catch(...){ 
-      RCLCPP_ERROR(rclcpp::get_logger("ThorInterface"), "Failed to send a request for status to Thor.");
-    }
-  }
+// ---------------------------------------------------------------------------
+// read — open-loop: mirror position_commands_ into position_states_
+//         Also drain any external /hardware_command messages.
+// ---------------------------------------------------------------------------
+hardware_interface::return_type ThorInterface::read(
+  const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
+{
+  // Open-loop: no position feedback from the Gryphon Arduino.
+  // Reflect last written commands back as the current state so that
+  // ros2_control considers the trajectory executed.
+  position_states_ = position_commands_;
 
-  if(thor_.IsOpen() && thor_.IsDataAvailable() > 0){
-    std::string serial_data;
-    try{
-      thor_.ReadLine(serial_data);
-      if(!serial_data.empty()){
-        if(board_type_ == "thor_pcb"){
-          // Check if the data contains the string "Mpos:"
-          if(serial_data.find("MPos:") != std::string::npos){         
-            // Extract the state of the board
-            size_t state_end = serial_data.find(',');
-            std::string board_state = serial_data.substr(1, state_end - 1);
-            bool homed = (board_state == "Idle" || board_state == "Run");
-
-            if (!homed) {
-              RCLCPP_ERROR_STREAM(rclcpp::get_logger("ThorInterface"), "Board state is not homed: " << board_state);
-            }
-
-            // Extract the MPos values
-            size_t mpos_start = serial_data.find("MPos:") + 5;
-            size_t mpos_end = serial_data.find(",WPos:");
-            std::string data = serial_data.substr(mpos_start, mpos_end - mpos_start);
-            std::istringstream iss(data);
-            std::string token;
-            int i = 0;
-            while (std::getline(iss, token, ',') && i < position_states_.size()) {
-              if (i == 1) {
-              // Skip the third token as it is a duplicate of the second
-              std::getline(iss, token, ',');
-              }
-              position_states_[i] = std::stod(token);
-              i++;
-            }
-
-            position_states_[0] = position_states_[0] * M_PI / 180;
-            position_states_[1] = position_states_[1] * M_PI / -180;
-            position_states_[2] = position_states_[2] * M_PI / -180;
-            position_states_[3] = position_states_[3] * M_PI / 180;
-            double a6pos = (position_states_[4] + position_states_[5]) / 4;
-            double a5pos = (position_states_[5] - 2 * a6pos);
-            position_states_[4] = a5pos * M_PI / 180;
-            position_states_[5] = a6pos * M_PI / 180;
-
-            position_states_[6] = (curr_angles_[6]-180) * M_PI / 180;
-          }
-        }
-        else{
-          // Check if the data starts with a JSON object
-          if(serial_data.find("{\"status\":") == 0){
-            try{
-              auto json_data = json::parse(serial_data);
-
-              // Extract the status data
-              if(json_data.contains("status")){
-                auto status = json_data["status"];
-              }
-
-              // Extract the position data
-              if(json_data.contains("pos")){
-                auto pos = json_data["pos"];
-                for(size_t i = 0; i < pos.size() && i < position_states_.size(); ++i){
-                  position_states_[i] = pos[i];
-                }
-
-                position_states_[0] = position_states_[0] * M_PI / 180;
-                position_states_[1] = position_states_[1] * M_PI / -180;
-                position_states_[2] = position_states_[2] * M_PI / -180;
-                position_states_[3] = position_states_[3] * M_PI / 180;
-                double a6pos = (position_states_[4] + position_states_[5]) / 4;
-                double a5pos = (position_states_[5] - 2 * a6pos);
-                position_states_[4] = a5pos * M_PI / 180;
-                position_states_[5] = a6pos * M_PI / 180;
-
-                position_states_[6] = (curr_angles_[6]-180) * M_PI / 180;
-              }
-              
-              // Extract the axis homed data
-              if(json_data.contains("homed")){
-                auto axis_homed = json_data["homed"];
-                bool homed = true;
-                for(size_t i = 0; i < axis_homed.size() && i < axis_homed.size(); ++i){
-                  if(axis_homed[i] == 0){
-                    homed = false;
-                    break;
-                  }
-                }
-              }
-            } 
-            catch(const json::parse_error &e){
-              RCLCPP_ERROR(rclcpp::get_logger("ThorInterface"), "Failed to parse JSON: %s", e.what());
-            }
-          }
-        }
-      }
-    }
-    catch(...){
-      RCLCPP_ERROR(rclcpp::get_logger("ThorInterface"), "Failed to read data from Thor.");
-    }
-  }
-
-  // Process external commands from the thread-safe queue
-  // Spin the internal node to process any pending subscription callbacks
+  // Spin the internal node to collect any incoming /hardware_command messages
   rclcpp::spin_some(command_node_);
 
+  // Drain and send any queued external commands over serial
   {
     std::lock_guard<std::mutex> lock(queue_mutex_);
     while (!command_queue_.empty()) {
       std::string command = command_queue_.front();
       command_queue_.pop();
-      RCLCPP_INFO(rclcpp::get_logger("ThorInterface"), "Executing external command: %s", command.c_str());
+      RCLCPP_INFO(rclcpp::get_logger("ThorInterface"),
+        "Executing external command: %s", command.c_str());
       try {
         thor_.Write(command + "\r\n");
-      } catch (const std::exception& e) {
-        RCLCPP_ERROR(rclcpp::get_logger("ThorInterface"), "Failed to send command '%s': %s", command.c_str(), e.what());
+      } catch (const std::exception &e) {
+        RCLCPP_ERROR(rclcpp::get_logger("ThorInterface"),
+          "Failed to send command '%s': %s", command.c_str(), e.what());
       }
     }
   }
@@ -259,93 +174,131 @@ hardware_interface::return_type ThorInterface::read(const rclcpp::Time &time, co
   return hardware_interface::return_type::OK;
 }
 
-void ThorInterface::commandCallback(const std_msgs::msg::String::SharedPtr msg) {
+// ---------------------------------------------------------------------------
+// commandCallback — thread-safe enqueue for /hardware_command topic
+// ---------------------------------------------------------------------------
+void ThorInterface::commandCallback(const std_msgs::msg::String::SharedPtr msg)
+{
   std::lock_guard<std::mutex> lock(queue_mutex_);
   command_queue_.push(msg->data);
-  RCLCPP_DEBUG(rclcpp::get_logger("ThorInterface"), "Queued command: %s", msg->data.c_str());
+  RCLCPP_DEBUG(rclcpp::get_logger("ThorInterface"),
+    "Queued external command: %s", msg->data.c_str());
 }
 
-hardware_interface::return_type ThorInterface::write(const rclcpp::Time &time, const rclcpp::Duration &period){
-  // Calculate angles
-  int art1 = -90 + static_cast<int>(((position_commands_.at(0) + (M_PI / 2)) * 180) / M_PI);
-  int art2 = 90 - static_cast<int>(((position_commands_.at(1) + (M_PI / 2)) * 180) / M_PI);
-  int art3 = 90 - static_cast<int>(((position_commands_.at(2) + (M_PI / 2)) * 180) / M_PI);
-  int art4 = static_cast<int>(((position_commands_.at(3)) * 180) / M_PI);
-  int art5 = static_cast<int>(((-position_commands_.at(4)) * 180) / M_PI);
-  int art6 = static_cast<int>(((position_commands_.at(5)) * 180) / M_PI);
+// ---------------------------------------------------------------------------
+// write — convert ros2_control joint positions (rad) → GRBL G-code → serial
+//
+// Joint index mapping (matches URDF joint order):
+//   [0] joint_1  → GRBL A  (waist)
+//   [1] joint_2  → GRBL B & C  (shoulder — dual motor, B must equal C)
+//   [2] joint_3  → GRBL D  (elbow)
+//   [3] joint_4  → GRBL X  (wrist pitch)
+//   [4] joint_5  → GRBL Y & Z  (differential wrist roll)
+//   [5] gripper  → M3 S255 / M5  (pneumatic valve ON/OFF)
+//
+// Angle convention (degrees, matching Thor ControlPCB firmware):
+//   art1 = joint_1 offset to Thor home: -90 + (cmd + π/2) * 180/π
+//   art2 = joint_2 inverted:             90 - (cmd + π/2) * 180/π
+//   art3 = joint_3 inverted:             90 - (cmd + π/2) * 180/π
+//   art4 = joint_4 direct:               cmd * 180/π
+//   art5 = joint_5 inverted:            -cmd * 180/π
+//   Differential wrist (2 GRBL axes):
+//     m_art5 (GRBL Y) = art5 + 2*art6   (where art6=0 for this arm)
+//     m_art6 (GRBL Z) = -art5 + 2*art6
+//   Pneumatic valve (binary):
+//     gripper_cmd ≠ 0  → M3 S255  (valve ON, grip)
+//     gripper_cmd = 0  → M5       (valve OFF, release)
+// ---------------------------------------------------------------------------
+hardware_interface::return_type ThorInterface::write(
+  const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
+{
+  // --- Arm joint angles (degrees) ---
+  // joint_1 (waist)
+  int art1 = -90 + static_cast<int>(((position_commands_[0] + (M_PI / 2)) * 180) / M_PI);
+  // joint_2 (shoulder, dual-motor — B & C must be equal)
+  int art2 = 90 - static_cast<int>(((position_commands_[1] + (M_PI / 2)) * 180) / M_PI);
+  // joint_3 (elbow)
+  int art3 = 90 - static_cast<int>(((position_commands_[2] + (M_PI / 2)) * 180) / M_PI);
+  // joint_4 (wrist pitch)
+  int art4 = static_cast<int>((position_commands_[3] * 180) / M_PI);
+  // joint_5 (wrist roll, differential)
+  int art5 = static_cast<int>((-position_commands_[4] * 180) / M_PI);
 
-  int m_art5 = art5 + 2 * art6;
-  int m_art6 = -1 * art5 + 2 * art6;
+  // Differential wrist: GRBL Y & Z
+  // art6 = 0 (Gryphon has no 6th wrist joint)
+  const int art6 = 0;
+  int m_art5 = art5 + 2 * art6;   // GRBL Y
+  int m_art6 = -art5 + 2 * art6;  // GRBL Z
 
-  int end_effector = static_cast<int>(180 + (position_commands_.at(6) * 180 / M_PI));
+  // Pneumatic gripper: binary valve control (ON / OFF)
+  // Any non-zero gripper command → valve ON (grip)
+  // Zero gripper command → valve OFF (release)
+  int valve_state = (std::abs(position_commands_[5]) > 0.01) ? 1 : 0;
 
-  curr_angles_ = {art1, art2, art3, art4, m_art5, m_art6, end_effector};
+  // curr_angles_ layout (8 entries):
+  //   [0] A (art1)   [1] B (art2)   [2] C (art2, =B)   [3] D (art3)
+  //   [4] X (art4)   [5] Y (m_art5) [6] Z (m_art6)     [7] valve (0/1)
+  curr_angles_ = {art1, art2, art2, art3, art4, m_art5, m_art6, valve_state};
 
-  if(curr_angles_ == prev_angles_){
+  // Skip if nothing changed (reduces serial traffic)
+  if (curr_angles_ == prev_angles_) {
     return hardware_interface::return_type::OK;
   }
 
-  if(curr_angles_.at(0) != prev_angles_.at(0) || curr_angles_.at(1) != prev_angles_.at(1) || curr_angles_.at(2) != prev_angles_.at(2) || curr_angles_.at(3) != prev_angles_.at(3) || curr_angles_.at(4) != prev_angles_.at(4) || curr_angles_.at(5) != prev_angles_.at(5)){
-    // Build the GCODE message for arm movement
-    std::string msg;
-    if(board_type_ == "thor_pcb"){
-      msg.append("G0 ");
-      msg.append("A").append(std::to_string(art1)).append(" ");
-      msg.append("B").append(std::to_string(art2)).append(" ");
-      msg.append("C").append(std::to_string(art2)).append(" ");
-      msg.append("D").append(std::to_string(art3)).append(" ");
-      msg.append("X").append(std::to_string(art4)).append(" ");
-      msg.append("Y").append(std::to_string(m_art5)).append(" ");
-      msg.append("Z").append(std::to_string(m_art6)).append("\r\n");
-    }
-    else{
-      msg.append("G0 ");
-      msg.append("X").append(std::to_string(art1)).append(" ");
-      msg.append("Y").append(std::to_string(art2)).append(" ");
-      msg.append("Z").append(std::to_string(art3)).append(" ");
-      msg.append("U").append(std::to_string(art4)).append(" ");
-      msg.append("V").append(std::to_string(m_art5)).append(" ");
-      msg.append("W").append(std::to_string(m_art6)).append("\r\n");
-    }
+  // --- Send arm move command if any motor axis changed ---
+  bool arm_changed =
+    curr_angles_[0] != prev_angles_[0] ||
+    curr_angles_[1] != prev_angles_[1] ||
+    curr_angles_[3] != prev_angles_[3] ||
+    curr_angles_[4] != prev_angles_[4] ||
+    curr_angles_[5] != prev_angles_[5] ||
+    curr_angles_[6] != prev_angles_[6];
 
-    // Send the command
-    try{
-      RCLCPP_INFO_STREAM(rclcpp::get_logger("ThorInterface"), "Sending new command " << msg);
+  if (arm_changed) {
+    std::string msg = "G0 ";
+    msg += "A" + std::to_string(art1)  + " ";
+    msg += "B" + std::to_string(art2)  + " ";
+    msg += "C" + std::to_string(art2)  + " ";  // C must equal B (dual-motor shoulder)
+    msg += "D" + std::to_string(art3)  + " ";
+    msg += "X" + std::to_string(art4)  + " ";
+    msg += "Y" + std::to_string(m_art5) + " ";
+    msg += "Z" + std::to_string(m_art6) + "\r\n";
+
+    try {
+      RCLCPP_INFO_STREAM(rclcpp::get_logger("ThorInterface"), "→ " << msg);
       thor_.Write(msg);
-    }
-    catch(...){
-      RCLCPP_ERROR_STREAM(rclcpp::get_logger("ThorInterface"), "Something went wrong while sending the message " << msg << " to the port " << port_);
+    } catch (...) {
+      RCLCPP_ERROR_STREAM(rclcpp::get_logger("ThorInterface"),
+        "Failed to send arm command: " << msg);
       return hardware_interface::return_type::ERROR;
     }
   }
-  if(curr_angles_.at(6) != prev_angles_.at(6)){
-    // Build the GCODE message for end effector movement
-    std::string msg;
-    if(board_type_ == "thor_pcb"){
-      int pwm_value = static_cast<int>(end_effector * 255 / 180);
-      msg.append("M3 ");
-      msg.append("S").append(std::to_string(pwm_value)).append("\r\n");
-    }
-    else{
-      msg.append("M280 P0 ");
-      msg.append("S").append(std::to_string(end_effector)).append("\r\n");
-    }
 
-    // Send the command
-    try{
-      RCLCPP_INFO_STREAM(rclcpp::get_logger("ThorInterface"), "Sending new command " << msg);
-      thor_.Write(msg);
+  // --- Send pneumatic valve command if changed ---
+  bool gripper_changed = (curr_angles_[7] != prev_angles_[7]);
+
+  if (gripper_changed) {
+    std::string msg;
+    if (valve_state == 1) {
+      msg = "M3 S255\r\n";  // Valve ON → gripper closes
+    } else {
+      msg = "M5\r\n";       // Valve OFF → gripper opens
     }
-    catch(...){
-      RCLCPP_ERROR_STREAM(rclcpp::get_logger("ThorInterface"), "Something went wrong while sending the message " << msg << " to the port " << port_);
+    try {
+      RCLCPP_INFO_STREAM(rclcpp::get_logger("ThorInterface"),
+        "→ Valve " << (valve_state ? "ON" : "OFF") << " : " << msg);
+      thor_.Write(msg);
+    } catch (...) {
+      RCLCPP_ERROR_STREAM(rclcpp::get_logger("ThorInterface"),
+        "Failed to send valve command: " << msg);
       return hardware_interface::return_type::ERROR;
     }
-
   }
-    prev_angles_ = curr_angles_;
 
-    return hardware_interface::return_type::OK;
-  }
+  prev_angles_ = curr_angles_;
+  return hardware_interface::return_type::OK;
+}
+
 } // namespace thor_controller
 
 PLUGINLIB_EXPORT_CLASS(thor_controller::ThorInterface, hardware_interface::SystemInterface)

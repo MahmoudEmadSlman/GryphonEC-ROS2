@@ -28,6 +28,10 @@
   A React-based web application for visual and intuitive control of the Gryphon arm — no command-line interaction needed.  
   Control the robot using joint movements (forward kinematics) or target coordinates (inverse kinematics), save poses, and create motion programs.
 
+- `/firmware` — **Arduino Mega Firmware (GRBL v1.0)**  
+  Modified GRBL firmware for the Arduino Mega that controls the Gryphon's stepper motors via G-code over serial (115200 baud).  
+  Includes axis mapping, default step/mm calibration, and upload instructions.
+
 ---
 
 ## 🤖 About the Gryphon Arm
@@ -36,8 +40,9 @@ The Gryphon is a 5-DOF robotic arm controlled via **Arduino Mega** over serial c
 This project adapts the arm for full ROS2 integration including simulation and real hardware execution.
 
 **Hardware stack:**
-- Gryphon robotic arm (×2)
-- Arduino Mega (custom firmware)
+- Gryphon robotic arm
+- Arduino Mega (GRBL v1.0 firmware) — serial interface for stepper motor control
+- Pneumatic gripper (compressor + solenoid valve) — binary open/close via GRBL M3/M5
 
 ---
 

@@ -18,10 +18,9 @@
       
     <xacro:unless value="$(arg is_sim)">
         <hardware>
+            <!-- Gryphon Arduino Mega running GRBL v1.0 firmware -->
             <plugin>thor_controller/ThorInterface</plugin>
             <param name="port">/dev/ttyACM0</param>
-            <param name="board_type">thor_pcb</param>
-            <!-- <param name="board_type">super8</param> -->
         </hardware>
     </xacro:unless>
 
