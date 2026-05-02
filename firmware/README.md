@@ -1,11 +1,11 @@
 # Gryphon Firmware
 
-This folder contains the **GRBL v1.0** firmware modified by Angel LM for the Gryphon robotic arm,
+This folder contains the **GRBL v1.0** firmware modified by Angel LM for the Thor robotic arm,
 adapted here for use with the **Gryphon 5-DOF robotic arm**.
 
 ## Source
 - Original: [AngelLM/grbl @ v1.0](https://github.com/AngelLM/grbl/releases/tag/v1.0)
-- Documentation: [gryphon.angel-lm.com/documentation/firmware](http://gryphon.angel-lm.com/documentation/firmware/)
+- Documentation: [thor.angel-lm.com/documentation/firmware](http://thor.angel-lm.com/documentation/firmware/)
 
 ## Uploading to Arduino Mega
 
