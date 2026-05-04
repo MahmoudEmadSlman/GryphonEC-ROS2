@@ -2,21 +2,18 @@
 #include <hardware_interface/types/hardware_interface_type_values.hpp>
 #include <pluginlib/class_list_macros.hpp>
 
-namespace gryphon_controller
-{
+namespace gryphon_controller {
 
-GryphonInterface::GryphonInterface()
-{
-}
+GryphonInterface::GryphonInterface() {}
 
-GryphonInterface::~GryphonInterface()
-{
+GryphonInterface::~GryphonInterface() {
   if (gryphon_.IsOpen()) {
     try {
       gryphon_.Close();
     } catch (...) {
-      RCLCPP_FATAL_STREAM(rclcpp::get_logger("GryphonInterface"),
-        "Something went wrong while closing connection with port " << port_);
+      RCLCPP_FATAL_STREAM(
+          rclcpp::get_logger("GryphonInterface"),
+          "Something went wrong while closing connection with port " << port_);
     }
   }
 }
@@ -24,9 +21,10 @@ GryphonInterface::~GryphonInterface()
 // ---------------------------------------------------------------------------
 // on_init — called once when the hardware plugin is loaded
 // ---------------------------------------------------------------------------
-CallbackReturn GryphonInterface::on_init(const hardware_interface::HardwareInfo &hardware_info)
-{
-  CallbackReturn result = hardware_interface::SystemInterface::on_init(hardware_info);
+CallbackReturn GryphonInterface::on_init(
+    const hardware_interface::HardwareInfo &hardware_info) {
+  CallbackReturn result =
+      hardware_interface::SystemInterface::on_init(hardware_info);
   if (result != CallbackReturn::SUCCESS) {
     return result;
   }
@@ -35,8 +33,9 @@ CallbackReturn GryphonInterface::on_init(const hardware_interface::HardwareInfo 
   try {
     port_ = info_.hardware_parameters.at("port");
   } catch (const std::out_of_range &) {
-    RCLCPP_FATAL(rclcpp::get_logger("GryphonInterface"),
-      "No 'port' parameter provided in URDF hardware tag! Aborting.");
+    RCLCPP_FATAL(
+        rclcpp::get_logger("GryphonInterface"),
+        "No 'port' parameter provided in URDF hardware tag! Aborting.");
     return CallbackReturn::FAILURE;
   }
 
@@ -45,18 +44,22 @@ CallbackReturn GryphonInterface::on_init(const hardware_interface::HardwareInfo 
   const size_t n_joints = info_.joints.size(); // expected: 6
   position_commands_.assign(n_joints, 0.0);
   position_states_.assign(n_joints, 0.0);
-  curr_angles_.assign(8, 0);   // 7 GRBL axes (A B C D X Y Z) + 1 gripper deg
+  curr_angles_.assign(8, 0); // 7 GRBL axes (A B C D X Y Z) + 1 gripper deg
   prev_angles_.assign(8, 0);
 
   RCLCPP_INFO_STREAM(rclcpp::get_logger("GryphonInterface"),
-    "on_init — joints: " << n_joints << ", port: " << port_);
+                     "on_init — joints: " << n_joints << ", port: " << port_);
 
   // Internal ROS2 node for receiving raw hardware commands on /hardware_command
-  command_node_ = rclcpp::Node::make_shared("gryphon_hardware_command_listener");
-  command_subscription_ = command_node_->create_subscription<std_msgs::msg::String>(
-    "/hardware_command", rclcpp::QoS(10),
-    std::bind(&GryphonInterface::commandCallback, this, std::placeholders::_1));
-  RCLCPP_INFO(rclcpp::get_logger("GryphonInterface"), "Subscribed to /hardware_command");
+  command_node_ =
+      rclcpp::Node::make_shared("gryphon_hardware_command_listener");
+  command_subscription_ =
+      command_node_->create_subscription<std_msgs::msg::String>(
+          "/hardware_command", rclcpp::QoS(10),
+          std::bind(&GryphonInterface::commandCallback, this,
+                    std::placeholders::_1));
+  RCLCPP_INFO(rclcpp::get_logger("GryphonInterface"),
+              "Subscribed to /hardware_command");
 
   return CallbackReturn::SUCCESS;
 }
@@ -64,12 +67,13 @@ CallbackReturn GryphonInterface::on_init(const hardware_interface::HardwareInfo 
 // ---------------------------------------------------------------------------
 // export_state_interfaces — expose position states to ros2_control
 // ---------------------------------------------------------------------------
-std::vector<hardware_interface::StateInterface> GryphonInterface::export_state_interfaces()
-{
+std::vector<hardware_interface::StateInterface>
+GryphonInterface::export_state_interfaces() {
   std::vector<hardware_interface::StateInterface> state_interfaces;
   for (size_t i = 0; i < info_.joints.size(); i++) {
-    state_interfaces.emplace_back(
-      info_.joints[i].name, hardware_interface::HW_IF_POSITION, &position_states_[i]);
+    state_interfaces.emplace_back(info_.joints[i].name,
+                                  hardware_interface::HW_IF_POSITION,
+                                  &position_states_[i]);
   }
   return state_interfaces;
 }
@@ -77,12 +81,13 @@ std::vector<hardware_interface::StateInterface> GryphonInterface::export_state_i
 // ---------------------------------------------------------------------------
 // export_command_interfaces — expose position commands from ros2_control
 // ---------------------------------------------------------------------------
-std::vector<hardware_interface::CommandInterface> GryphonInterface::export_command_interfaces()
-{
+std::vector<hardware_interface::CommandInterface>
+GryphonInterface::export_command_interfaces() {
   std::vector<hardware_interface::CommandInterface> command_interfaces;
   for (size_t i = 0; i < info_.joints.size(); i++) {
-    command_interfaces.emplace_back(
-      info_.joints[i].name, hardware_interface::HW_IF_POSITION, &position_commands_[i]);
+    command_interfaces.emplace_back(info_.joints[i].name,
+                                    hardware_interface::HW_IF_POSITION,
+                                    &position_commands_[i]);
   }
   return command_interfaces;
 }
@@ -90,9 +95,10 @@ std::vector<hardware_interface::CommandInterface> GryphonInterface::export_comma
 // ---------------------------------------------------------------------------
 // on_activate — open serial port and wait for GRBL to boot
 // ---------------------------------------------------------------------------
-CallbackReturn GryphonInterface::on_activate(const rclcpp_lifecycle::State & /*previous_state*/)
-{
-  RCLCPP_INFO(rclcpp::get_logger("GryphonInterface"), "Starting Gryphon hardware ...");
+CallbackReturn GryphonInterface::on_activate(
+    const rclcpp_lifecycle::State & /*previous_state*/) {
+  RCLCPP_INFO(rclcpp::get_logger("GryphonInterface"),
+              "Starting Gryphon hardware ...");
 
   // Initialize all joints to zero position
   const size_t n_joints = info_.joints.size();
@@ -108,21 +114,23 @@ CallbackReturn GryphonInterface::on_activate(const rclcpp_lifecycle::State & /*p
     std::this_thread::sleep_for(std::chrono::seconds(2));
   } catch (...) {
     RCLCPP_FATAL_STREAM(rclcpp::get_logger("GryphonInterface"),
-      "Failed to open serial port " << port_);
+                        "Failed to open serial port " << port_);
     return CallbackReturn::FAILURE;
   }
 
   RCLCPP_INFO(rclcpp::get_logger("GryphonInterface"),
-    "Gryphon hardware started — ready to accept commands on port %s", port_.c_str());
+              "Gryphon hardware started — ready to accept commands on port %s",
+              port_.c_str());
   return CallbackReturn::SUCCESS;
 }
 
 // ---------------------------------------------------------------------------
 // on_deactivate — close serial port cleanly
 // ---------------------------------------------------------------------------
-CallbackReturn GryphonInterface::on_deactivate(const rclcpp_lifecycle::State & /*previous_state*/)
-{
-  RCLCPP_INFO(rclcpp::get_logger("GryphonInterface"), "Stopping Gryphon hardware ...");
+CallbackReturn GryphonInterface::on_deactivate(
+    const rclcpp_lifecycle::State & /*previous_state*/) {
+  RCLCPP_INFO(rclcpp::get_logger("GryphonInterface"),
+              "Stopping Gryphon hardware ...");
 
   command_subscription_.reset();
 
@@ -131,11 +139,12 @@ CallbackReturn GryphonInterface::on_deactivate(const rclcpp_lifecycle::State & /
       gryphon_.Close();
     } catch (...) {
       RCLCPP_FATAL_STREAM(rclcpp::get_logger("GryphonInterface"),
-        "Failed to close serial port " << port_);
+                          "Failed to close serial port " << port_);
     }
   }
 
-  RCLCPP_INFO(rclcpp::get_logger("GryphonInterface"), "Gryphon hardware stopped.");
+  RCLCPP_INFO(rclcpp::get_logger("GryphonInterface"),
+              "Gryphon hardware stopped.");
   return CallbackReturn::SUCCESS;
 }
 
@@ -143,13 +152,27 @@ CallbackReturn GryphonInterface::on_deactivate(const rclcpp_lifecycle::State & /
 // read — open-loop: mirror position_commands_ into position_states_
 //         Also drain any external /hardware_command messages.
 // ---------------------------------------------------------------------------
-hardware_interface::return_type GryphonInterface::read(
-  const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
-{
+hardware_interface::return_type
+GryphonInterface::read(const rclcpp::Time & /*time*/,
+                       const rclcpp::Duration & /*period*/) {
   // Open-loop: no position feedback from the Gryphon Arduino.
-  // Reflect last written commands back as the current state so that
-  // ros2_control considers the trajectory executed.
+  // Reflect last written commands back as the current state.
   position_states_ = position_commands_;
+
+  // --- Read and log any responses from the Arduino (e.g., "ok", "error:...")
+  // ---
+  try {
+    if (gryphon_.IsOpen() && gryphon_.IsDataAvailable()) {
+      std::string response;
+      gryphon_.ReadLine(response);
+      if (!response.empty()) {
+        RCLCPP_INFO_STREAM(rclcpp::get_logger("GryphonInterface"),
+                           "← " << response);
+      }
+    }
+  } catch (...) {
+    // Ignore read timeouts/errors
+  }
 
   // Spin the internal node to collect any incoming /hardware_command messages
   rclcpp::spin_some(command_node_);
@@ -161,12 +184,13 @@ hardware_interface::return_type GryphonInterface::read(
       std::string command = command_queue_.front();
       command_queue_.pop();
       RCLCPP_INFO(rclcpp::get_logger("GryphonInterface"),
-        "Executing external command: %s", command.c_str());
+                  "Executing external command: %s", command.c_str());
       try {
         gryphon_.Write(command + "\r\n");
       } catch (const std::exception &e) {
         RCLCPP_ERROR(rclcpp::get_logger("GryphonInterface"),
-          "Failed to send command '%s': %s", command.c_str(), e.what());
+                     "Failed to send command '%s': %s", command.c_str(),
+                     e.what());
       }
     }
   }
@@ -177,12 +201,12 @@ hardware_interface::return_type GryphonInterface::read(
 // ---------------------------------------------------------------------------
 // commandCallback — thread-safe enqueue for /hardware_command topic
 // ---------------------------------------------------------------------------
-void GryphonInterface::commandCallback(const std_msgs::msg::String::SharedPtr msg)
-{
+void GryphonInterface::commandCallback(
+    const std_msgs::msg::String::SharedPtr msg) {
   std::lock_guard<std::mutex> lock(queue_mutex_);
   command_queue_.push(msg->data);
   RCLCPP_DEBUG(rclcpp::get_logger("GryphonInterface"),
-    "Queued external command: %s", msg->data.c_str());
+               "Queued external command: %s", msg->data.c_str());
 }
 
 // ---------------------------------------------------------------------------
@@ -209,16 +233,19 @@ void GryphonInterface::commandCallback(const std_msgs::msg::String::SharedPtr ms
 //     gripper_cmd ≠ 0  → M3 S255  (valve ON, grip)
 //     gripper_cmd = 0  → M5       (valve OFF, release)
 // ---------------------------------------------------------------------------
-hardware_interface::return_type GryphonInterface::write(
-  const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
-{
+hardware_interface::return_type
+GryphonInterface::write(const rclcpp::Time & /*time*/,
+                        const rclcpp::Duration & /*period*/) {
   // --- Arm joint angles (degrees) ---
   // joint_1 (waist)
-  int art1 = -90 + static_cast<int>(((position_commands_[0] + (M_PI / 2)) * 180) / M_PI);
+  int art1 = -90 + static_cast<int>(
+                       ((position_commands_[0] + (M_PI / 2)) * 180) / M_PI);
   // joint_2 (shoulder, dual-motor — B & C must be equal)
-  int art2 = 90 - static_cast<int>(((position_commands_[1] + (M_PI / 2)) * 180) / M_PI);
+  int art2 = 90 - static_cast<int>(
+                      ((position_commands_[1] + (M_PI / 2)) * 180) / M_PI);
   // joint_3 (elbow)
-  int art3 = 90 - static_cast<int>(((position_commands_[2] + (M_PI / 2)) * 180) / M_PI);
+  int art3 = 90 - static_cast<int>(
+                      ((position_commands_[2] + (M_PI / 2)) * 180) / M_PI);
   // joint_4 (wrist pitch)
   int art4 = static_cast<int>((position_commands_[3] * 180) / M_PI);
   // joint_5 (wrist roll, differential)
@@ -227,8 +254,8 @@ hardware_interface::return_type GryphonInterface::write(
   // Differential wrist: GRBL Y & Z
   // art6 = 0 (Gryphon has no 6th wrist joint)
   const int art6 = 0;
-  int m_art5 = art5 + 2 * art6;   // GRBL Y
-  int m_art6 = -art5 + 2 * art6;  // GRBL Z
+  int m_art5 = art5 + 2 * art6;  // GRBL Y
+  int m_art6 = -art5 + 2 * art6; // GRBL Z
 
   // Pneumatic gripper: binary valve control (ON / OFF)
   // Any non-zero gripper command → valve ON (grip)
@@ -246,21 +273,21 @@ hardware_interface::return_type GryphonInterface::write(
   }
 
   // --- Send arm move command if any motor axis changed ---
-  bool arm_changed =
-    curr_angles_[0] != prev_angles_[0] ||
-    curr_angles_[1] != prev_angles_[1] ||
-    curr_angles_[3] != prev_angles_[3] ||
-    curr_angles_[4] != prev_angles_[4] ||
-    curr_angles_[5] != prev_angles_[5] ||
-    curr_angles_[6] != prev_angles_[6];
+  bool arm_changed = curr_angles_[0] != prev_angles_[0] ||
+                     curr_angles_[1] != prev_angles_[1] ||
+                     curr_angles_[3] != prev_angles_[3] ||
+                     curr_angles_[4] != prev_angles_[4] ||
+                     curr_angles_[5] != prev_angles_[5] ||
+                     curr_angles_[6] != prev_angles_[6];
 
   if (arm_changed) {
     std::string msg = "G0 ";
-    msg += "A" + std::to_string(art1)  + " ";
-    msg += "B" + std::to_string(art2)  + " ";
-    msg += "C" + std::to_string(art2)  + " ";  // C must equal B (dual-motor shoulder)
-    msg += "D" + std::to_string(art3)  + " ";
-    msg += "X" + std::to_string(art4)  + " ";
+    msg += "A" + std::to_string(art1) + " ";
+    msg += "B" + std::to_string(art2) + " ";
+    msg += "C" + std::to_string(art2) +
+           " "; // C must equal B (dual-motor shoulder)
+    msg += "D" + std::to_string(art3) + " ";
+    msg += "X" + std::to_string(art4) + " ";
     msg += "Y" + std::to_string(m_art5) + " ";
     msg += "Z" + std::to_string(m_art6) + "\r\n";
 
@@ -269,7 +296,7 @@ hardware_interface::return_type GryphonInterface::write(
       gryphon_.Write(msg);
     } catch (...) {
       RCLCPP_ERROR_STREAM(rclcpp::get_logger("GryphonInterface"),
-        "Failed to send arm command: " << msg);
+                          "Failed to send arm command: " << msg);
       return hardware_interface::return_type::ERROR;
     }
   }
@@ -280,17 +307,18 @@ hardware_interface::return_type GryphonInterface::write(
   if (gripper_changed) {
     std::string msg;
     if (valve_state == 1) {
-      msg = "M3 S255\r\n";  // Valve ON → gripper closes
+      msg = "M3 S255\r\n"; // Valve ON → gripper closes
     } else {
-      msg = "M5\r\n";       // Valve OFF → gripper opens
+      msg = "M5\r\n"; // Valve OFF → gripper opens
     }
     try {
       RCLCPP_INFO_STREAM(rclcpp::get_logger("GryphonInterface"),
-        "→ Valve " << (valve_state ? "ON" : "OFF") << " : " << msg);
+                         "→ Valve " << (valve_state ? "ON" : "OFF") << " : "
+                                    << msg);
       gryphon_.Write(msg);
     } catch (...) {
       RCLCPP_ERROR_STREAM(rclcpp::get_logger("GryphonInterface"),
-        "Failed to send valve command: " << msg);
+                          "Failed to send valve command: " << msg);
       return hardware_interface::return_type::ERROR;
     }
   }
@@ -301,4 +329,5 @@ hardware_interface::return_type GryphonInterface::write(
 
 } // namespace gryphon_controller
 
-PLUGINLIB_EXPORT_CLASS(gryphon_controller::GryphonInterface, hardware_interface::SystemInterface)
+PLUGINLIB_EXPORT_CLASS(gryphon_controller::GryphonInterface,
+                       hardware_interface::SystemInterface)
