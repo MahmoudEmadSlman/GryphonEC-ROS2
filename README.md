@@ -23,10 +23,15 @@
 
 - `ws_gryphon/src` — **ROS2 Packages for Gryphon**  
   All packages and configuration needed to integrate the Gryphon arm with ROS2 Humble LTS and MoveIt2, enabling motion planning, simulation, and real hardware control via RViz.
-
+  <p align="center">
+  <img alt="Rviz & Gazebo" src="Docs/Media/gryphon_rviz_gazebo.gif" />
+  </p>
 - `/asgard` — **Asgard: Web GUI**  
   A React-based web application for visual and intuitive control of the Gryphon arm — no command-line interaction needed.  
   Control the robot using joint movements (forward kinematics) or target coordinates (inverse kinematics), save poses, and create motion programs.
+  <p align="center">
+  <img alt="Asgard Web GUI" src="Docs/Media/gryphon_webGUI_gazebo.gif" />
+  </p>
 
 - `/firmware` — **Arduino Mega Firmware (GRBL v1.0)**  
   Modified GRBL firmware for the Arduino Mega that controls the Gryphon's stepper motors via G-code over serial (115200 baud).  
