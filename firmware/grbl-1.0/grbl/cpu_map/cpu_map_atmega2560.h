@@ -77,7 +77,7 @@
 #define LIMIT_PIN       PINL
 #define A_LIMIT_BIT     7 // MEGA2560 Digital Pin 42
 #define B_LIMIT_BIT     5 // MEGA2560 Digital Pin 44
-#define C_LIMIT_BIT     5 // MEGA2560 Digital Pin 44 //3 // MEGA2560 Digital Pin 46
+#define C_LIMIT_BIT     3 // MEGA2560 Digital Pin 46
 #define D_LIMIT_BIT     1 // MEGA2560 Digital Pin 48
 #define E_LIMIT_BIT     0 // MEGA2560 Digital Pin 49
 #define F_LIMIT_BIT     2 // MEGA2560 Digital Pin 47
