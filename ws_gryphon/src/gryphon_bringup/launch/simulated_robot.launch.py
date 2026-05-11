@@ -98,15 +98,16 @@ def generate_launch_description():
     )
 
     spawn_cube = Node(
-        package="gazebo_ros",
-        executable="spawn_entity.py",
+        package="ros_gz_sim",
+        executable="create",
         arguments=[
-            "-entity", "cube",
+            "-name", "cube",
             "-file", os.path.join(get_package_share_directory("gryphon_urdf"), "urdf", "cube.urdf"),
             "-x", "0.0",
             "-y", "0.3",
-            "-z", "0.02"
-        ]
+            "-z", "0.02",
+        ],
+        output="screen",
     )
 
     return LaunchDescription([

@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="gryphon_arm">
+
+    <!-- Ignition Gazebo: gz_ros2_control plugin -->
     <gazebo>
-        <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+        <plugin filename="libign_ros2_control-system.so" name="ign_ros2_control::IgnitionROS2ControlPlugin">
             <robot_param>robot_description</robot_param>
             <robot_param_node>robot_state_publisher</robot_param_node>
             <parameters>$(find gryphon_controller)/config/gryphon_controllers.yaml</parameters>
@@ -20,7 +22,6 @@
         <minDepth>0.002</minDepth>
         <maxVel>0.0</maxVel>
         <selfCollide>false</selfCollide>
-        <material>Gazebo/DarkGrey</material>
     </gazebo>
 
     <!-- Left Finger -->
@@ -32,7 +33,6 @@
         <minDepth>0.002</minDepth>
         <maxVel>0.0</maxVel>
         <selfCollide>false</selfCollide>
-        <material>Gazebo/DarkGrey</material>
     </gazebo>
 
     <!-- Gripper base (link_5) also benefits from contact tuning -->
