@@ -21,20 +21,19 @@ using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface
 /**
  * Gryphon Hardware Interface — ros2_control plugin
  *
- * Controls the Gryphon 5-DOF robotic arm via GRBL firmware running on an Arduino Mega.
- * Protocol: GRBL G-code over serial @ 115200 baud (same as Gryphon ControlPCB).
+ * Controls the Gryphon 5-DOF robotic arm via custom Arduino firmware.
+ * Protocol: Text commands over serial @ 115200 baud.
  *
  * Joint mapping (6 joints: joint_1..5 + gripper):
- *   joint_1  → GRBL axis A  (waist)
- *   joint_2  → GRBL axis B  (shoulder, motor 2)
- *   joint_2  → GRBL axis C  (shoulder mirror, motor 3 — must equal B)
- *   joint_3  → GRBL axis D  (elbow)
- *   joint_4  → GRBL axis X  (wrist pitch)
- *   joint_5  → GRBL axes Y+Z (differential wrist roll — 2 motors)
- *   gripper  → GRBL M3 S255 / M5  (pneumatic valve ON/OFF)
+ *   joint_1  → Motor 1  (waist)
+ *   joint_2  → Motor 2  (shoulder)
+ *   joint_3  → Motor 3  (elbow)
+ *   joint_4  → Motor 4  (differential wrist pitch — handled by Arduino)
+ *   joint_5  → Motor 5  (differential wrist roll  — handled by Arduino)
+ *   gripper  → Relay on Pin 42  (ON/OFF)
  *
- * Open-loop: no position feedback from Arduino.
- * Position states mirror commands after each write.
+ * Closed-loop: Real position feedback from 5× HEDS-9100 encoders.
+ * Arduino sends "POS:<d1>,<d2>,<d3>,<d4>,<d5>" every 20ms.
  */
 class GryphonInterface : public hardware_interface::SystemInterface
 {
@@ -55,13 +54,20 @@ public:
 
 private:
   LibSerial::SerialPort gryphon_;   ///< Serial connection to Arduino Mega
-  std::string port_;             ///< Serial port (e.g. /dev/ttyACM0)
+  std::string port_;                ///< Serial port (e.g. /dev/ttyACM0)
 
-  // 6 joints: joint_1, joint_2, joint_3, joint_4, joint_5, gripper
+  // 6 joints: joint_1..5 + gripper
   std::vector<double> position_commands_;  ///< Commands from ros2_control (radians)
-  std::vector<int>    curr_angles_;        ///< Current GRBL angles (degrees, 7 motors + 1 gripper)
-  std::vector<int>    prev_angles_;        ///< Previous GRBL angles (for change detection)
-  std::vector<double> position_states_;   ///< State feedback (mirrors commands — open-loop)
+  std::vector<double> position_states_;    ///< Actual feedback from encoders (radians)
+
+  // Previous command cache (to detect changes and reduce serial traffic)
+  std::vector<double> prev_commands_;
+
+  // Previous gripper state
+  int prev_gripper_state_;
+
+  // Serial receive buffer (accumulate chars until newline)
+  std::string serial_rx_buf_;
 
   // Thread-safe queue for external hardware commands via /hardware_command topic
   rclcpp::Node::SharedPtr command_node_;
@@ -70,6 +76,15 @@ private:
   std::mutex queue_mutex_;
 
   void commandCallback(const std_msgs::msg::String::SharedPtr msg);
+
+  /// Parse a "POS:<d1>,<d2>,<d3>,<d4>,<d5>" line and update position_states_
+  void parsePositionReport(const std::string &line);
+
+  /// Process all complete lines waiting in the serial buffer
+  void drainSerial();
+
+  /// Send a raw string over serial
+  void sendCommand(const std::string &cmd);
 };
 
 } // namespace gryphon_controller

@@ -1,66 +1,103 @@
 # Gryphon Firmware
 
-This folder contains the **GRBL v1.0** firmware modified by Angel LM for the Thor robotic arm,
-adapted here for use with the **Gryphon 5-DOF robotic arm**.
+Custom Arduino Mega firmware for the **Gryphon 5-DOF robotic arm** with **closed-loop encoder feedback**.
 
-## Source
-- Original: [AngelLM/grbl @ v1.0](https://github.com/AngelLM/grbl/releases/tag/v1.0)
-- Documentation: [thor.angel-lm.com/documentation/firmware](http://thor.angel-lm.com/documentation/firmware/)
+Replaces the old GRBL-based firmware with a simpler, purpose-built solution featuring:
+- 5× TB6600 stepper motor drivers (PUL/DIR control)
+- 5× HEDS-9100 incremental encoders (500 PPR, x2 quadrature decoding)
+- Differential wrist (Motors 4 & 5)
+- Stall-detection homing with configurable stall angles
+- Relay-based gripper (ON/OFF)
+- Per-encoder and per-motor multipliers for calibration
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `gryphon_arduino.ino` | Main sketch — serial protocol, command parser, position reporting |
+| `config.h` | All pin assignments, encoder PPR, multipliers, homing params |
+| `encoders.h` | Quadrature encoder reading via hardware interrupts |
+| `steppers.h` | Non-blocking TB6600 stepper control |
+| `homing.h` | Stall-detection homing with return-to-zero sequence |
+
+## Pin Mapping
+
+### TB6600 Drivers
+
+| Joint | PUL | DIR |
+|-------|-----|-----|
+| 1 (Waist) | 27 | 28 |
+| 2 (Shoulder) | 29 | 30 |
+| 3 (Elbow) | 31 | 32 |
+| 4 (Diff Wrist) | 33 | 34 |
+| 5 (Diff Wrist) | 35 | 36 |
+
+### Encoders (HEDS-9100 A00, 500 PPR)
+
+| Encoder | Ch A (interrupt) | Ch B |
+|---------|-----------------|------|
+| 1 | 2 (INT4) | 22 |
+| 2 | 3 (INT5) | 23 |
+| 3 | 18 (INT3) | 24 |
+| 4 | 19 (INT2) | 25 |
+| 5 | 20 (INT1) | 26 |
+
+### Other
+
+| Function | Pin |
+|----------|-----|
+| Gripper Relay | 42 |
+| Emergency Stop | 43 |
+
+## Serial Protocol (115200 baud)
+
+### Commands (ROS2 → Arduino)
+
+| Command | Description |
+|---------|-------------|
+| `MOV:<d1>,<d2>,<d3>,<d4>,<d5>` | Move joints to target (degrees) |
+| `HOM:ALL` | Home all motors (sequence: 1→2→3→4+5) |
+| `HOM:<id>` | Home single motor (0–4) |
+| `STP` | Emergency stop |
+| `RST` | Reset all encoder/step counters |
+| `GRP:<0\|1>` | Gripper relay OFF/ON |
+| `SPD:<id>,<delay_us>` | Set step speed for a motor |
+| `MUL:E<id>,<val>` | Set encoder multiplier at runtime |
+| `MUL:M<id>,<val>` | Set motor multiplier at runtime |
+| `GET` | Request position report |
+
+### Responses (Arduino → ROS2)
+
+| Response | Description |
+|----------|-------------|
+| `POS:<d1>,<d2>,<d3>,<d4>,<d5>` | Joint positions in degrees (sent every 20ms) |
+| `OK` | Command acknowledged |
+| `HMD:<id>` / `HMD:ALL` | Homing complete |
+| `ERR:<msg>` | Error message |
+| `RDY` | Arduino boot complete |
 
 ## Uploading to Arduino Mega
 
 1. Open **Arduino IDE**
-2. Go to `Sketch > Include Library > Add .ZIP Library`
-   - Navigate to the file: `firmware/grbl_library.zip` and press **Open** 
-3. Open the upload sketch:
-   - Go to `File > Examples > grbl > grblUpload`
-4. Select `Tools > Board > Arduino Mega or Mega 2560`
-5. Select correct port under `Tools > Port`
-6. Press **Upload**
+2. Open `firmware/gryphon_arduino/gryphon_arduino.ino`
+3. Select `Tools > Board > Arduino Mega or Mega 2560`
+4. Select correct port under `Tools > Port`
+5. Press **Upload**
 
-> **Note:** If you get a "Library already exists" error, you can skip step 2. If you see "NoSuchFileException", make sure you are selecting the `.zip` file itself, not the folder.
+## Calibration
 
-## GRBL Axis → Gryphon Joint Mapping
+1. Upload the firmware
+2. Open Serial Monitor at **115200 baud**
+3. Manually rotate each joint exactly **90°**
+4. Read the `POS:` value for that joint
+5. Calculate multiplier: `multiplier = 90.0 / reported_value`
+6. Set via serial: `MUL:E0,<multiplier>` (for encoder 0)
+7. Once confirmed, update the values in `config.h` and re-upload
 
-| GRBL Axis | `defaults_gryphon.h` | Gryphon Joint | Motor |
-|-----------|-------------------|---------------|-------|
-| `A`       | `A_STEPS = 44.5`  | Joint 1 (Waist) | Motor 1 |
-| `B`       | `B_STEPS = 270.0` | Joint 2 (Shoulder) | Motor 2 |
-| `C`       | `C_STEPS = 270.0` | Joint 2 (Shoulder mirror) | Motor 3 — **must equal B** |
-| `D`       | `D_STEPS = 265.0` | Joint 3 (Elbow) | Motor 4 |
-| `X`       | `E_STEPS = 20.0`  | Joint 4 (Wrist pitch) | Motor 5 |
-| `Y`       | `F_STEPS = 250.0` | Joint 5 (Wrist roll +) | Motor 6 — differential |
-| `Z`       | `G_STEPS = 250.0` | Joint 5 (Wrist roll −) | Motor 7 — differential |
+## Homing Sequence
 
-> **Note:** B and C must always be sent the same value (dual-motor shoulder joint).
-> Y and Z implement a differential wrist where:
-> - `Y = art5 + 2*art6`
-> - `Z = -art5 + 2*art6`
+Each motor homes individually (Motor 1 → 2 → 3 → 4+5 together):
 
-## Move Command Format
-
-```
-G0 A<deg> B<deg> C<deg> D<deg> X<deg> Y<deg> Z<deg>\r\n
-```
-
-## Tool (Pneumatic Gripper) Command
-
-```
-M3 S255   ← Valve ON (gripper closes)
-M5        ← Valve OFF (gripper opens)
-```
-
-## Configuration
-
-After flashing, open Serial Monitor at **115200 baud** and send `$$` to verify settings.
-To reset to defaults: `$RST=$`
-
-Key settings for Gryphon:
-- `$22=1` — Homing enabled
-- `$100=44.5` — A steps/mm
-- `$101=270.0` — B steps/mm
-- `$102=270.0` — C steps/mm
-- `$103=265.0` — D steps/mm
-- `$104=20.0` — X (E) steps/mm
-- `$105=250.0` — Y (F) steps/mm
-- `$106=250.0` — Z (G) steps/mm
+1. **Find stall**: Motor moves slowly until encoder stops changing (mechanical stop)
+2. **Set angle**: Encoder counter is set to the configured stall angle (e.g., −90°)
+3. **Return to zero**: Motor moves to 0° using encoder feedback

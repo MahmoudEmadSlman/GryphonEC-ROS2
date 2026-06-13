@@ -33,9 +33,9 @@
   <img alt="Asgard Web GUI" src="Docs/Media/gryphon_webGUI_gazebo.gif" />
   </p>
 
-- `/firmware` — **Arduino Mega Firmware (GRBL v1.0)**  
-  Modified GRBL firmware for the Arduino Mega that controls the Gryphon's stepper motors via G-code over serial (115200 baud).  
-  Includes axis mapping, default step/mm calibration, and upload instructions.
+- `/firmware` — **Arduino Mega Firmware (Custom)**  
+  Custom Arduino firmware with closed-loop encoder feedback, replacing the old GRBL-based system.  
+  Controls 5× TB6600 stepper drivers, reads 5× HEDS-9100 incremental encoders, and supports stall-detection homing and a relay-based gripper.
 
 ---
 
@@ -45,9 +45,12 @@ The Gryphon is a 5-DOF robotic arm controlled via **Arduino Mega** over serial c
 This project adapts the arm for full ROS2 integration including simulation and real hardware execution.
 
 **Hardware stack:**
-- Gryphon robotic arm
-- Arduino Mega (GRBL v1.0 firmware) — serial interface for stepper motor control
-- Pneumatic gripper (compressor + solenoid valve) — binary open/close via GRBL M3/M5
+- Gryphon robotic arm (5-DOF + gripper)
+- Arduino Mega — custom firmware with encoder feedback @ 115200 baud
+- 5× TB6600 stepper motor drivers
+- 5× HEDS-9100 incremental encoders (500 PPR)
+- Differential wrist (motors 4 & 5)
+- Relay-based gripper (binary open/close)
 
 ---
 
@@ -66,6 +69,9 @@ This project adapts the arm for full ROS2 integration including simulation and r
 - [x] RViz & Gazebo simulation
 - [x] Asgard web GUI integration
 - [x] Arduino hardware interface (ros2_control)
+- [x] Closed-loop encoder feedback (HEDS-9100)
+- [x] Stall-detection homing
+- [ ] PID closed-loop control
 - [ ] Dockerize the project & deploy to server
 
 ---
