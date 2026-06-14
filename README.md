@@ -34,7 +34,7 @@
   </p>
 
 - `/firmware` — **Arduino Mega Firmware (Custom)**  
-  Custom Arduino firmware with closed-loop encoder feedback, replacing the old GRBL-based system.  
+  Custom Arduino firmware with closed-loop encoder feedback.
   Controls 5× TB6600 stepper drivers, reads 5× HEDS-9100 incremental encoders, and supports stall-detection homing and a relay-based gripper.
 
 ---
@@ -50,7 +50,7 @@ This project adapts the arm for full ROS2 integration including simulation and r
 - 5× TB6600 stepper motor drivers
 - 5× HEDS-9100 incremental encoders (500 PPR)
 - Differential wrist (motors 4 & 5)
-- Relay-based gripper (binary open/close)
+- Pneumatic Gripper (binary open/close)
 
 ---
 
