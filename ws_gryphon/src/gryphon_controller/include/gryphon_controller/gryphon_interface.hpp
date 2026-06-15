@@ -12,6 +12,9 @@
 #include <string>
 #include <mutex>
 #include <queue>
+#include <memory>
+#include <thread>
+#include <atomic>
 
 namespace gryphon_controller
 {
@@ -24,16 +27,18 @@ using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface
  * Controls the Gryphon 5-DOF robotic arm via custom Arduino firmware.
  * Protocol: Text commands over serial @ 115200 baud.
  *
+ * Open-loop stepper control — no encoders.
+ * Position feedback is derived from step counters in the Arduino firmware.
+ *
  * Joint mapping (6 joints: joint_1..5 + gripper):
  *   joint_1  → Motor 1  (waist)
  *   joint_2  → Motor 2  (shoulder)
  *   joint_3  → Motor 3  (elbow)
- *   joint_4  → Motor 4  (differential wrist pitch — handled by Arduino)
- *   joint_5  → Motor 5  (differential wrist roll  — handled by Arduino)
+ *   joint_4  → J4: both wrist motors same direction
+ *   joint_5  → J5: wrist motors in opposite directions
  *   gripper  → Relay on Pin 42  (ON/OFF)
  *
- * Closed-loop: Real position feedback from 5× HEDS-9100 encoders.
- * Arduino sends "POS:<d1>,<d2>,<d3>,<d4>,<d5>" every 20ms.
+ * Arduino sends "POS:<d1>,<d2>,<d3>,<d4>,<d5>" every 20ms (from step counters).
  */
 class GryphonInterface : public hardware_interface::SystemInterface
 {
@@ -53,12 +58,16 @@ public:
   virtual hardware_interface::return_type write(const rclcpp::Time &time, const rclcpp::Duration &period) override;
 
 private:
-  LibSerial::SerialPort gryphon_;   ///< Serial connection to Arduino Mega
+  /// Serial connection to Arduino Mega (unique_ptr so we can destroy it
+  /// safely inside a try-catch, preventing LibSerial's destructor from
+  /// propagating exceptions and crashing the process).
+  std::unique_ptr<LibSerial::SerialPort> gryphon_;
   std::string port_;                ///< Serial port (e.g. /dev/ttyACM0)
+  std::atomic<bool> arduino_connected_{false};  ///< true when serial is open & ready
 
   // 6 joints: joint_1..5 + gripper
   std::vector<double> position_commands_;  ///< Commands from ros2_control (radians)
-  std::vector<double> position_states_;    ///< Actual feedback from encoders (radians)
+  std::vector<double> position_states_;    ///< Estimated position from Arduino step counters (radians)
 
   // Previous command cache (to detect changes and reduce serial traffic)
   std::vector<double> prev_commands_;

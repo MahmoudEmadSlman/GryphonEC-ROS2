@@ -1,22 +1,22 @@
 #include "gryphon_controller/gryphon_interface.hpp"
+#include <cmath>
 #include <hardware_interface/types/hardware_interface_type_values.hpp>
 #include <pluginlib/class_list_macros.hpp>
 #include <sstream>
-#include <cmath>
 
 namespace gryphon_controller {
 
 GryphonInterface::GryphonInterface() : prev_gripper_state_(-1) {}
 
 GryphonInterface::~GryphonInterface() {
-  if (gryphon_.IsOpen()) {
-    try {
-      gryphon_.Close();
-    } catch (...) {
-      RCLCPP_FATAL_STREAM(
-          rclcpp::get_logger("GryphonInterface"),
-          "Something went wrong while closing connection with port " << port_);
-    }
+  // Destroy the SerialPort object inside a try-catch.
+  // LibSerial's ~SerialPort() can throw if the port is in a broken state
+  // (e.g. Arduino unplugged during shutdown). Destroying via reset() inside
+  // try-catch prevents std::terminate from being called.
+  try {
+    gryphon_.reset();
+  } catch (...) {
+    // Swallow — we are in a destructor, nothing else to do.
   }
 }
 
@@ -108,23 +108,59 @@ CallbackReturn GryphonInterface::on_activate(
   prev_commands_.assign(n_joints, 0.0);
   prev_gripper_state_ = -1;
   serial_rx_buf_.clear();
+  arduino_connected_ = false;
 
-  try {
-    gryphon_.Open(port_);
-    gryphon_.SetBaudRate(LibSerial::BaudRate::BAUD_115200);
-    // Wait for Arduino to reset and send "RDY"
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-  } catch (...) {
-    RCLCPP_FATAL_STREAM(rclcpp::get_logger("GryphonInterface"),
-                        "Failed to open serial port " << port_);
-    return CallbackReturn::FAILURE;
+  // Try to open the serial port with retries.
+  // If the Arduino is not connected, we log an error but do NOT return FAILURE.
+  // The system will keep running (move_group, rviz) and the interface will
+  // silently skip read/write until the port becomes available.
+  constexpr int MAX_RETRIES = 3;
+  for (int attempt = 1; attempt <= MAX_RETRIES; ++attempt) {
+    try {
+      gryphon_ = std::make_unique<LibSerial::SerialPort>();
+      gryphon_->Open(port_);
+      gryphon_->SetBaudRate(LibSerial::BaudRate::BAUD_115200);
+      // Wait for Arduino to reset and send "RDY"
+      std::this_thread::sleep_for(std::chrono::seconds(2));
+      drainSerial();
+      arduino_connected_ = true;
+      RCLCPP_INFO(rclcpp::get_logger("GryphonInterface"),
+                  "Gryphon hardware started — ready on port %s", port_.c_str());
+      return CallbackReturn::SUCCESS;
+    } catch (const std::exception &e) {
+      RCLCPP_WARN_STREAM(rclcpp::get_logger("GryphonInterface"),
+                         "Attempt " << attempt << "/" << MAX_RETRIES
+                                    << " — failed to open " << port_ << ": "
+                                    << e.what());
+      // Safely destroy the half-open port object
+      try {
+        gryphon_.reset();
+      } catch (...) {
+      }
+      if (attempt < MAX_RETRIES) {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+      }
+    } catch (...) {
+      RCLCPP_WARN_STREAM(rclcpp::get_logger("GryphonInterface"),
+                         "Attempt " << attempt << "/" << MAX_RETRIES
+                                    << " — unknown error opening " << port_);
+      try {
+        gryphon_.reset();
+      } catch (...) {
+      }
+      if (attempt < MAX_RETRIES) {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+      }
+    }
   }
 
-  // Drain any boot messages
-  drainSerial();
-
-  RCLCPP_INFO(rclcpp::get_logger("GryphonInterface"),
-              "Gryphon hardware started — ready on port %s", port_.c_str());
+  RCLCPP_ERROR_STREAM(rclcpp::get_logger("GryphonInterface"),
+                      "Arduino not reachable on "
+                          << port_ << " after " << MAX_RETRIES
+                          << " attempts."
+                             " Running WITHOUT hardware (sim-only mode)."
+                             " Plug in the Arduino and restart.");
+  // Return SUCCESS so move_group and rviz keep running.
   return CallbackReturn::SUCCESS;
 }
 
@@ -137,16 +173,26 @@ CallbackReturn GryphonInterface::on_deactivate(
               "Stopping Gryphon hardware ...");
 
   command_subscription_.reset();
+  arduino_connected_ = false;
 
-  if (gryphon_.IsOpen()) {
+  if (gryphon_ && gryphon_->IsOpen()) {
     try {
-      // Send emergency stop before closing
       sendCommand("STP");
-      gryphon_.Close();
+      gryphon_->Close();
+    } catch (const std::exception &e) {
+      RCLCPP_WARN_STREAM(rclcpp::get_logger("GryphonInterface"),
+                         "Exception closing port (ignored): " << e.what());
     } catch (...) {
-      RCLCPP_FATAL_STREAM(rclcpp::get_logger("GryphonInterface"),
-                          "Failed to close serial port " << port_);
+      RCLCPP_WARN(rclcpp::get_logger("GryphonInterface"),
+                  "Unknown exception closing port (ignored).");
     }
+  }
+
+  // Destroy the port object now, before the destructor, so LibSerial's
+  // ~SerialPort() runs here while we can still catch its exceptions.
+  try {
+    gryphon_.reset();
+  } catch (...) {
   }
 
   RCLCPP_INFO(rclcpp::get_logger("GryphonInterface"),
@@ -160,6 +206,9 @@ CallbackReturn GryphonInterface::on_deactivate(
 hardware_interface::return_type
 GryphonInterface::read(const rclcpp::Time & /*time*/,
                        const rclcpp::Duration & /*period*/) {
+  if (!arduino_connected_)
+    return hardware_interface::return_type::OK;
+
   // Read and parse all available serial data (POS reports, OK, ERR, etc.)
   drainSerial();
 
@@ -183,23 +232,18 @@ GryphonInterface::read(const rclcpp::Time & /*time*/,
 
 // ---------------------------------------------------------------------------
 // write — convert ros2_control joint positions (rad) → Arduino MOV command
-//
-// Joint index mapping (matches URDF joint order):
-//   [0] joint_1  → Motor 1  (waist)
-//   [1] joint_2  → Motor 2  (shoulder)
-//   [2] joint_3  → Motor 3  (elbow)
-//   [3] joint_4  → Motor 4  (diff wrist pitch — Arduino handles kinematics)
-//   [4] joint_5  → Motor 5  (diff wrist roll  — Arduino handles kinematics)
-//   [5] gripper  → Relay    (GRP:0 / GRP:1)
 // ---------------------------------------------------------------------------
 hardware_interface::return_type
 GryphonInterface::write(const rclcpp::Time & /*time*/,
                         const rclcpp::Duration & /*period*/) {
+  if (!arduino_connected_)
+    return hardware_interface::return_type::OK;
 
-  // --- Check if arm joints changed ---
+  // --- Check if arm joints changed beyond threshold ---
+  // 0.01 rad ≈ 0.57° — below this, open-loop steppers can't move meaningfully
   bool arm_changed = false;
   for (int i = 0; i < 5; i++) {
-    if (std::abs(position_commands_[i] - prev_commands_[i]) > 1e-4) {
+    if (std::abs(position_commands_[i] - prev_commands_[i]) > 0.01) {
       arm_changed = true;
       break;
     }
@@ -214,7 +258,8 @@ GryphonInterface::write(const rclcpp::Time & /*time*/,
       oss << std::fixed;
       oss.precision(2);
       oss << deg;
-      if (i < 4) oss << ",";
+      if (i < 4)
+        oss << ",";
     }
 
     try {
@@ -232,15 +277,22 @@ GryphonInterface::write(const rclcpp::Time & /*time*/,
     }
   }
 
-  // --- Gripper (relay ON/OFF) ---
-  int gripper_state = (std::abs(position_commands_[5]) > 0.01) ? 1 : 0;
+  // --- Gripper (pneumatic valve relay) ---
+  // Joint range in RViz: -43° to 29°  →  midpoint = -7° = -0.1222 rad
+  // position >= midpoint  →  past halfway toward closed  →  valve ON  (GRP:100)
+  // position <  midpoint  →  open side                  →  valve OFF (GRP:0)
+  constexpr double GRIPPER_MID_RAD = -7.0 * M_PI / 180.0; // -0.1222 rad
+  int gripper_state = (position_commands_[5] >= GRIPPER_MID_RAD) ? 1 : 0;
 
   if (gripper_state != prev_gripper_state_) {
-    std::string msg = "GRP:" + std::to_string(gripper_state);
+    // Send 100 when closed (>= threshold in Arduino config.h = 50), 0 when open
+    std::string msg = "GRP:" + std::string(gripper_state ? "100" : "0");
     try {
       RCLCPP_INFO_STREAM(rclcpp::get_logger("GryphonInterface"),
-                         "→ Gripper " << (gripper_state ? "ON" : "OFF")
-                                      << " : " << msg);
+                         "→ Gripper " << (gripper_state ? "CLOSED" : "OPEN")
+                                      << " (pos=" << std::fixed
+                                      << position_commands_[5] * 180.0 / M_PI
+                                      << "°, mid=-7°) : " << msg);
       sendCommand(msg);
     } catch (...) {
       RCLCPP_ERROR(rclcpp::get_logger("GryphonInterface"),
@@ -248,6 +300,13 @@ GryphonInterface::write(const rclcpp::Time & /*time*/,
       return hardware_interface::return_type::ERROR;
     }
     prev_gripper_state_ = gripper_state;
+  }
+
+  // --- Open-loop fake feedback ---
+  // No encoder feedback from Arduino. Mirror commands → states so that
+  // RViz, joint_state_broadcaster, and MoveIt all see the robot moving.
+  for (size_t i = 0; i < position_states_.size(); i++) {
+    position_states_[i] = position_commands_[i];
   }
 
   return hardware_interface::return_type::OK;
@@ -269,7 +328,8 @@ void GryphonInterface::commandCallback(
 // ---------------------------------------------------------------------------
 void GryphonInterface::parsePositionReport(const std::string &line) {
   // Expected format: "POS:12.34,56.78,90.12,34.56,78.90"
-  if (line.size() < 5) return;
+  if (line.size() < 5)
+    return;
 
   std::string data = line.substr(4); // skip "POS:"
   std::istringstream iss(data);
@@ -297,18 +357,22 @@ void GryphonInterface::parsePositionReport(const std::string &line) {
 // drainSerial — read all available bytes, split into lines, process each
 // ---------------------------------------------------------------------------
 void GryphonInterface::drainSerial() {
+  if (!gryphon_ || !gryphon_->IsOpen())
+    return;
   try {
-    while (gryphon_.IsOpen() && gryphon_.IsDataAvailable()) {
+    while (gryphon_->IsDataAvailable()) {
       char c;
-      gryphon_.ReadByte(c, 0); // non-blocking read
+      gryphon_->ReadByte(c, 0); // non-blocking read
 
       if (c == '\n' || c == '\r') {
         if (!serial_rx_buf_.empty()) {
-          // Process the complete line
           if (serial_rx_buf_.rfind("POS:", 0) == 0) {
             parsePositionReport(serial_rx_buf_);
+          } else if (serial_rx_buf_.rfind("WRN:", 0) == 0) {
+            RCLCPP_WARN_STREAM(rclcpp::get_logger("GryphonInterface"),
+                               "####WRNNG#### " << serial_rx_buf_.substr(4));
           } else if (serial_rx_buf_ == "OK") {
-            // Command acknowledged — no action needed
+            // acknowledged
           } else if (serial_rx_buf_.rfind("ERR:", 0) == 0) {
             RCLCPP_WARN_STREAM(rclcpp::get_logger("GryphonInterface"),
                                "← ERROR: " << serial_rx_buf_);
@@ -332,7 +396,7 @@ void GryphonInterface::drainSerial() {
       }
     }
   } catch (...) {
-    // Ignore read errors (timeout, etc.)
+    // Ignore read errors (timeout, disconnect, etc.)
   }
 }
 
@@ -340,8 +404,8 @@ void GryphonInterface::drainSerial() {
 // sendCommand — write a command string + newline to serial
 // ---------------------------------------------------------------------------
 void GryphonInterface::sendCommand(const std::string &cmd) {
-  if (gryphon_.IsOpen()) {
-    gryphon_.Write(cmd + "\n");
+  if (gryphon_ && gryphon_->IsOpen()) {
+    gryphon_->Write(cmd + "\n");
   }
 }
 

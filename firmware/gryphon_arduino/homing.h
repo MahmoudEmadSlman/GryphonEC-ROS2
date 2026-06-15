@@ -1,210 +1,155 @@
 // =============================================================================
-// homing.h — Homing via Stall Detection with Return-to-Zero
+// homing.h — Current-Sensor Stall-Based Auto Homing
 // =============================================================================
-// Sequence for each motor:
-//   1. Move slowly in homing direction until stall detected
-//   2. Set encoder to the known stall angle (e.g., -90°)
-//   3. Move motor to 0° position
-//
-// Full homing order:
-//   Motor 1 → Motor 2 → Motor 3 → Motors 4+5 (together)
-// =============================================================================
-
 #ifndef GRYPHON_HOMING_H
 #define GRYPHON_HOMING_H
 
 #include "config.h"
-#include "encoders.h"
 #include "steppers.h"
 #include <Arduino.h>
 
-// ─── Per-motor config arrays ────────────────────────────────────────────────
-static const bool homing_dirs[NUM_MOTORS] = {
-  HOM1_DIR, HOM2_DIR, HOM3_DIR, HOM4_DIR, HOM5_DIR
-};
+// ─── Per-motor config arrays ──────────────────────────────────────────────────
+static const bool  homing_dirs[NUM_MOTORS]     = { HOM1_DIR, HOM2_DIR, HOM3_DIR, HOM4_DIR, HOM5_DIR };
+static const int   stall_thresholds[NUM_MOTORS] = { STALL_THRESHOLD1, STALL_THRESHOLD2,
+                                                     STALL_THRESHOLD3, STALL_THRESHOLD4,
+                                                     STALL_THRESHOLD5 };
+static const float home_offsets_deg[NUM_MOTORS] = { HOME_OFFSET1_DEG, HOME_OFFSET2_DEG,
+                                                     HOME_OFFSET3_DEG, HOME_OFFSET4_DEG,
+                                                     HOME_OFFSET5_DEG };
 
-static const float stall_angles[NUM_MOTORS] = {
-  HOM1_STALL_ANGLE, HOM2_STALL_ANGLE, HOM3_STALL_ANGLE,
-  HOM4_STALL_ANGLE, HOM5_STALL_ANGLE
-};
+// ─── Drive one motor to mechanical stop via current-sensor stall detection ───
+// Returns true  = stall detected (normal).
+// Returns false = timeout (HOMING_TIMEOUT_MS elapsed without stall).
+// hit_current   = EMA value at the moment stall was triggered (0 if timeout).
+bool drive_to_stall(uint8_t motor, int &hit_current) {
+  bool dir       = homing_dirs[motor];
+  int  threshold = stall_thresholds[motor];
+  hit_current    = 0;
 
-// ─── Phase 1: Find mechanical stop via stall detection ──────────────────────
-// Returns true if stall found, false on timeout.
-bool find_stall(uint8_t motor) {
-  unsigned long start = millis();
-  bool dir = homing_dirs[motor];
-
-  while (true) {
-    if (millis() - start > HOMING_TIMEOUT_MS) return false;
-
-    long enc_before = encoder_read(motor);
-
-    for (int s = 0; s < STALL_CHECK_STEPS; s++) {
-      do_step(motor, dir);
-      delayMicroseconds(HOMING_SPEED_DELAY_US);
+  // ── Wait for current to settle before seeding the EMA ──
+  // After the previous motor stalled, current stays elevated.
+  // Keep sampling until average drops at least 15 below threshold, or 3s.
+  float ema = 0;
+  unsigned long settle_deadline = millis() + 3000;
+  do {
+    ema = 0;
+    for (int i = 0; i < 20; i++) {
+      ema += analogRead(CURRENT_SENSOR_PIN);
+      delay(10);
     }
+    ema /= 20.0f;
+  } while ((int)ema > (threshold - 15) && millis() < settle_deadline);
 
-    long enc_after = encoder_read(motor);
-    if (abs(enc_after - enc_before) < STALL_THRESHOLD) {
-      return true; // Stalled
-    }
-  }
-}
+  // ── Blocking step loop: step → read → EMA → check ──
+  unsigned long deadline = millis() + HOMING_TIMEOUT_MS;
+  bool stalled = false;
 
-// ─── Phase 2: Set encoder to stall angle ────────────────────────────────────
-// Convert the known stall angle to encoder ticks and set the counter.
-void set_encoder_to_angle(uint8_t motor, float angle_deg) {
-  // ticks = (angle / 360) * CPR / multiplier
-  // We need the raw ticks that correspond to this angle
-  extern float rt_enc_mult[];
-  float raw_deg = angle_deg / rt_enc_mult[motor];
-  long ticks = (long)((raw_deg / 360.0f) * (float)ENCODER_CPR);
+  while (millis() < deadline) {
+    do_step(motor, dir);
+    motors[motor].current_steps += dir ? 1 : -1;
+    delayMicroseconds(HOMING_SPEED_DELAY_US);
 
-  noInterrupts();
-  enc_ticks[motor] = ticks;
-  interrupts();
-}
+    int raw = analogRead(CURRENT_SENSOR_PIN);
+    ema = 0.2f * raw + 0.8f * ema;
 
-// ─── Phase 3: Move motor to 0° (blocking) ───────────────────────────────────
-// Uses stepping with encoder feedback to reach zero position.
-bool move_to_zero(uint8_t motor) {
-  unsigned long start = millis();
-  extern float rt_enc_mult[];
-
-  while (true) {
-    if (millis() - start > HOMING_TIMEOUT_MS) return false;
-
-    // Read current angle
-    long ticks = encoder_read(motor);
-    float motor_deg = (ticks * 360.0f) / (float)ENCODER_CPR;
-    float link_deg = motor_deg * rt_enc_mult[motor];
-
-    // Close enough to zero? (within ~0.5°)
-    if (abs(link_deg) < 0.5f) {
+    if ((int)ema > threshold) {
+      hit_current = (int)ema;
+      stalled     = true;
       break;
     }
-
-    // Step toward zero
-    bool dir = (link_deg < 0);  // If negative angle, move positive
-    do_step(motor, dir);
-    delayMicroseconds(HOMING_RETURN_DELAY_US);
   }
 
-  // Set step counter to match current encoder position
-  motors[motor].current_steps = 0;
-  motors[motor].target_steps = 0;
-  motors[motor].moving = false;
+  // Stop motor
+  motors[motor].target_steps = motors[motor].current_steps;
+  motors[motor].moving       = false;
 
-  return true;
+  return stalled;
 }
 
-// ─── Home a single motor (full sequence) ────────────────────────────────────
-// Phase 1: Find stall → Phase 2: Set angle → Phase 3: Go to 0°
-// Returns true on success.
+// ─── Move motor by a fixed number of degrees (blocking, homing speed) ────────
+void move_degrees_blocking(uint8_t motor, float deg) {
+  if (deg == 0.0f) return;
+
+  long steps     = degrees_to_steps(motor, deg);
+  bool dir       = (steps > 0);
+  long abs_steps = steps < 0 ? -steps : steps;
+
+  for (long s = 0; s < abs_steps; s++) {
+    do_step(motor, dir);
+    delayMicroseconds(HOMING_SPEED_DELAY_US);
+  }
+  motors[motor].current_steps += steps;
+  motors[motor].target_steps   = motors[motor].current_steps;
+}
+
+// ─── Home a single motor (for manual HOM:<id> command) ───────────────────────
 bool home_motor(uint8_t motor) {
   Serial.print("HOM_START:");
   Serial.println(motor);
 
-  // Phase 1: Find mechanical stop
-  if (!find_stall(motor)) {
-    Serial.print("ERR:STALL_TIMEOUT:");
-    Serial.println(motor);
-    return false;
-  }
-  Serial.print("HOM_STALL:");
-  Serial.println(motor);
+  int  hit_current = 0;
+  bool ok          = drive_to_stall(motor, hit_current);
 
-  // Phase 2: Set encoder to known stall angle
-  set_encoder_to_angle(motor, stall_angles[motor]);
+  motors[motor].current_steps = 0;
+  motors[motor].target_steps  = 0;
 
-  // Phase 3: Move to 0°
-  if (!move_to_zero(motor)) {
-    Serial.print("ERR:RETURN_TIMEOUT:");
-    Serial.println(motor);
-    return false;
+  if (home_offsets_deg[motor] != 0.0f) {
+    move_degrees_blocking(motor, home_offsets_deg[motor]);
+    motors[motor].current_steps = 0;
+    motors[motor].target_steps  = 0;
   }
 
-  return true;
+  Serial.print(ok ? "HOM_HIT:" : "HOM_TIMEOUT:");
+  Serial.print(motor);
+  Serial.print(" ( With Current : ");
+  Serial.print(hit_current);
+  Serial.println(" )");
+  return ok;
 }
 
-// ─── Home all motors in sequence ────────────────────────────────────────────
-// Order: Motor 0 → 1 → 2 → then 3 & 4 together (differential wrist)
-// Returns bitmask of failed motors (0 = all OK).
+// ─── Home all motors — Elbow(2)→Shoulder(1)→Base(0)→WristA(3)→WristB(4) ─────
 uint8_t home_all() {
-  uint8_t fail_mask = 0;
+  Serial.println("HOM_START:ALL");
 
-  // ── Step 1: Home motors 0, 1, 2 sequentially ──
-  for (int i = 0; i < 3; i++) {
-    if (!home_motor(i)) {
-      fail_mask |= (1 << i);
-    }
-    delay(200); // Brief pause between joints
+  // Homing order: ELBOW(2) → SHOULDER(1) → BASE(0) → WRIST_A(3) → WRIST_B(4)
+  const uint8_t order[NUM_MOTORS] = { 2, 1, 0, 3, 4 };
+
+  // Phase 1: each motor drives to its mechanical stop
+  for (int i = 0; i < NUM_MOTORS; i++) {
+    uint8_t mid = order[i];
+
+    Serial.print("HOM_START:");
+    Serial.println(mid);
+
+    int  hit_current = 0;
+    bool ok          = drive_to_stall(mid, hit_current);
+
+    motors[mid].current_steps = 0;
+    motors[mid].target_steps  = 0;
+
+    Serial.print(ok ? "HOM_HIT:" : "HOM_TIMEOUT:");
+    Serial.print(mid);
+    Serial.print(" ( With Current : ");
+    Serial.print(hit_current);
+    Serial.println(" )");
+
+    delay(300);
   }
 
-  // ── Step 2: Home motors 3 & 4 (differential wrist) together ──
-  // First, find stall on both
-  Serial.println("HOM_START:WRIST");
-
-  bool stall3 = find_stall(3);
-  bool stall4 = find_stall(4);
-
-  if (!stall3) { fail_mask |= (1 << 3); Serial.println("ERR:STALL_TIMEOUT:3"); }
-  if (!stall4) { fail_mask |= (1 << 4); Serial.println("ERR:STALL_TIMEOUT:4"); }
-
-  if (stall3 && stall4) {
-    // Set both encoders to their stall angles
-    set_encoder_to_angle(3, stall_angles[3]);
-    set_encoder_to_angle(4, stall_angles[4]);
-
-    Serial.println("HOM_STALL:WRIST");
-
-    // Move both to 0° (alternating steps for smoother motion)
-    unsigned long start = millis();
-    extern float rt_enc_mult[];
-    bool done3 = false, done4 = false;
-
-    while (!done3 || !done4) {
-      if (millis() - start > HOMING_TIMEOUT_MS) {
-        if (!done3) fail_mask |= (1 << 3);
-        if (!done4) fail_mask |= (1 << 4);
-        break;
-      }
-
-      // Motor 3
-      if (!done3) {
-        long t3 = encoder_read(3);
-        float deg3 = (t3 * 360.0f / (float)ENCODER_CPR) * rt_enc_mult[3];
-        if (abs(deg3) < 0.5f) {
-          done3 = true;
-        } else {
-          do_step(3, deg3 < 0);
-          delayMicroseconds(HOMING_RETURN_DELAY_US / 2);
-        }
-      }
-
-      // Motor 4
-      if (!done4) {
-        long t4 = encoder_read(4);
-        float deg4 = (t4 * 360.0f / (float)ENCODER_CPR) * rt_enc_mult[4];
-        if (abs(deg4) < 0.5f) {
-          done4 = true;
-        } else {
-          do_step(4, deg4 < 0);
-          delayMicroseconds(HOMING_RETURN_DELAY_US / 2);
-        }
-      }
+  // Phase 2: back off to home positions (same order)
+  Serial.println("HOM_OFFSET:START");
+  for (int i = 0; i < NUM_MOTORS; i++) {
+    uint8_t mid = order[i];
+    if (home_offsets_deg[mid] != 0.0f) {
+      move_degrees_blocking(mid, home_offsets_deg[mid]);
     }
-
-    // Reset step counters
-    motors[3].current_steps = 0;
-    motors[3].target_steps = 0;
-    motors[3].moving = false;
-    motors[4].current_steps = 0;
-    motors[4].target_steps = 0;
-    motors[4].moving = false;
+    motors[mid].current_steps = 0;
+    motors[mid].target_steps  = 0;
+    motors[mid].moving        = false;
   }
 
-  return fail_mask;
+  Serial.println("HMD:ALL");
+  return 0;
 }
 
 #endif // GRYPHON_HOMING_H

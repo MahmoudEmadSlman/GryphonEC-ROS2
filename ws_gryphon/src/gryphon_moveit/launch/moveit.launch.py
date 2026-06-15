@@ -27,7 +27,15 @@ def generate_launch_description():
         package="moveit_ros_move_group",
         executable="move_group",
         output="screen",
-        parameters=[moveit_config.to_dict(), {"use_sim_time": is_sim}, {"publish_robot_description_semantic": True}],
+        parameters=[
+            moveit_config.to_dict(),
+            {"use_sim_time": is_sim},
+            {"publish_robot_description_semantic": True},
+            # Disable joint-state timestamp validation:
+            # the real robot Arduino may not publish states fast enough
+            # for the default 0.01s tolerance.
+            {"trajectory_execution.allowed_start_tolerance": 0.0},
+        ],
         arguments=["--ros-args", "--log-level", "info"]
     )
 
