@@ -6,6 +6,7 @@
 </p>
 
 <p align="center">
+  <img height="100px" alt="Gryphon Logo" src="Docs/Media/gryphon_logo.png" style="margin-right: 24px;">
   <a href="https://www.ros.org/">
     <img height="100px" alt="ROS Humble Logo" src="Docs/Media/humble_logo.png" style="margin-right: 24px;">
   </a>
@@ -36,6 +37,9 @@
 - `/firmware` — **Arduino Mega Firmware (Custom)**  
   Custom Arduino firmware with closed-loop encoder feedback.
   Controls 5× TB6600 stepper drivers, reads 5× HEDS-9100 incremental encoders, and supports stall-detection homing and a relay-based gripper.
+  <p align="center">
+  <img alt="RViz Real" src="Docs/Media/rviz_real.gif" />
+  </p>
 
 ---
 
